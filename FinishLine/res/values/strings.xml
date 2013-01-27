@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Finish Line</string>
+    <string name="menu_delete" translation_description="In the menu, to delete all the tracks.
+
+      Character limit: ~20 (1 line)">    Delete </string>
+    <string name="icon_track" translation_description="The accessibility description for the &apos;Track&apos; icon.">    Track</string>
+    <string name="menu_edit" translation_description="In the menu, to edit a track or a marker.
+
+      Character limit: ~20 (1 line)">    Edit</string>
+    <string name="menu_show_on_map" translation_description="In the menu, to show a track or a marker on the map.
+
+      Character limit: ~20 (1 line)">    Show on map</string>
+    <string name="menu_settings">Settings</string>
+    <string name="finish_line_app_name">Finish Line</string>
+    <string name="finish_line_service">FinishLine Service</string>
+    <string name="button_start">Start</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_button_bar">ButtonBar</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="button_set_finish_line">Set Finish Line</string>
+    <string name="race_notification">Select to restore.</string>
+    <string name="app_name_is_running">Finish Line is running</string>
+
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="location_interval_key">min_distance</string>
+    <string name="max_accuracy_allowed_key">max_accuracy_allowed</string>
+    <string name="auto_resume_race_timeout_key">auto_resume_race_timeout</string>
+    <string name="min_distance_key">min_distance</string>
+    <string name="auto_resume_race_current_retry_key">auto_resume_race_current_retry</string>
+    <string name="race_started_broadcast_action">race_started_broadcast</string>
+    <string name="race_resumed_broadcast_action">race_resumed_broadcast</string>
+    <string name="race_stopped_broadcast_action">race_stopped_broadcast</string>
+    <string name="race_id_key">race_id</string>
+    <string name="race_id_broadcast_extra">race_id_broadcast_extra</string>
+    <string name="buoy_1_id_key">buoy_1_id</string>
+    <string name="buoy_2_id_key">buoy_2_id</string>
+    <string name="buoy_1_name_key">buoy_1_name</string>
+    <string name="buoy_2_name_key">buoy_2_name</string>
+    <string name="buoy_1_latitude_key">buoy_1_latitude</string>
+    <string name="buoy_2_latitude_key">buoy_2_latitude</string>
+    <string name="buoy_1_longitude_key">buoy_1_longitude</string>
+    <string name="buoy_2_longitude_key">buoy_2_longitude</string>
+    
+</resources>
