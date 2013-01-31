@@ -98,38 +98,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity
 		}
 	};	
 
-	public  void playAlertTone(final Context context)
-	{
-		Thread t = new Thread()
-		{
-			public void run()
-			{
-				MediaPlayer player = null;
-				int countBeep = 0;
-				while(countBeep<2){
-					player = MediaPlayer.create(context,R.raw.beephigh);
-					player.start();
-					countBeep+=1;
-					try 
-					{
-						// 100 millisecond is duration gap between two beep
-						Thread.sleep(player.getDuration()+100);
-						player.release();
-					}
-					catch (InterruptedException e) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-
-				}
-			}
-		};
-
-		t.start();   
-
-	}
 
 	
     private void setupButtons() 

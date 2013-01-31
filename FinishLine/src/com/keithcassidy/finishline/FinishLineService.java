@@ -32,6 +32,7 @@ public class FinishLineService extends Service
 {
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();	
+    
     public class LocalBinder extends Binder {
     	FinishLineService getService() 
     	{
@@ -45,7 +46,7 @@ public class FinishLineService extends Service
     }
 	
 	
-	private static final String RACE_ID = "RaceId";
+	private static final String INTENT_RACE_ID = "RaceId";
 
 	private static final String TAG = FinishLineService.class.getSimpleName();
 
@@ -342,7 +343,23 @@ public class FinishLineService extends Service
 
     	Toast.makeText(getBaseContext(), raceStarted ? "Starting Race"
 				: "Resuming Race", Toast.LENGTH_LONG).show();
+    	
+    	PlaySounds.playStartRace(this);
+	}
+	private void endRacing(long endingRaceId) 
+	{
+		// Unregister notifications
+		unregisterLocationListener();
+
+		// Send notifications
+		showNotification();
+		sendLocalBroadcast(Constants.RACE_ENDED_MESSAGE, endingRaceId);
+
+    	Toast.makeText(getBaseContext(), "Ending Race", Toast.LENGTH_LONG).show();
 		
+    	PlaySounds.playEndRace(this);
+    	
+		releaseWakeLock();
 	}
 
 	public void endCurrentRace()
@@ -374,19 +391,6 @@ public class FinishLineService extends Service
 	}
 
 
-	private void endRacing(long endingRaceId) 
-	{
-		// Unregister notifications
-		unregisterLocationListener();
-
-		// Send notifications
-		showNotification();
-		sendLocalBroadcast(Constants.RACE_ENDED_MESSAGE, endingRaceId);
-
-    	Toast.makeText(getBaseContext(), "Ending Race", Toast.LENGTH_LONG).show();
-		
-		releaseWakeLock();
-	}
 
 	private void updateRacingState(long updatingRaceId) 
 	{
@@ -437,20 +441,28 @@ public class FinishLineService extends Service
 	//are we near of crossing the finish line  
 	private void HandleLineCrossing(Location location) 
 	{
-		//update race with latest time
 		Race race = finishLineDataStorage.getRace(raceId);
-		if (race != null) 
+		if (race != null && lastLocation != null) 
 		{
-			race.setStopTime(location.getTime());
 
 			//test to see if we are near finish line
+			location.getBearing();
+			
+			//does this intersect with finish line
+			
 
 
 			//test to see if we crossed the line
 
 
+			
+			//update race with latest time
+			race.setStopTime(location.getTime());
 			finishLineDataStorage.updateRace(race);
 		}
+		
+		lastLocation = location;
+
 	}
 
 	private void registerLocationListener() 
@@ -527,7 +539,7 @@ public class FinishLineService extends Service
 	{
 		if (isRacing())
 		{
-			Intent intent = NewIntent(this, MainActivity.class).putExtra(RACE_ID, raceId);
+			Intent intent = NewIntent(this, MainActivity.class).putExtra(INTENT_RACE_ID, raceId);
 			
 			TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
 			taskStackBuilder.addNextIntent(intent);

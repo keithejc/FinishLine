@@ -13,7 +13,9 @@ public abstract class Constants
 	  public static final String  RACE_STARTED_MESSAGE = "RACE_STARTED_MESSAGE";
 	  public static final String  RACE_RESUMED_MESSAGE = "RACE_RESUMED_MESSAGE";
 	  public static final String  RACE_ENDED_MESSAGE = "RACE_ENDED_MESSAGE";
-	  
+
+	  public static final int START_BEEP_COUNT = 1;
+	  public static final int STOP_BEEP_COUNT = 2;
 
 	  protected Constants() 
 	  {		  
