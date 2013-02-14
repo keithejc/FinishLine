@@ -539,7 +539,7 @@ public class FinishLineService extends Service
 	{
 		if (isRacing())
 		{
-			Intent intent = NewIntent(this, MainActivity.class).putExtra(INTENT_RACE_ID, raceId);
+			Intent intent = NewIntent(this, MapActivity.class).putExtra(INTENT_RACE_ID, raceId);
 			
 			TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
 			taskStackBuilder.addNextIntent(intent);

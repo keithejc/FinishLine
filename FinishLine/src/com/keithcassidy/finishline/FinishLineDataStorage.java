@@ -25,11 +25,18 @@ public class FinishLineDataStorage
 	public FinishLineDataStorage(Context context)
 	{
 		dbHelper = new FinishLineDbHelper(context);
+	
 	}
 	
 	public void open() throws SQLException
 	{
 		db = dbHelper.getWritableDatabase();
+		
+		List<Buoy> list = getAllBuoys();
+		Buoy buoy = new Buoy();
+		buoy.Name = String.format("%d", (list.size() + 1));
+		buoy.Position = new LatLng(1,2);
+		addBuoy(buoy);
 	}
 	
 	public void close()
@@ -154,6 +161,7 @@ public class FinishLineDataStorage
 		while(!cursor.isAfterLast())
 		{
 			crossings.add(cursorToCrossing(cursor));
+			cursor.moveToNext();
 		}
 		cursor.close();
 		
@@ -216,24 +224,24 @@ public class FinishLineDataStorage
 		values.put(FinishLineDbHelper.BUOY_COL_LONGITUDE, Double.doubleToLongBits(buoy.Position.longitude));
 		values.put(FinishLineDbHelper.BUOY_COL_NAME, buoy.Name);
 	
-		long id =  db.update(FinishLineDbHelper.BUOY_TABLE_NAME, values, FinishLineDbHelper.BUOY_COL_ID + " = " + buoy.Id, null);
-        Log.d(TAG, "Updating buoy: " + id );
+		long id =  db.update(FinishLineDbHelper.BUOY_TABLE_NAME, values, FinishLineDbHelper.BUOY_COL_NAME + " = '" + buoy.Name + "'", null);
+        Log.d(TAG, "Updating buoy: " + id + ", " + buoy.Name );
 	}
 	
-	public boolean isBouyNameUnique(String name)
+	public boolean doesBuoyExist(String name)
 	{
-		boolean isUnique = true;
+		boolean exists = false;
 		
 		Cursor cursor = db.query(FinishLineDbHelper.BUOY_TABLE_NAME, FinishLineDbHelper.BUOY_TABLE_ALL_COLS, FinishLineDbHelper.BUOY_COL_NAME + " = '" + name + "'", null, null, null, null);
 		
 		if( cursor.getCount() > 0)
 		{
-			isUnique = false;
+			exists = true;
 		}
 		
 		cursor.close();
 		
-		return isUnique;
+		return exists;
 	}
 	
 	public long addBuoy(Buoy buoy)
@@ -255,16 +263,33 @@ public class FinishLineDataStorage
 		List<Buoy> buoys = new ArrayList<Buoy>();
 		
 		Cursor cursor = db.query(FinishLineDbHelper.BUOY_TABLE_NAME, FinishLineDbHelper.BUOY_TABLE_ALL_COLS, null, null, null, null, null);
-		cursor.moveToFirst();
-		while(!cursor.isAfterLast())
+		if( cursor != null )
 		{
-			buoys.add(cursorToBuoy(cursor));
+			cursor.moveToFirst();
+			while(!cursor.isAfterLast())
+			{
+				buoys.add(cursorToBuoy(cursor));
+				cursor.moveToNext();
+			}
+			cursor.close();
 		}
-		cursor.close();
 		
 		Log.d(TAG, "getting all buoys" );
 		return buoys;
 	}
 	
+	public Cursor getAllBuoysCursor()
+	{
+		List<Buoy> buoys = new ArrayList<Buoy>();
+		
+		Cursor cursor = db.query(FinishLineDbHelper.BUOY_TABLE_NAME, FinishLineDbHelper.BUOY_TABLE_ALL_COLS, null, null, null, null, null);
+		if( cursor != null )
+		{
+			cursor.moveToFirst();
+		}
+		Log.d(TAG, "getting all buoys" );
+		return cursor;
+	}
+
 	
 }

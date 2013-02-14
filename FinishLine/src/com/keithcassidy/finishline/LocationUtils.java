@@ -336,7 +336,7 @@ public class LocationUtils
 
 		if( !dmsStrTrim.contains(" "))
 		{
-			decimalDeg = parseDoubleLocale(dmsStr);
+			decimalDeg = Math.abs(parseDoubleLocale(dmsStr));
 		}
 
 		// check for signed decimal degrees without NSEW, if so return it directly
@@ -387,6 +387,7 @@ public class LocationUtils
 		}
 		
 		return decimalDeg;
-
+		
 	}
+	
 }

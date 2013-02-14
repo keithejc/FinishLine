@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <fragment
+     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,22 +15,6 @@
         android:layout_alignParentTop="true"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-<!-- </LinearLayout>    
-    <FrameLayout
-        android:id="@+id/FrameLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" >
-
-        <Button
-            android:id="@+id/buttonStart"
-            android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:onClick="onClickStartStop"
-            android:text="@string/button_start" />
-    </FrameLayout>
- -->
 
     <LinearLayout
         android:id="@+id/footer"
@@ -49,7 +33,7 @@
             android:text="@string/button_start" />
 
         <Button
-            android:id="@+id/buttonAction"
+            android:id="@+id/buttonSetupBuoys"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

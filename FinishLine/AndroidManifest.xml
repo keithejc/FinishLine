@@ -30,7 +30,7 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.Sherlock" >
         <receiver android:name="com.keithcassidy.finishline.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -46,8 +46,17 @@
             android:value="AIzaSyATlZ_h8hX8gVPzS3-Chj8fUJLJSbR9UkM" />
 
         <activity
-            android:name="com.keithcassidy.finishline.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.keithcassidy.finishline.MapActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.keithcassidy.finishline.HomeActivity" >
+        </activity>
+        <activity
+            android:name="com.keithcassidy.finishline.BuoySetupActivity"
+            android:label="@string/title_activity_bouy_setup" >
+        </activity>
+        <activity
+            android:name="com.keithcassidy.finishline.HomeActivity"
+            android:label="@string/title_activity_home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

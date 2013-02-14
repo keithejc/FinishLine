@@ -2,18 +2,11 @@
 <resources>
 
     <string name="app_name">Finish Line</string>
-    <string name="menu_delete" translation_description="In the menu, to delete all the tracks.
-
-      Character limit: ~20 (1 line)">    Delete </string>
-    <string name="icon_track" translation_description="The accessibility description for the &apos;Track&apos; icon.">    Track</string>
-    <string name="menu_edit" translation_description="In the menu, to edit a track or a marker.
-
-      Character limit: ~20 (1 line)">    Edit</string>
-    <string name="menu_show_on_map" translation_description="In the menu, to show a track or a marker on the map.
-
-      Character limit: ~20 (1 line)">    Show on map</string>
+    <string name="menu_delete">    Delete </string>
+    <string name="icon_track">    Track</string>
+    <string name="menu_edit">    Edit</string>
+    <string name="menu_show_on_map">    Show on map</string>
     <string name="menu_settings">Settings</string>
-    <string name="finish_line_app_name">Finish Line</string>
     <string name="finish_line_service">FinishLine Service</string>
     <string name="button_start">Start</string>
     <string name="start">Start</string>
@@ -24,5 +17,22 @@
     <string name="button_set_finish_line">Set Finish Line</string>
     <string name="race_notification">Select to restore.</string>
     <string name="app_name_is_running">Finish Line is running</string>
-
+    <string name="title_activity_bouy_setup">FinishLine Bouys</string>
+    <string name="spinner_buoy1">Buoy 1</string>
+    <string name="spinner_buoy2">Buoy 2</string>
+    <string name="tab_buoy1">Buoy 1</string>
+    <string name="tab_buoy2">Buoy 2</string>
+    <string name="select_saved_buoy">Select a previously saved Buoy or enter its details below:</string>
+    <string name="or_edit_buoy">Or Edit Buoy Details:</string>
+    <string name="buoy_name">Name:</string>
+    <string name="buoy_latitude">Latitude (enter in any format):</string>
+    <string name="buoy_longitude">Longitude (enter in any format):</string>
+    <string name="save_bouy">Save to Buoy List</string>
+    <string name="title_linecrossings">Line Crossings</string>
+    <string name="title_setup">Setup</string>
+    <string name="title_home">Home</string>
+    <string name="title_activity_home">Finish Line</string>
+    <string name="save_label">Press save to store the buoy.</string>
+    <string name="set_with_gps">Set with GPS</string>
+    
 </resources>
