@@ -31,12 +31,6 @@ public class FinishLineDataStorage
 	public void open() throws SQLException
 	{
 		db = dbHelper.getWritableDatabase();
-		
-		List<Buoy> list = getAllBuoys();
-		Buoy buoy = new Buoy();
-		buoy.Name = String.format("%d", (list.size() + 1));
-		buoy.Position = new LatLng(1,2);
-		addBuoy(buoy);
 	}
 	
 	public void close()
@@ -188,6 +182,24 @@ public class FinishLineDataStorage
 		Log.d(TAG, "deleting crossings for race: " + idRace );
 	}
 	
+	public Buoy getBuoy(String name)
+	{
+		Buoy buoy = null;
+		
+		Cursor cursor = db.query(FinishLineDbHelper.BUOY_TABLE_NAME, FinishLineDbHelper.BUOY_TABLE_ALL_COLS, FinishLineDbHelper.BUOY_COL_NAME + " = '" + name + "'", null, null, null, null);
+		
+		cursor.moveToFirst();
+		
+		if( cursor.getCount() > 0)
+		{
+			buoy = cursorToBuoy(cursor);
+		}
+		
+		cursor.close();
+		
+		return buoy;
+	}
+	
 	public Buoy getBuoy(long idBuoy)
 	{
 		Buoy buoy = null;
@@ -262,7 +274,7 @@ public class FinishLineDataStorage
 	{
 		List<Buoy> buoys = new ArrayList<Buoy>();
 		
-		Cursor cursor = db.query(FinishLineDbHelper.BUOY_TABLE_NAME, FinishLineDbHelper.BUOY_TABLE_ALL_COLS, null, null, null, null, null);
+		Cursor cursor = db.query(FinishLineDbHelper.BUOY_TABLE_NAME, FinishLineDbHelper.BUOY_TABLE_ALL_COLS, null, null, null, null, FinishLineDbHelper.BUOY_COL_NAME);
 		if( cursor != null )
 		{
 			cursor.moveToFirst();
@@ -291,5 +303,13 @@ public class FinishLineDataStorage
 		return cursor;
 	}
 
+	public void deleteBuoy(String name)
+	{
+	
+		db.delete(FinishLineDbHelper.BUOY_TABLE_NAME, FinishLineDbHelper.BUOY_COL_NAME
+		        + " = '" + name + "'", null);
+
+		Log.d(TAG, "Deleting buoy: " + name );
+	}
 	
 }

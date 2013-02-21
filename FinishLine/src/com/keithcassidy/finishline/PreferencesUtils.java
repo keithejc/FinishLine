@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.location.Location;
 
 @SuppressLint("CommitPrefEdits")
 public final class PreferencesUtils 
@@ -14,6 +15,11 @@ public final class PreferencesUtils
 	public static final long RACE_ID_DEFAULT = -1L;
 	public static final int AUTO_RESUME_RACE_CURRENT_RETRY_DEFAULT = 3;
 	public static final int AUTO_RESUME_RACE_TIMEOUT_DEFAULT = 10;
+
+	public static final double METERS_FORWARD_DEFAULT = 0;
+	public static final double METERS_STARBOARD_DEFAULT = 0;
+	
+	public static final int LOCATION_FORMAT_DEFAULT = Location.FORMAT_SECONDS; 
 	
 	  private PreferencesUtils() {}
 
@@ -77,6 +83,20 @@ public final class PreferencesUtils
 	    return Double.longBitsToDouble( sharedPreferences.getLong(getKey(context, keyId), Double.doubleToLongBits(defaultValue)));
 	  }
 
+	  public static String locationToString(Context context, double latLng, boolean isLatitude)
+	  {
+		  int formatCode = getInt(context, R.string.location_format_key, LOCATION_FORMAT_DEFAULT);
+		  
+		  String ret = "?";
+		  if( !Double.isNaN( latLng) ) 
+		  {
+			  ret = Location.convert(latLng,  formatCode);
+		  }
+		  
+		  return ret;
+	  }
+	  
+	  
 	  /**
 	   * Sets a Double preference value.
 	   * 

@@ -210,7 +210,7 @@ public class MapActivity extends FragmentActivity
     
     private void stopRace()
     {
-    	mService.endCurrentRace();        
+    	mService.stopCurrentRace();        
     }
     
     private ServiceConnection mConnection = new ServiceConnection() 

@@ -1,10 +1,6 @@
 package com.keithcassidy.finishline;
 
 import java.util.Date;
-//import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -18,7 +14,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -60,7 +55,6 @@ public class FinishLineService extends Service
 	//set in onCreate:
 	private Context context;
 	private FinishLineDataStorage finishLineDataStorage;
-	private ExecutorService executorService;
 	private LocationManager locationManager;
 	private SharedPreferences sharedPreferences;
 	private long raceId;
@@ -120,39 +114,25 @@ public class FinishLineService extends Service
 		@Override
 		public void onProviderDisabled(String provider) 
 		{
-			// Do nothing
+			sendLocalBroadcast(Constants.GPS_NOT_ENABLED_MESSAGE, true);
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) 
 		{
-	    	Toast.makeText(getBaseContext(), "Provider enabled..", Toast.LENGTH_SHORT).show();
-			// Do nothing
+			sendLocalBroadcast(Constants.GPS_ENABLED_MESSAGE, true);
 		}
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) 
 		{
-	    	Toast.makeText(getBaseContext(), "status changed..", Toast.LENGTH_SHORT).show();
 			// Do nothing
 		}
 
 		@Override
 		public void onLocationChanged(final Location location) 
 		{
-	    	Toast.makeText(getBaseContext(), "loccation changed..", Toast.LENGTH_LONG).show();
-			if (executorService == null || executorService.isTerminated()) 
-			{
-				return;
-			}
-			executorService.submit(new Runnable() 
-			{
-				@Override
-				public void run() 
-				{
-					onLocationChangedAsync(location);
-				}
-			});
+	    	handleLocationData(location);
 		}
 	};
 
@@ -164,7 +144,6 @@ public class FinishLineService extends Service
 		finishLineDataStorage = new FinishLineDataStorage(context);
 		finishLineDataStorage.open();
 		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		executorService = Executors.newSingleThreadExecutor();
 		sharedPreferences = getSharedPreferences(Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
 
@@ -193,6 +172,11 @@ public class FinishLineService extends Service
 			}
 			showNotification();
 		}
+		
+		// Register for locations
+		registerLocationListener();
+		
+		acquireWakeLock();
 	}
 
 	@Override
@@ -224,11 +208,6 @@ public class FinishLineService extends Service
 		// This should be the next to last operation
 		releaseWakeLock();
 
-		/*
-		 * Shutdown the executor service last to avoid sending events to a dead
-		 * executor.
-		 */
-		executorService.shutdown();
 		super.onDestroy();
 	}
 
@@ -255,7 +234,6 @@ public class FinishLineService extends Service
 		{
 			if (!shouldResumeRace()) 
 			{
-			  	Toast.makeText(context, "don't resume", Toast.LENGTH_LONG).show();
 				Log.i(TAG, "Stop resume track.");
 				updateRacingState(PreferencesUtils.RACE_ID_DEFAULT);
 				stopSelfResult(startId);
@@ -263,7 +241,6 @@ public class FinishLineService extends Service
 			}
 			else
 			{
-			  	Toast.makeText(context, "resume", Toast.LENGTH_LONG).show();
 				restartRace();
 			}
 		}
@@ -327,50 +304,33 @@ public class FinishLineService extends Service
 
 	private void startRacing(boolean raceStarted) 
 	{
-		acquireWakeLock();
 
 		// Update instance variables
 		lastLocation = null;
 
-		// Register notifications
-		registerLocationListener();
-
 		// Send notifications
 		showNotification();
 		
-		sendLocalBroadcast(raceStarted ? Constants.RACE_STARTED_MESSAGE
-				: Constants.RACE_RESUMED_MESSAGE, raceId);
-
-    	Toast.makeText(getBaseContext(), raceStarted ? "Starting Race"
-				: "Resuming Race", Toast.LENGTH_LONG).show();
+		Toast.makeText(getBaseContext(), raceStarted ? getString(R.string.starting_race)
+				: getString(R.string.resuming_race), Toast.LENGTH_LONG).show();
     	
-    	PlaySounds.playStartRace(this);
+		if( raceStarted)
+    	{
+			PlaySounds.playStartRace(this);
+    	}
 	}
-	private void endRacing(long endingRaceId) 
+	private void stopRacing(long endingRaceId) 
 	{
-		// Unregister notifications
-		unregisterLocationListener();
-
-		// Send notifications
 		showNotification();
-		sendLocalBroadcast(Constants.RACE_ENDED_MESSAGE, endingRaceId);
-
-    	Toast.makeText(getBaseContext(), "Ending Race", Toast.LENGTH_LONG).show();
+		
+    	Toast.makeText(getBaseContext(), getString(R.string.stopping_race), Toast.LENGTH_LONG).show();
 		
     	PlaySounds.playEndRace(this);
     	
-		releaseWakeLock();
 	}
 
-	public void endCurrentRace()
+	public void stopCurrentRace()
 	{
-		if (!isRacing()) 
-		{
-			Log.d(TAG, "Ignore endCurrentRace. Not racing.");
-			stopSelf();
-			return;
-		}
-
 		// Need to remember the raceId before setting it to -1L
 		long currentRaceId = raceId;
 
@@ -385,9 +345,8 @@ public class FinishLineService extends Service
 			race.setStopTime(date.getTime());
 			finishLineDataStorage.updateRace(race);
 		}
-		endRacing(currentRaceId);
+		stopRacing(currentRaceId);
 
-		stopSelf();
 	}
 
 
@@ -398,25 +357,27 @@ public class FinishLineService extends Service
 		PreferencesUtils.setLong(this, R.string.race_id_key, raceId);
 	}
 
-	private void onLocationChangedAsync(Location location) 
+	private void handleLocationData(Location location) 
 	{
 		try 
 		{
 
 			if (!LocationUtils.isValidLocation(location)) 
 			{
-				sendLocalBroadcast(Constants.LOCATION_INVALID_MESSAGE, 0);
+				sendLocalBroadcast(Constants.LOCATION_INVALID_MESSAGE, true);
 				Log.w(TAG, "Ignore onLocationChangedAsync. location is invalid.");
 				return;
 			}
 
 			if (location.getAccuracy() > maxAccuracyAllowed)
 			{
-				sendLocalBroadcast(Constants.LOCATION_INACCURATE_MESSAGE, 0);
+				sendLocalBroadcast(Constants.LOCATION_INACCURATE_MESSAGE, true);
 				Log.d(TAG, "Ignore onLocationChangedAsync. Poor accuracy.");
 				return;
 			}
 
+			sendLocalBroadcast(Constants.NEW_LOCATION_MESSAGE, location);
+			
 			if (isRacing() )
 			{
 				//are we near finish line or have we crossed it?
@@ -437,24 +398,47 @@ public class FinishLineService extends Service
 		}
 	}
 
-
+	float lastDistanceToFinish = Float.POSITIVE_INFINITY;
 	//are we near of crossing the finish line  
 	private void HandleLineCrossing(Location location) 
 	{
 		Race race = finishLineDataStorage.getRace(raceId);
 		if (race != null && lastLocation != null) 
 		{
-
-			//test to see if we are near finish line
-			location.getBearing();
 			
 			//does this intersect with finish line
+			float distanceToFinish = LocationUtils.distanceToFinish(location, race.getBuoy1(), race.getBuoy2());
+			sendLocalBroadcast(Constants.FINISHLINE_DISTANCE_MESSAGE, distanceToFinish);
 			
+			//sound appropriate to distance
+			PlaySounds.playProximity(this, (int)distanceToFinish);
 
-
+			
+			
 			//test to see if we crossed the line
+			if( lastDistanceToFinish > 0 && distanceToFinish <= 0 )
+			{
+				long timeOfCrossing = (long)( lastLocation.getTime() + (location.getTime() - lastLocation.getTime()) * 
+						(lastDistanceToFinish / (Math.abs(distanceToFinish) + lastDistanceToFinish)) ) ;
+				
+				Location buoyStart = new Location("na");
+				buoyStart.setLatitude(race.getBuoy1().Position.latitude);
+				buoyStart.setLongitude(race.getBuoy1().Position.longitude);
 
-
+				Location buoyEnd = new Location("na");
+				buoyEnd.setLatitude(race.getBuoy2().Position.latitude);
+				buoyEnd.setLongitude(race.getBuoy2().Position.longitude);
+				buoyStart.setBearing(buoyStart.bearingTo(buoyEnd));
+				
+				Location locationCrossing = LocationUtils.intersectionOfTwoPaths(location, buoyStart);
+				locationCrossing.setTime(timeOfCrossing);
+				locationCrossing.setBearing(lastLocation.getBearing());
+				finishLineDataStorage.addCrossing(raceId, locationCrossing);
+				
+				sendLocalBroadcast(Constants.FINISHLINE_CROSSED_MESSAGE, true);
+			
+				PlaySounds.playLineCross(this);
+			}
 			
 			//update race with latest time
 			race.setStopTime(location.getTime());
@@ -539,7 +523,7 @@ public class FinishLineService extends Service
 	{
 		if (isRacing())
 		{
-			Intent intent = NewIntent(this, MapActivity.class).putExtra(INTENT_RACE_ID, raceId);
+			Intent intent = NewIntent(this, HomeActivity.class).putExtra(INTENT_RACE_ID, raceId);
 			
 			TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
 			taskStackBuilder.addNextIntent(intent);
@@ -557,8 +541,26 @@ public class FinishLineService extends Service
 			stopForegroundService();
 		}
 	}
+
+	private void sendLocalBroadcast(String action, Location data) 
+	{
+		Intent intent = new Intent(Constants.SERVICE_STATUS_MESSAGE).putExtra(action, data);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	}
+	
+	private void sendLocalBroadcast(String action, boolean data) 
+	{
+		Intent intent = new Intent(Constants.SERVICE_STATUS_MESSAGE).putExtra(action, data);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	}
 	
 	private void sendLocalBroadcast(String action, long data) 
+	{
+		Intent intent = new Intent(Constants.SERVICE_STATUS_MESSAGE).putExtra(action, data);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	}
+
+	private void sendLocalBroadcast(String action, float data) 
 	{
 		Intent intent = new Intent(Constants.SERVICE_STATUS_MESSAGE).putExtra(action, data);
 		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);

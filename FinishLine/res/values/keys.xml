@@ -18,5 +18,9 @@
     <string name="buoy_2_latitude_key">buoy_2_latitude</string>
     <string name="buoy_1_longitude_key">buoy_1_longitude</string>
     <string name="buoy_2_longitude_key">buoy_2_longitude</string>
+    <string name="meters_forward_key">meters_forward</string>
+    <string name="meters_starboard_key">meters_starboard</string>
+    <string name="location_format_key">location_format</string>
+    <string name="intent_data_buoy_name">intent_data_buoy_name</string>
     
 </resources>

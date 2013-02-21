@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.location.Location;
 import android.util.Log;
 
@@ -64,9 +66,11 @@ public class LocationUtils
 
 	static double roundLatOrLong(double latLng)
 	{
-		BigDecimal bd = new BigDecimal(latLng);
+		return latLng;
+		
+		/*BigDecimal bd = new BigDecimal(latLng);
 		BigDecimal rounded = bd.setScale((int) MAX_LATLNG_PRECISION_DPLACES, BigDecimal.ROUND_HALF_UP);
-		return rounded.doubleValue();	  
+		return rounded.doubleValue();*/	  
 	}
 
 	/**
@@ -279,6 +283,31 @@ public class LocationUtils
 
 	public static float distanceToFinish(Location boat, Buoy buoy1, Buoy buoy2)
 	{
+		float dLine = distanceToLine(boat, buoy1, buoy2);
+				
+		if( Float.isInfinite(dLine) )
+		{
+			Location boatReverse = new Location(boat);
+			float bearing = boat.getBearing();
+			bearing += 180;
+			if( bearing > 360 )
+			{
+				bearing -= 360;
+			}
+			boatReverse.setBearing(bearing);
+			float dReverse = distanceToLine(boatReverse, buoy1, buoy2);
+			
+			if( !Float.isInfinite(dReverse) ) 
+			{
+				dLine = 0 - dReverse;
+			}
+		}		
+		
+		return dLine;
+	}
+	
+	public static float distanceToLine(Location boat, Buoy buoy1, Buoy buoy2)
+	{
 		Location buoyStart = new Location("na");
 		buoyStart.setLatitude(buoy1.Position.latitude);
 		buoyStart.setLongitude(buoy1.Position.longitude);
@@ -293,7 +322,7 @@ public class LocationUtils
 
 		if( intersection == null )
 		{
-			return (float) EARTH_CIRCUMFERENCE;
+			return Float.POSITIVE_INFINITY;
 		}
 
 		float dIntersection = buoyStart.distanceTo(intersection);
@@ -305,7 +334,7 @@ public class LocationUtils
 		if(  dIntersection > dEnd ||
 				Math.abs( (bInt - bEnd) ) > 90 )
 		{
-			return EARTH_CIRCUMFERENCE;
+			return Float.POSITIVE_INFINITY;
 		}
 		return  boat.distanceTo(intersection);
 
@@ -331,63 +360,122 @@ public class LocationUtils
 	}
 	public static double parseDMS (String dmsStr) 
 	{
-		double decimalDeg = Double.NaN;
-		String dmsStrTrim = dmsStr.trim(); 
 
-		if( !dmsStrTrim.contains(" "))
+		try
 		{
-			decimalDeg = Math.abs(parseDoubleLocale(dmsStr));
+			double decimalDeg = Double.NaN;
+
+			String dmsStrTrim = dmsStr.trim(); 
+
+			if( !dmsStrTrim.contains(" ") && !dmsStrTrim.contains(":") && !dmsStrTrim.contains("'") && !dmsStrTrim.contains("°")&& !dmsStrTrim.contains("\""))
+			{
+				decimalDeg = Math.abs(parseDoubleLocale(dmsStr));
+			}
+
+			// check for signed decimal degrees without NSEW, if so return it directly
+			if( Double.isNaN(decimalDeg) )
+			{
+				// strip off any sign or compass dir'n & split out separate d/m/s
+				String cleaned = dmsStrTrim.replaceAll("^-","").replaceAll("[NSEWnsew°\"']","").replaceAll(" +", " ").replaceAll(":", " ");
+				List<String> dms = Arrays.asList(cleaned.split("[^0-9.,]"));
+
+				if (dms.get(dms.size() - 1) == "")
+				{
+					dms.remove(dms.size() - 1);  // from trailing symbol
+				}
+
+				if (dms.size() == 0)
+				{
+					return Double.NaN;
+				}
+
+				// and convert to decimal degrees...
+				switch (dms.size())
+				{
+				case 3:  // interpret 3-part result as d/m/s
+					decimalDeg = parseDoubleLocale(dms.get(0)) + parseDoubleLocale(dms.get(1))/60 + parseDoubleLocale(dms.get(2))/3600; 
+					break;
+				case 2:  // interpret 2-part result as d/m
+					decimalDeg = parseDoubleLocale(dms.get(0)) + parseDoubleLocale(dms.get(1))/60; 
+					break;
+				case 1:  // just d (possibly decimal) or non-separated dddmmss
+					decimalDeg = parseDoubleLocale(dms.get(0));
+					// check for fixed-width unseparated format eg 0033709W
+					//if (/[NS]/i.test(dmsStr)) deg = '0' + deg;  // - normalise N/S to 3-digit degrees
+					//if (/[0-9]{7}/.test(deg)) deg = deg.slice(0,3)/1 + deg.slice(3,5)/60 + deg.slice(5)/3600; 
+					break;
+				default:
+					return Double.NaN;
+				}
+
+			}
+
+			if( !Double.isNaN(decimalDeg) )
+			{
+				if( dmsStrTrim.startsWith("-") || dmsStrTrim.contains("W") || dmsStrTrim.contains("S") || dmsStrTrim.contains("w") || dmsStrTrim.contains("s")) 
+				{
+					decimalDeg = -decimalDeg;
+				}
+				decimalDeg = roundLatOrLong(decimalDeg);
+			}
+
+			return decimalDeg;
 		}
-
-		// check for signed decimal degrees without NSEW, if so return it directly
-		if( Double.isNaN(decimalDeg) )
+		catch(Exception e)
 		{
-			// strip off any sign or compass dir'n & split out separate d/m/s
-			String cleaned = dmsStrTrim.replaceAll("^-","").replaceAll("[NSEWnsew°\"']","");
-			List<String> dms = Arrays.asList(cleaned.split("[^0-9.,]"));
-
-			if (dms.get(dms.size() - 1) == "")
-			{
-				dms.remove(dms.size() - 1);  // from trailing symbol
-			}
-
-			if (dms.size() == 0)
-			{
-				return Double.NaN;
-			}
-
-			// and convert to decimal degrees...
-			switch (dms.size())
-			{
-			case 3:  // interpret 3-part result as d/m/s
-				decimalDeg = parseDoubleLocale(dms.get(0)) + parseDoubleLocale(dms.get(1))/60 + parseDoubleLocale(dms.get(2))/3600; 
-				break;
-			case 2:  // interpret 2-part result as d/m
-				decimalDeg = parseDoubleLocale(dms.get(0)) + parseDoubleLocale(dms.get(1))/60; 
-				break;
-			case 1:  // just d (possibly decimal) or non-separated dddmmss
-				decimalDeg = parseDoubleLocale(dms.get(0));
-				// check for fixed-width unseparated format eg 0033709W
-				//if (/[NS]/i.test(dmsStr)) deg = '0' + deg;  // - normalise N/S to 3-digit degrees
-				//if (/[0-9]{7}/.test(deg)) deg = deg.slice(0,3)/1 + deg.slice(3,5)/60 + deg.slice(5)/3600; 
-				break;
-			default:
-				return Double.NaN;
-			}
-
+			return Double.NaN;
 		}
+	}
 
-		if( !Double.isNaN(decimalDeg) )
+	//assume 2d plane
+	public static LatLng getIntermediatePosition(long timeInt, Location position1, Location position2)
+	{
+		try
 		{
-			if( dmsStrTrim.startsWith("-") || dmsStrTrim.contains("W") || dmsStrTrim.contains("S") || dmsStrTrim.contains("w") || dmsStrTrim.contains("s")) 
-			{
-				decimalDeg = -decimalDeg;
-			}
-			decimalDeg = roundLatOrLong(decimalDeg);
+			double mLat = (position2.getLatitude() - position1.getLatitude() ) / ( position2.getTime() - position1.getTime() );
+			double intLat = mLat * (timeInt - position1.getTime()) + position1.getLatitude();
+			
+			double mLong = (position2.getLongitude() - position1.getLongitude() ) / ( position2.getTime() - position1.getTime() );
+			double intLong = mLong * (timeInt - position1.getTime()) + position1.getLongitude();
+			return new LatLng(intLat, intLong);
+		}
+		catch(Exception e)
+		{
 		}
 		
-		return decimalDeg;
+		return null;
 		
 	}
+
+	
+	public static LatLng adjustPositionByOffsets(LatLng buoyPos, double metersForward, double metersStarboard, float boatBearing) 
+	{
+		
+		Location loc = new Location("");
+		loc.setLatitude(buoyPos.latitude);
+		loc.setLongitude(buoyPos.longitude);
+		
+		//distance and bearing from offsets
+		double distance = Math.sqrt( (metersForward * metersForward) + 
+									 (metersStarboard * metersStarboard) );
+		
+		float bearing = boatBearing + (90 - (float)Math.toDegrees( Math.atan2(metersForward, metersStarboard) ));
+
+		if( bearing > 360 )
+		{
+			bearing = bearing - 360;
+		}
+		if( bearing < 0 )
+		{
+			bearing = 360 + bearing;
+		}
+		
+		loc.setBearing(bearing);
+		
+		Location newLoc = LocationUtils.getPointFromDistanceAndBearing(loc,  distance);
+		
+		return new LatLng(newLoc.getLatitude(), newLoc.getLongitude());
+	}
+	
 	
 }
