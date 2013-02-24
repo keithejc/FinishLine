@@ -14,7 +14,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class FinishLineDataStorage
+public class FinishLineDataStorage implements FinishLineDataInterface 
 {
 	private static final String TAG = FinishLineDataStorage.class.getSimpleName();
 	

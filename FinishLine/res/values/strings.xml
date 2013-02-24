@@ -61,12 +61,13 @@
     <string name="status_invalid_location">Invalid GPS location</string>
     <string name="status_inaccurate_location">Location inaccurate</string>
     <string name="status_gps_not_enabled">GPS not enabled!</string>
-    <string name="status_location_ok">Location recieved</string>
+    <string name="status_location_ok">Location received</string>
     <string name="status_gps_waiting">Waiting for location</string>
     <string name="location">Location</string>
     <string name="distance">Distance to finish</string>
     <string name="bearing">Bearing</string>
     <string name="distance_infinite">...</string>
+    <string name="no_crossings">No crossings yet.</string>
     
     
 </resources>
