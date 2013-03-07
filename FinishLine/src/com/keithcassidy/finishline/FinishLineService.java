@@ -57,8 +57,7 @@ public class FinishLineService extends Service
 	private FinishLineDataStorage finishLineDataStorage;
 	private LocationManager locationManager;
 	private SharedPreferences sharedPreferences;
-	private long raceId;
-	private Race race = null;
+	private boolean isRacing;
 	private long locationPollingInterval;
 	private long minDistance;
 	private long autoResumeRaceTimeout;
@@ -69,6 +68,8 @@ public class FinishLineService extends Service
 	private LineCrossHandler lineCrossHandler;
 
 	protected int maxAccuracyAllowed;	
+	Buoy buoy1;
+	Buoy buoy2;
 	/*
 	 * Note that sharedPreferenceChangeListener cannot be an anonymous inner
 	 * class. Anonymous inner class will get garbage collected.
@@ -85,15 +86,14 @@ public class FinishLineService extends Service
 						PreferencesUtils.LOCATION_INTERVAL_DEFAULT);
 			}
 
-			if (key == null || key.equals(PreferencesUtils.getKey(context, R.string.race_id_key))) 
+			if (key == null || key.equals(PreferencesUtils.getKey(context, R.string.is_racing_key))) 
 			{
-				raceId = PreferencesUtils.getLong(context, R.string.race_id_key, PreferencesUtils.RACE_ID_DEFAULT);
-			}
-			
+				isRacing = PreferencesUtils.getBoolean(context, R.string.is_racing_key, false);
+			}			
+		
 			if (key == null || key.equals(PreferencesUtils.getKey(context, R.string.max_accuracy_allowed_key))) 
 			{
-				maxAccuracyAllowed = (PreferencesUtils.getInt(context, R.string.max_accuracy_allowed_key, 
-						PreferencesUtils.MAX_ACCURACY_ALLOWED_DEFAULT));
+				maxAccuracyAllowed = PreferencesUtils.getMaxAccuracyAllowed(context);
 				
 				if( lineCrossHandler != null)
 				{
@@ -113,20 +113,24 @@ public class FinishLineService extends Service
 						PreferencesUtils.LOCATION_MIN_DISTANCE_DEFAULT);
 			}
 
-			if (race != null &&( key.equals(PreferencesUtils.getKey(context, R.string.buoy_1_latitude_key)) ||
+			if ((key == null || key.equals(PreferencesUtils.getKey(context, R.string.buoy_1_latitude_key)) ||
 							   key.equals(PreferencesUtils.getKey(context, R.string.buoy_1_longitude_key))) ) 
 			{
-				Buoy buoy1 = PreferencesUtils.getBouy1(context);
-				race.setBuoy1(buoy1);
-				finishLineDataStorage.updateRace(race);
+				buoy1 = PreferencesUtils.getBouy1(context);
+				if( lineCrossHandler != null)
+				{
+					lineCrossHandler.setBouys(buoy1, buoy2);
+				}
 			}
 
-			if (race != null &&( key.equals(PreferencesUtils.getKey(context, R.string.buoy_2_latitude_key)) ||
+			if ((key == null || key.equals(PreferencesUtils.getKey(context, R.string.buoy_2_latitude_key)) ||
 					key.equals(PreferencesUtils.getKey(context, R.string.buoy_2_longitude_key))) ) 
 			{
-				Buoy buoy2 = PreferencesUtils.getBouy2(context);
-				race.setBuoy2(buoy2);
-				finishLineDataStorage.updateRace(race);
+				buoy2 = PreferencesUtils.getBouy2(context);
+				if( lineCrossHandler != null)
+				{
+					lineCrossHandler.setBouys(buoy1, buoy2);
+				}
 			}
 			
 		}
@@ -138,7 +142,7 @@ public class FinishLineService extends Service
 		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 	}
 	
-	
+
 	private LocationListener locationListener = new LocationListener() 
 	{
 		@Override
@@ -180,39 +184,30 @@ public class FinishLineService extends Service
 		sharedPreferences = getSharedPreferences(Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
 
-		// onSharedPreferenceChanged might not set recordingTrackId.
-		raceId = PreferencesUtils.RACE_ID_DEFAULT;
-
 		// Require announcementExecutor and splitExecutor to be created.
 		sharedPreferenceChangeListener.onSharedPreferenceChanged(sharedPreferences, null);
 
-
-		/*
-		 * Try to restart the previous recording track in case the service has been
-		 * restarted by the system, which can sometimes happen.
-		 */
-		race = finishLineDataStorage.getRace(raceId);
 		
 		lineCrossHandler = new LineCrossHandler();
 		lineCrossHandler.setContext(this);
 		lineCrossHandler.setFinishLineDataStorage(finishLineDataStorage);
 		lineCrossHandler.setMaxAccuracyAllowed(maxAccuracyAllowed);
+		lineCrossHandler.setFinishLineExtension(PreferencesUtils.getFinishLineExtension(this));
+		lineCrossHandler.setBouys(buoy1, buoy2);
 		lineCrossHandler.initialise();
+		
+		
 
 		acquireWakeLock();
 		registerLocationListener();
 		
-		if (race != null) 
+		if (isRacing) 
 		{
-			restartRace(race);
+			Log.v(TAG, "xxx onCreate restartRace service");
+			restartRace();
 		} 
 		else 
 		{
-			if (isRacing()) 
-			{
-				Log.w(TAG, "race is null, but raceId not -1L. " + raceId);
-				updateRacingState(PreferencesUtils.RACE_ID_DEFAULT);
-			}
 			showNotification();
 		}
 		
@@ -221,19 +216,21 @@ public class FinishLineService extends Service
 	@Override
 	public void onStart(Intent intent, int startId) 
 	{
-		handleRestartOnBoot(intent, startId);
+		handleStartCommand(intent, startId);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) 
 	{
-		handleRestartOnBoot(intent, startId);
+		handleStartCommand(intent, startId);
 		return START_STICKY;
 	}
 
 	@Override
 	public void onDestroy() 
 	{
+		Log.v(TAG, "xxx onDestroy ");
+
 		showNotification();
 
 		sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
@@ -252,7 +249,7 @@ public class FinishLineService extends Service
 
 	public boolean isRacing() 
 	{
-		return raceId != PreferencesUtils.RACE_ID_DEFAULT;
+		return isRacing;
 	}
 
 
@@ -266,89 +263,79 @@ public class FinishLineService extends Service
 		stopForeground(true);
 	}
 
-	private void handleRestartOnBoot(Intent intent, int startId) 
+	private void handleStartCommand(Intent intent, int startId) 
 	{
 		// Check if the service is called to resume track (from phone reboot)
-		if (intent != null && intent.getBooleanExtra(Constants.RESUME_RACE_EXTRA_NAME, false)) 
+		if (intent == null || intent.getBooleanExtra(Constants.RESUME_RACE_EXTRA_NAME, false)) 
 		{
-			race = finishLineDataStorage.getRace(raceId);
-			
-			if (!shouldResumeRace(race)) 
+			if (!shouldResumeRace()) 
 			{
-				Log.i(TAG, "Stop resume track.");
-				updateRacingState(PreferencesUtils.RACE_ID_DEFAULT);
+				Log.v(TAG, "Stop resume track.");
+				updateRacingState(false);
 				stopSelfResult(startId);
 				return;
 			}
 			else
 			{
-				restartRace(race);
+				restartRace();
 			}
+		}
+		else if( intent.getBooleanExtra(Constants.START_RACE_EXTRA_NAME, false))
+		{
+			startNewRace();
+		}
+		else if( intent.getBooleanExtra(Constants.STOP_RACE_EXTRA_NAME, false))
+		{
+			stopRace();
 		}
 	}
 
-	private boolean shouldResumeRace(Race race) 
+	private boolean shouldResumeRace() 
 	{
-
-		if (race == null) 
-		{
-			Log.d(TAG, "Not resuming. Track is null.");
-			return false;
-		}
 
 		int retries = PreferencesUtils.getInt(this, R.string.auto_resume_race_current_retry_key, PreferencesUtils.AUTO_RESUME_RACE_CURRENT_RETRY_DEFAULT);
 		if (retries >= MAX_AUTO_RESUME_TRACK_RETRY_ATTEMPTS) 
 		{
-			Log.d(TAG, "Not resuming. Exceeded maximum retry attempts.");
+			Log.w(TAG, "Not resuming. Exceeded maximum retry attempts.");
 			return false;
 		}
 		PreferencesUtils.setInt(this, R.string.auto_resume_race_current_retry_key, retries + 1);
 
-		long stopTime = race.getStopTime();
+		long stopTime = PreferencesUtils.getLastRaceStopTime(this);
 		return stopTime > 0
 				&& (System.currentTimeMillis() - stopTime) <= autoResumeRaceTimeout * ONE_MINUTE;
 	}
 
 
-	public long startNewRace() 
+	public void startNewRace() 
 	{
-		if (isRacing()) 
+		if (!isRacing()) 
 		{
-			Log.d(TAG, "Ignore startNewRace. Already racing.");
-			return -1L;
+	
+			
+			updateRacingState(true);
+			
+			//resume race retries to 0
+			PreferencesUtils.setInt(this, R.string.auto_resume_race_current_retry_key, 0);
+	
+			startRacing(true);
 		}
-
-		// create a race
-		race = new Race();
-		race.setBuoy1(PreferencesUtils.getBouy1(context));
-		race.setBuoy2(PreferencesUtils.getBouy2(context));
-		raceId = finishLineDataStorage.addRace(race);
-		race.setId(raceId);
-
-		
-		//store current race in case service is restarted
-		updateRacingState(raceId);
-		
-		//resume race retries to 0
-		PreferencesUtils.setInt(this, R.string.auto_resume_race_current_retry_key, 0);
-
-		startRacing(race, true);
-		return raceId;
 	}
+		
 
 
-	private void restartRace(Race race) 
+	private void restartRace() 
 	{
-		Log.d(TAG, "Restarting race: " + raceId);
-		startRacing(race, false);
+		Log.v(TAG, "Restarting race: ");
+		startRacing(false);
 	}
 
-	private void startRacing(Race race, boolean raceStarted) 
+	private void startRacing(boolean raceStarted) 
 	{
 
 		// Update instance variables
 		lineCrossHandler.initialise();
-		lineCrossHandler.setRace(race);
+		lineCrossHandler.setRacing(true);
 
 		// Send notifications
 		showNotification();
@@ -365,16 +352,13 @@ public class FinishLineService extends Service
 	public void stopRace()
 	{
 		// Update shared preferences
-		updateRacingState(PreferencesUtils.RACE_ID_DEFAULT);
+		updateRacingState(false);
 
 
-		if (race != null) 
-		{
-			Date date = new Date();		    	
-			race.setStopTime(date.getTime());
-			finishLineDataStorage.updateRace(race);
-		}
-		lineCrossHandler.setRace(null);
+		Date date = new Date();		    	
+		PreferencesUtils.setLastRaceStopTime(context, date.getTime());
+
+		lineCrossHandler.setRacing(false);
 		
 		showNotification();
 		
@@ -385,10 +369,10 @@ public class FinishLineService extends Service
 
 
 
-	private void updateRacingState(long updatingRaceId) 
+	private void updateRacingState(boolean racing) 
 	{
-		raceId = updatingRaceId;
-		PreferencesUtils.setLong(this, R.string.race_id_key, raceId);
+		isRacing = racing;
+		PreferencesUtils.setBoolean(this, R.string.is_racing_key, racing);
 	}
 
 
@@ -410,7 +394,7 @@ public class FinishLineService extends Service
 	{
 		if (locationManager == null) 
 		{
-			Log.e(TAG, "locationManager is null.");
+			Log.e(TAG, "locationManager is already null.");
 			return;
 		}
 		locationManager.removeUpdates(locationListener);
@@ -466,8 +450,7 @@ public class FinishLineService extends Service
 	{
 		if (isRacing())
 		{
-			Intent intent = NewIntent(this, HomeActivity.class).putExtra(INTENT_RACE_ID, raceId);
-			
+			Intent intent = NewIntent(this, HomeActivity.class);
 			TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
 			taskStackBuilder.addNextIntent(intent);
 

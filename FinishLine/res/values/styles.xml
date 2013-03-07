@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
 <!--
 Copyright 2010 Google Inc.
 
@@ -14,7 +16,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- about value -->
   <style name="AboutValue" parent="@style/TextMedium">
     <item name="android:paddingLeft">48dp</item>

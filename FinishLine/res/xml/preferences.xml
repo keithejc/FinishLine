@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference android:entryValues="@array/CoordinateFormatIndex"
+         android:entries="@array/CoordinateFormat" 
+         android:key="@string/location_format_key" 
+         android:title="@string/coordinate_format" 
+         android:defaultValue="0"/>
+    <ListPreference android:key="@string/max_accuracy_allowed_key" android:title="@string/Max_GPS_accuracy" android:entryValues="@array/MaxAccuracyIndex" android:entries="@array/MaxAccuracy" android:defaultValue="10"/>
+    <EditTextPreference android:title="@string/boat_name" android:key="@string/boat_name_key"/>
+</PreferenceScreen>

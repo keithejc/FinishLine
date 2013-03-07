@@ -31,7 +31,9 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock" >
+        android:theme="@style/Theme.FinishLine" >
+
+        <!-- android:theme="@style/Theme.finishlineactionbarstyle" -->
         <receiver android:name="com.keithcassidy.finishline.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -47,20 +49,20 @@
             android:value="AIzaSyATlZ_h8hX8gVPzS3-Chj8fUJLJSbR9UkM" />
 
         <activity
-            android:name="com.keithcassidy.finishline.MapActivity"
-            android:screenOrientation="portrait"
+            android:name="com.keithcassidy.finishline.MapFragment"
             android:label="@string/app_name"
-            android:parentActivityName="com.keithcassidy.finishline.HomeActivity" >
+            android:parentActivityName="com.keithcassidy.finishline.HomeActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.keithcassidy.finishline.BuoySetupActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_bouy_setup" >
+            android:label="@string/title_activity_bouy_setup"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.keithcassidy.finishline.HomeActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_home" >
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,13 +71,18 @@
         </activity>
         <activity
             android:name="com.keithcassidy.finishline.SetFromGPSActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_set_from_gps" >
+            android:label="@string/title_activity_set_from_gps"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.keithcassidy.finishline.BuoyListActivity"
+            android:name="com.keithcassidy.finishline.BuoyListDialogOld"
+            android:label="@string/title_activity_buoy_list"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_buoy_list" >
+            android:theme="@style/Theme.Sherlock.DialogWithCorners" >
+        </activity>
+        <activity
+            android:name="com.keithcassidy.finishline.SettingsActivity"
+            android:label="@string/settings" >
         </activity>
     </application>
 

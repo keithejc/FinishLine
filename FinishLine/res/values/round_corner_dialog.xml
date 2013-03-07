@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.Sherlock.DialogWithCorners" parent="Theme.Sherlock.Dialog">
+        <item name="android:windowBackground">@drawable/rounded_corner_dialog</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+</resources>

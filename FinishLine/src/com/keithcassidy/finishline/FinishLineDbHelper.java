@@ -10,44 +10,7 @@ class FinishLineDbHelper extends SQLiteOpenHelper
 	private static final String TAG = FinishLineDbHelper.class.getSimpleName();
 	
 	private static final String DATABASE_NAME = "FinishLine.db";
-	private static final int DATABASE_VERSION = 1;
-	
-    public static final String RACE_TABLE_NAME = "Races";
-    public static final String RACE_COL_ID = "_id";
-    public static final String RACE_COL_BUOY_1_NAME = "Bouy1Name";
-    public static final String RACE_COL_BUOY_2_NAME = "Bouy2Name";
-    public static final String RACE_COL_BUOY_1_ID = "Bouy1Id";
-    public static final String RACE_COL_BUOY_2_ID = "Bouy2Id";
-    public static final String RACE_COL_BUOY_1_LATITUDE = "Bouy1Latitude";
-    public static final String RACE_COL_BUOY_2_LATITUDE = "Bouy2Latitude";
-    public static final String RACE_COL_BUOY_1_LONGITUDE = "Bouy1Longitude";
-    public static final String RACE_COL_BUOY_2_LONGITUDE = "Bouy2Longitude";
-    public static final String RACE_COL_STOPTIME = "StopTime";
-    public static final String[] RACE_TABLE_ALL_COLS = {RACE_COL_ID, 
-											    		RACE_COL_BUOY_1_NAME,
-											    		RACE_COL_BUOY_2_NAME,
-											    		RACE_COL_BUOY_1_ID,
-											    		RACE_COL_BUOY_2_ID,
-											    		RACE_COL_BUOY_1_LATITUDE,
-											    		RACE_COL_BUOY_2_LATITUDE,
-											    		RACE_COL_BUOY_1_LONGITUDE,
-											    		RACE_COL_BUOY_2_LONGITUDE,
-											    		RACE_COL_STOPTIME};
-    		
-    		
-    private static final String RACE_TABLE_CREATE =
-                "CREATE TABLE " + RACE_TABLE_NAME + " (" +
-                		RACE_COL_ID + " INTEGER primary key autoincrement, " +
-                		RACE_COL_STOPTIME + " INTEGER," +
-                		RACE_COL_BUOY_1_NAME + " TEXT," +
-                		RACE_COL_BUOY_2_NAME + " TEXT," +
-                		RACE_COL_BUOY_1_ID + " INTEGER," +
-                		RACE_COL_BUOY_2_ID + " INTEGER," +
-                		RACE_COL_BUOY_1_LATITUDE + " INTEGER," +
-                		RACE_COL_BUOY_2_LATITUDE + " INTEGER," +
-                		RACE_COL_BUOY_1_LONGITUDE + " INTEGER," +
-                		RACE_COL_BUOY_2_LONGITUDE + " INTEGER" +
-                				");";
+	private static final int DATABASE_VERSION = 2;
 
     public static final String BUOY_TABLE_NAME = "Bouys";
     public static final String BUOY_COL_ID = "_id";
@@ -68,13 +31,11 @@ class FinishLineDbHelper extends SQLiteOpenHelper
     
     public static final String CROSSING_TABLE_NAME = "Crossings";
     public static final String CROSSING_COL_ID = "_id";
-    public static final String CROSSING_COL_RACE_ID = "RaceId";
     public static final String CROSSING_COL_LATITUDE = "Latitude";
     public static final String CROSSING_COL_LONGITUDE = "Longitude";
     public static final String CROSSING_COL_TIME = "Time";
     public static final String CROSSING_COL_BEARING = "Bearing";
     public static final String[] CROSSING_TABLE_ALL_COLS = { CROSSING_COL_ID,
-    														CROSSING_COL_RACE_ID,
     														CROSSING_COL_LATITUDE,
     														CROSSING_COL_LONGITUDE,
     														CROSSING_COL_TIME,
@@ -84,7 +45,6 @@ class FinishLineDbHelper extends SQLiteOpenHelper
     private static final String CROSSING_TABLE_CREATE =
             "CREATE TABLE " + CROSSING_TABLE_NAME + " (" +
             		CROSSING_COL_ID + " INTEGER primary key autoincrement, " +
-            		CROSSING_COL_RACE_ID + " INTEGER, " +
             		CROSSING_COL_LATITUDE + " INTEGER, " +
             		CROSSING_COL_LONGITUDE + " INTEGER, " +
             		CROSSING_COL_TIME + " INTEGER, " +
@@ -99,7 +59,6 @@ class FinishLineDbHelper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db) 
     {
-        db.execSQL(RACE_TABLE_CREATE);
         db.execSQL(BUOY_TABLE_CREATE);
         db.execSQL(CROSSING_TABLE_CREATE);
 
@@ -109,7 +68,15 @@ class FinishLineDbHelper extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		
+		//delete and start again
+		if( oldVersion == 1 && newVersion == 2)
+		{
+	        Log.d(TAG, "upgrading 1 to 2 database");
+
+	        db.execSQL("DROP TABLE IF EXISTS Crossings");
+			db.execSQL("DROP TABLE IF EXISTS Races");
+	        db.execSQL(CROSSING_TABLE_CREATE);
+		}
 	}
 		
 	

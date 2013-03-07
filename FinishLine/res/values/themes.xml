@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomTitlePageIndicator">
+        <item name="android:background">#494949</item>
+        <item name="footerColor">#ffae36</item>
+        <item name="footerLineHeight">1dp</item>
+        <item name="footerIndicatorHeight">2dp</item>
+        <item name="footerIndicatorStyle">underline</item>
+        <item name="android:textColor">#ffae36</item>
+        <item name="selectedColor">#ffae36</item>
+        <item name="selectedBold">true</item>
+        <item name="android:padding">20dp</item>
+        
+        <!-- 
+        
+        <item name="android:paddingLeft">12dip</item>
+        <item name="android:paddingRight">12dip</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#ffae36</item>
+         
+        
+        <item name="android:background">@drawable/tab_indicator_ab_finishlineactionbarstyle</item>
+        <item name="background">@drawable/tab_indicator_ab_finishlineactionbarstyle</item>  
+        -->
+        
+        </style>
+
+    <style name="Theme.FinishLine" parent="@style/Theme.finishlineactionbarstyle">
+        <item name="vpiTitlePageIndicatorStyle">@style/CustomTitlePageIndicator</item>
+    </style>
+
+</resources>

@@ -1,6 +1,5 @@
 package com.keithcassidy.finishline;
 
-import static android.content.Intent.ACTION_BOOT_COMPLETED;
 import static com.keithcassidy.finishline.Constants.RESUME_RACE_EXTRA_NAME;
 import static com.keithcassidy.finishline.Constants.TAG;
 
@@ -11,7 +10,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 /**
  * This class handles MyTracks related broadcast messages.
@@ -35,7 +33,7 @@ public class BootReceiver extends BroadcastReceiver
   {
 	  
 	
-    Log.w(TAG, "+++++++++++++++++++++++++++++++++++++++++++BootReceiver.onReceive: " + intent.getAction());
+    Log.w(TAG, "BootReceiver.onReceive: " + intent.getAction());
     if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) 
     {
       Intent startIntent = new Intent(context, FinishLineService.class)

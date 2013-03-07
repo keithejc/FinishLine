@@ -8,7 +8,7 @@
     <string name="race_started_broadcast_action">race_started_broadcast</string>
     <string name="race_resumed_broadcast_action">race_resumed_broadcast</string>
     <string name="race_stopped_broadcast_action">race_stopped_broadcast</string>
-    <string name="race_id_key">race_id</string>
+    <string name="is_racing_key">is_racing</string>
     <string name="race_id_broadcast_extra">race_id_broadcast_extra</string>
     <string name="buoy_1_id_key">buoy_1_id</string>
     <string name="buoy_2_id_key">buoy_2_id</string>
@@ -20,7 +20,11 @@
     <string name="buoy_2_longitude_key">buoy_2_longitude</string>
     <string name="meters_forward_key">meters_forward</string>
     <string name="meters_starboard_key">meters_starboard</string>
-    <string name="location_format_key">location_format</string>
-    <string name="intent_data_buoy_name">intent_data_buoy_name</string>
-    
+    <string name="location_format_key">latlng_format</string>
+    <string name="intent_data_buoy_name">intent_data_buoy_name</string>    
+    <string name="intent_data_buoy_position">intent_data_buoy_position</string>    
+    <string name="finish_line_extension_key">finish_line_extension</string>
+    <string name="current_fragment_key">current_fragment</string>
+    <string name="last_race_stop_time_key">last_race_stop_time</string>
+    <string name="boat_name_key">boat_name</string>
 </resources>

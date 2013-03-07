@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/editTextBuoyLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextBuoyName"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editTextBuoyName"
+        android:layout_marginRight="12dp"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+
+    <EditText
+        android:id="@+id/editTextBuoyLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextBuoyLatitude"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editTextBuoyLatitude"
+        android:layout_marginRight="12dp"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+
+    <EditText
+        android:id="@+id/editTextBuoyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textViewSelectBuoy"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:inputType="textCapWords"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+
+    <TextView
+        android:id="@+id/textViewSelectBuoy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/select_saved_buoy"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/buttonSaveBuoy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editTextBuoyLongitude"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/save_bouy"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+
+    <TextView
+        android:id="@+id/textViewBuoySelect"
+        style="@style/AppBaseTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:drawableRight="@drawable/navigation_expand"
+        android:focusable="true"
+        android:nextFocusDown="@id/editTextBuoyName"
+        android:shadowColor="@color/pressed_finishlineactionbarstyle"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="BuoyList"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+
+    <TextView
+        android:id="@+id/textBuoyLongitide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextBuoyLongitude"
+        android:layout_alignBottom="@+id/editTextBuoyLongitude"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
+        android:text="@string/buoy_longitude"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textBuoyLatitide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextBuoyLatitude"
+        android:layout_alignBottom="@+id/editTextBuoyLatitude"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
+        android:text="@string/buoy_latitude"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textBuoyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextBuoyName"
+        android:layout_alignBottom="@+id/editTextBuoyName"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
+        android:text="@string/buoy_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/buttonSetWithGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:minHeight="72dp"
+        android:text="@string/set_with_gps" />
+
+</RelativeLayout>

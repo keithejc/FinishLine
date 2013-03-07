@@ -34,11 +34,11 @@ public class PlaySounds
 	{
 		if( context != null )
 		{
-			if( distance < 20)
+			if( distance > 0 && distance < 30)
 			{
 				playTone(context, 1, Sound.ToneHalfSec);
 			}			
-			else if( distance < 40 )
+			else if( distance > 0 && distance < 50 )
 			{
 				playTone(context, 1, Sound.ToneQuarterSec);
 			}

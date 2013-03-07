@@ -4,7 +4,9 @@ public abstract class Constants
 {
 	public static final String TAG = "FinishLine";
 	  public static final String SETTINGS_NAME = "SettingsActivity";
-	  public static final String  RESUME_RACE_EXTRA_NAME = "com.keithcassidy.apps.finishline.RESUME_RACE";
+	  public static final String  RESUME_RACE_EXTRA_NAME = "RESUME_RACE";
+	  public static final String  START_RACE_EXTRA_NAME = "START_RACE";
+	  public static final String  STOP_RACE_EXTRA_NAME = "STOP_RACE";
 	  public static final String  SERVICE_STATUS_MESSAGE = "SERVICE_MESSAGE";
 	  public static final String  SERVICE_LOCATION_MESSAGE = "LOCATION_MESSAGE";
 	  public static final String  NEW_LOCATION_MESSAGE = "NEW_LOCATION_MESSAGE";

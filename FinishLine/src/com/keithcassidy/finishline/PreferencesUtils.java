@@ -11,18 +11,36 @@ public final class PreferencesUtils
 {
 	public static final int LOCATION_INTERVAL_DEFAULT = 1000;
 	public static final int LOCATION_MIN_DISTANCE_DEFAULT = 0;
-	public static final int MAX_ACCURACY_ALLOWED_DEFAULT = 10;
+	public static final String MAX_ACCURACY_ALLOWED_DEFAULT = "10";
 	public static final long RACE_ID_DEFAULT = -1L;
 	public static final int AUTO_RESUME_RACE_CURRENT_RETRY_DEFAULT = 3;
 	public static final int AUTO_RESUME_RACE_TIMEOUT_DEFAULT = 10;
+	public static final int CURRENT_FRAGMENT_DEFAULT = 0;
 
 	public static final double METERS_FORWARD_DEFAULT = 0;
 	public static final double METERS_STARBOARD_DEFAULT = 0;
+
+	public static final float FINISHLINE_EXTENSION_DEFAULT = 20;
 	
-	public static final int LOCATION_FORMAT_DEFAULT = Location.FORMAT_SECONDS; 
+	public static final String LOCATION_FORMAT_DEFAULT = String.format("%d",Location.FORMAT_SECONDS); 
 	
 	  private PreferencesUtils() {}
 
+	  public static String getBoatName(Context context)
+	  {
+		  return getString(context, R.string.boat_name_key, "");
+	  }
+	  
+	  public static int getCurrentFragment(Context context)
+	  {
+		  return getInt(context, R.string.current_fragment_key, CURRENT_FRAGMENT_DEFAULT);
+	  }
+
+	  public static void setCurrentFragment(Context context, int fragment)
+	  {
+		  setInt(context, R.string.current_fragment_key, fragment);
+	  }
+	  
 	  /**
 	   * Gets a preference key
 	   * 
@@ -32,6 +50,11 @@ public final class PreferencesUtils
 	  public static String getKey(Context context, int keyId) 
 	  {
 	    return context.getString(keyId);
+	  }
+	  
+	  public static float getFinishLineExtension(Context context)
+	  {
+		  return getFloat(context, R.string.finish_line_extension_key, FINISHLINE_EXTENSION_DEFAULT);
 	  }
 	
 	  public static Buoy getBouy1(Context context)
@@ -77,7 +100,8 @@ public final class PreferencesUtils
 	   * @param keyId the key id
 	   * @param defaultValue the default value
 	   */
-	  public static Double getDouble(Context context, int keyId, Double defaultValue) {
+	  public static Double getDouble(Context context, int keyId, Double defaultValue) 
+	  {
 	    SharedPreferences sharedPreferences = context.getSharedPreferences(
 	        Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 	    return Double.longBitsToDouble( sharedPreferences.getLong(getKey(context, keyId), Double.doubleToLongBits(defaultValue)));
@@ -85,12 +109,39 @@ public final class PreferencesUtils
 
 	  public static String locationToString(Context context, double latLng, boolean isLatitude)
 	  {
-		  int formatCode = getInt(context, R.string.location_format_key, LOCATION_FORMAT_DEFAULT);
-		  
+		  String formatString = getString(context, R.string.location_format_key, LOCATION_FORMAT_DEFAULT);
+		  int formatCode = Integer.parseInt(formatString); 
 		  String ret = "?";
 		  if( !Double.isNaN( latLng) ) 
 		  {
-			  ret = Location.convert(latLng,  formatCode);
+			  ret = Location.convert(latLng, formatCode);
+		  }
+		  
+		  if( formatCode != Location.FORMAT_DEGREES )
+		  {
+			  if( isLatitude )
+			  {
+				  if( !ret.contains("-"))
+				  {
+					  ret = "N" + ret;
+				  }
+				  else
+				  {
+					  ret = ret.replace('-', 'S');
+				  }
+			  }
+			  else
+			  {
+				  if( !ret.contains("-"))
+				  {
+					  ret = "E" + ret;
+				  }
+				  else
+				  {
+					  ret = ret.replace('-', 'W');
+				  }
+			  }
+
 		  }
 		  
 		  return ret;
@@ -251,5 +302,27 @@ public final class PreferencesUtils
 	    editor.putString(getKey(context, keyId), value);
 	    ApiAdapterFactory.getApiAdapter().applyPreferenceChanges(editor);
 	  }
+
+	public static int getMaxAccuracyAllowed(Context context) 
+	{
+		String maxAccuracyAllowedString = getString(context, R.string.max_accuracy_allowed_key, 
+				PreferencesUtils.MAX_ACCURACY_ALLOWED_DEFAULT);
+		
+		return Integer.parseInt(maxAccuracyAllowedString);
+	}
+
+
+	public static long getLastRaceStopTime(Context context)  
+	{
+		return getLong(context, R.string.last_race_stop_time_key, 0);
+	}
+
+	public static void setLastRaceStopTime(Context context, long lastTime)  
+	{
+		if( context != null)
+		{
+			setLong(context, R.string.last_race_stop_time_key, lastTime);
+		}
+	}
 	  
 }

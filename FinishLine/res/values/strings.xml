@@ -6,7 +6,11 @@
     <string name="icon_track">    Track</string>
     <string name="menu_edit">    Edit</string>
     <string name="menu_show_on_map">    Show on map</string>
-    <string name="menu_settings">Settings</string>
+    <string name="settings">Settings</string>
+    <string name="menu_about">About</string>
+    <string name="menu_help">Help</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_clear_crossing_times">Clear crossing times</string>
     <string name="finish_line_service">FinishLine Service</string>
     <string name="button_start">Start</string>
     <string name="start">Start</string>
@@ -19,22 +23,24 @@
     <string name="title_activity_bouy_setup">FinishLine Bouys</string>
     <string name="tab_buoy1">Buoy 1</string>
     <string name="tab_buoy2">Buoy 2</string>
-    <string name="select_saved_buoy">Select a previously saved Buoy or enter its details below:</string>
+    <string name="select_saved_buoy">Buoy List:</string>
     <string name="or_edit_buoy">Or Edit Buoy Details:</string>
     <string name="buoy_name">Name:</string>
     <string name="buoy_latitude">Latitude:</string>
     <string name="buoy_longitude">Longitude:</string>
     <string name="save_bouy">Save to Buoy List</string>
-    <string name="title_linecrossings">Line Crossings</string>
-    <string name="title_setup_buoy1">Buoy 1</string>
-    <string name="title_setup_buoy2">Buoy 2</string>
-    <string name="title_home">Home</string>
+    <string name="boat_name">Boat name</string>
+    <string name="title_linecrossings">TIMES</string>
+    <string name="title_setup_buoy1">BUOY 1</string>
+    <string name="title_setup_buoy2">BUOY 2</string>
+    <string name="title_home">HOME</string>
+    <string name="title_map">MAP</string>
     <string name="title_activity_home">Finish Line</string>
     <string name="save_label">Enter the position of this buoy. If you want to save it for another time, give it a name and press the save button.</string>
-    <string name="set_with_gps">Set with GPS</string>
+    <string name="set_with_gps">Set From GPS</string>
     <string name="spinner_select_buoy">Select a Buoy</string>
     <string name="title_activity_set_from_gps">Set From GPS</string>
-    <string name="set_from_gps_label">Where is the buoy relative to this phone when you set the position? (You can change this before or after you have pressed \'Set Position Now\')</string>
+    <string name="set_from_gps_label">Where is the buoy as you pass it? (Relative to the track of the boat). You can set this at any time</string>
     <string name="button_set_pos_gps">Set Position Now</string>
     <string name="accuracy">Accuracy:</string>
     <string name="meters_forward">m Forward</string>
@@ -49,25 +55,55 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="buoy_position">Buoy Position:</string>
+    <string name="position">Position:</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_buoy_list">Buoy List</string>
     <string name="buoy_list_title">Buoy List</string>
     <string name="finish_line_buoys">Set Your Finish Line Buoys</string>
-    <string name="press_start_to_log">Press Start To Log Crossings</string>
+    <string name="press_start_to_log">Press Start To Log Crossing Times</string>
     <string name="starting_race">Starting Race</string>
     <string name="resuming_race">Resuming Race</string>
     <string name="stopping_race">Stopping Race</string>
-    <string name="status">Status</string>
+    <string name="status">GPS Status</string>
     <string name="status_invalid_location">Invalid GPS location</string>
     <string name="status_inaccurate_location">Location inaccurate</string>
     <string name="status_gps_not_enabled">GPS not enabled!</string>
     <string name="status_location_ok">Location received</string>
     <string name="status_gps_waiting">Waiting for location</string>
     <string name="location">Location</string>
-    <string name="distance">Distance to finish</string>
-    <string name="bearing">Bearing</string>
-    <string name="distance_infinite">...</string>
+    <string name="distance">Distance to line</string>
+    <string name="bearing">Track</string>
+    <string name="distance_infinite">…</string>
     <string name="no_crossings">No crossings yet.</string>
-    
-    
+    <string name="confirm_quit">Are you sure you want to exit?</string>
+    <string name="map">Map</string>
+    <string name="save_and_close">Save and Close</string>
+    <string name="coordinate_format">LatLong Format</string>
+    <string name="Max_GPS_accuracy">Max GPS error</string>
+    <string name="map_not_installed">Google Maps Not Installed</string>
+    <string name="confirm_delete_crossings">Delete all crossing times?</string>
+    <string-array name="CoordinateFormat">
+        <item>Decimal</item>
+        <item>Degrees, decimal minutes</item>
+        <item>Degrees, minutes, decimal seconds</item>
+    </string-array>
+    <string-array name="CoordinateFormatIndex">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="MaxAccuracy">
+        <item>10m</item>
+        <item>20m</item>
+        <item>50m</item>
+    </string-array>
+    <string-array name="MaxAccuracyIndex">
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
+    </string-array>
+
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_about">About</string>
+
 </resources>
