@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 
 public class AboutDialog extends DialogFragment 
@@ -45,8 +46,21 @@ public class AboutDialog extends DialogFragment
 		tv.setText(readRawTextFile(R.raw.legal));
 		
 		tv = (TextView)v.findViewById(R.id.info_text);
-		tv.setText(Html.fromHtml(readRawTextFile(R.raw.info)));
-		 tv.setLinkTextColor(Color.WHITE);
+		
+		String version = "";
+		try 
+		{
+			version = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+		}
+		catch (NameNotFoundException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String info = readRawTextFile(R.raw.info);
+		String infoReady = info.replace("VVV", version);
+		tv.setText(Html.fromHtml(infoReady));
+		tv.setLinkTextColor(Color.WHITE);
 		Linkify.addLinks(tv, Linkify.ALL);
 
     	getDialog().setCanceledOnTouchOutside(true);
