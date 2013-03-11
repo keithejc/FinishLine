@@ -1,5 +1,7 @@
 package com.keithcassidy.finishline;
 
+import java.util.ArrayList;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +25,13 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -44,12 +51,13 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 	private boolean autoMapUpdate;
 	private MenuItem autoUpdateMenuItem;
 	private boolean isFirstMapUpdate;
+	private ArrayList<Marker> markers;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		isFirstMapUpdate = true;
-		
+
 		super.onCreate(savedInstanceState);
 		super.setHasOptionsMenu(true);
 
@@ -68,7 +76,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
 
-		autoUpdateMenuItem = menu.add(getAutoUpdateMenuText());
+		autoUpdateMenuItem = menu.add(R.string.menu_autozoom);
 		autoUpdateMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		setAutoZoomIcon();
 	}
@@ -89,27 +97,21 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 	}
 
 
-	private String getAutoUpdateMenuText() 
-	{
-		return getActivity().getString(R.string.menu_autozoom);
-	}
-
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
 		try
 		{
 			autoMapUpdate = !autoMapUpdate;
-			
+
 			//sets the menu icon
 			setAutoZoomIcon();
 			//redraws the menu
 			super.getSherlockActivity().supportInvalidateOptionsMenu();
-			
+
 			PreferencesUtils.setAutoMapUpdate(getActivity(), autoMapUpdate);
 			refreshMap();			
-			
+
 		}
 		catch(Exception e)
 		{
@@ -127,17 +129,23 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 		@Override
 		public void onSharedPreferenceChanged(SharedPreferences preferences, String key) {
 
-			if ((key == null || key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_1_latitude_key)) ||
+			if ((key == null || 
+					key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_1_name_key)) ||
+					key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_1_latitude_key)) ||
 					key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_1_longitude_key))) ) 
 			{
 				buoy1 = PreferencesUtils.getBouy1(getActivity());
 				refreshFinishLine();
+				refreshMap();
 			}
 
-			if ((key == null || key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_2_latitude_key)) ||
+			if ((key == null ||
+					key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_2_name_key)) ||
+					key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_2_latitude_key)) ||
 					key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_2_longitude_key))) ) 
 			{
 				buoy2 = PreferencesUtils.getBouy2(getActivity());
+				refreshFinishLine();
 				refreshMap();
 			}
 
@@ -214,6 +222,45 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 		{
 			line = raceMap.addPolyline(new PolylineOptions().add(buoy1.Position).add(buoy2.Position).color(Color.RED).width(5));
 		}
+
+		refreshMarkers();
+	}
+
+
+	private void refreshMarkers()
+	{
+		if( markers == null && buoy1 != null && buoy2 != null && raceMap != null)
+		{
+			markers = new ArrayList<Marker>(2);
+			markers.add(raceMap.addMarker(new MarkerOptions()
+				.position(buoy1.Position)
+				.title(buoy1.Name)
+				.snippet(PreferencesUtils.locationToString(getActivity(), buoy1.Position))
+				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)) ));
+			markers.add(raceMap.addMarker(new MarkerOptions()
+				.position(buoy2.Position)
+				.title(buoy2.Name)
+				.snippet(PreferencesUtils.locationToString(getActivity(), buoy2.Position))
+				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)) ));
+		}
+		else if(buoy1 != null && buoy2 != null && raceMap != null)
+		{
+			for(Marker marker: markers)
+			{
+				marker.remove();
+			}
+			markers.clear();
+			markers.add(raceMap.addMarker(new MarkerOptions()
+				.position(buoy1.Position)
+				.title(buoy1.Name)
+				.snippet(PreferencesUtils.locationToString(getActivity(), buoy1.Position))
+				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)) ));
+			markers.add(raceMap.addMarker(new MarkerOptions()
+				.position(buoy2.Position)
+				.title(buoy2.Name)
+				.snippet(PreferencesUtils.locationToString(getActivity(), buoy2.Position))
+				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)) ));
+		}
 	}
 
 	private void refreshMap()
@@ -232,7 +279,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 				if(autoMapUpdate || isFirstMapUpdate) 
 				{
 					isFirstMapUpdate = false;
-					
+
 					//set map camera
 					Location loc = raceMap.getMyLocation();
 
@@ -247,7 +294,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 
 					if( viewWidth > 0 && viewHeight > 0 )
 					{
-						int padding = 40;
+						int padding = 80;
 						CameraUpdate c = CameraUpdateFactory.newLatLngBounds(builder.build(), viewWidth, viewHeight, padding);
 						raceMap.animateCamera(c);
 					}
@@ -263,6 +310,18 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 
 	}
 
+	private boolean onMarkerClicked(Marker marker)
+	{
+		if( marker.isInfoWindowShown() )
+		{
+			marker.hideInfoWindow();
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
 	private void setUpMap() 
 	{
 		try
@@ -274,6 +333,22 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 				// Check if we were successful in obtaining the map.
 				if (raceMap != null) 
 				{
+					raceMap.setOnMapClickListener(new OnMapClickListener() {
+
+						@Override
+						public void onMapClick(LatLng location) 
+						{
+							onMapClicked();
+							
+						}});
+					raceMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+
+						@Override
+						public boolean onMarkerClick(Marker marker) 
+						{
+							return onMarkerClicked(marker);
+						}});
+					
 					raceMap.setMyLocationEnabled(true);
 					refreshMap();
 					refreshFinishLine();
@@ -289,6 +364,17 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 			Log.e(TAG, "setUpMap " + e);
 		}
 
+	}
+
+	protected void onMapClicked() 
+	{
+		
+		if( autoMapUpdate )
+		{
+			isFirstMapUpdate = true;
+			refreshMap();
+		}
+		
 	}
 
 	@Override

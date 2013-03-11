@@ -1,5 +1,7 @@
 package com.keithcassidy.finishline;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -115,6 +117,11 @@ public final class PreferencesUtils
 		return Double.longBitsToDouble( sharedPreferences.getLong(getKey(context, keyId), Double.doubleToLongBits(defaultValue)));
 	}
 
+	public static String locationToString(Context context, LatLng latLng)
+	{
+		return locationToString(context, latLng.latitude, true) + " " + locationToString(context, latLng.longitude, false); 
+		
+	}
 	public static String locationToString(Context context, double latLng, boolean isLatitude)
 	{
 		String formatString = getString(context, R.string.location_format_key, LOCATION_FORMAT_DEFAULT);
