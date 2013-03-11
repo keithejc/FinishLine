@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,8 +28,10 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+
 public class MapFragment extends SherlockMapFragment implements TabFocusInterface
 {
+
 
 	private static final String TAG = MapFragment.class.getSimpleName(); 
 	private GoogleMap raceMap = null;
@@ -36,11 +41,17 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 	private SharedPreferences sharedPreferences;
 	Buoy buoy1;
 	Buoy buoy2;
+	private boolean autoMapUpdate;
+	private MenuItem autoUpdateMenuItem;
+	private boolean isFirstMapUpdate;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
+		isFirstMapUpdate = true;
+		
 		super.onCreate(savedInstanceState);
+		super.setHasOptionsMenu(true);
 
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onBroadcastServiceStatusReceived,
 				new IntentFilter(Constants.SERVICE_STATUS_MESSAGE));
@@ -51,6 +62,60 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 		//force it to run once - to get buoys
 		sharedPreferenceChangeListener.onSharedPreferenceChanged(sharedPreferences, null);
 
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+
+		autoUpdateMenuItem = menu.add(getAutoUpdateMenuText());
+		autoUpdateMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		setAutoZoomIcon();
+	}
+
+	private void setAutoZoomIcon()
+	{
+		if( autoUpdateMenuItem != null )
+		{
+			if( autoMapUpdate )
+			{
+				autoUpdateMenuItem.setIcon(R.drawable.ic_action_zoom_on);
+			}
+			else
+			{
+				autoUpdateMenuItem.setIcon(R.drawable.ic_action_zoom_off);
+			}
+		}
+	}
+
+
+	private String getAutoUpdateMenuText() 
+	{
+		return getActivity().getString(R.string.menu_autozoom);
+	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) 
+	{
+		try
+		{
+			autoMapUpdate = !autoMapUpdate;
+			
+			//sets the menu icon
+			setAutoZoomIcon();
+			//redraws the menu
+			super.getSherlockActivity().supportInvalidateOptionsMenu();
+			
+			PreferencesUtils.setAutoMapUpdate(getActivity(), autoMapUpdate);
+			refreshMap();			
+			
+		}
+		catch(Exception e)
+		{
+			Log.e(TAG, "onMenuItemClick " + e);
+		}
+		return true;
 	}
 
 	/*
@@ -73,9 +138,13 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 					key.equals(PreferencesUtils.getKey(getActivity(), R.string.buoy_2_longitude_key))) ) 
 			{
 				buoy2 = PreferencesUtils.getBouy2(getActivity());
-				refreshFinishLine();
+				refreshMap();
 			}
 
+			if ((key == null || key.equals(PreferencesUtils.getKey(getActivity(), R.string.auto_map_update_key)))) 
+			{
+				autoMapUpdate = PreferencesUtils.getAutoMapUpdate(getActivity());
+			}
 		}
 	};
 
@@ -154,23 +223,34 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 			if( raceMap != null)
 			{
 
-				//set map camera
-				Location loc = raceMap.getMyLocation();
+				raceMap.getUiSettings().setMyLocationButtonEnabled(!autoMapUpdate);
+				raceMap.getUiSettings().setRotateGesturesEnabled(!autoMapUpdate);
+				raceMap.getUiSettings().setTiltGesturesEnabled(!autoMapUpdate);
+				raceMap.getUiSettings().setScrollGesturesEnabled(!autoMapUpdate);
+				raceMap.getUiSettings().setZoomControlsEnabled(!autoMapUpdate);
 
-				LatLngBounds.Builder builder = new LatLngBounds.Builder();
-				builder.include(buoy1.Position);
-				builder.include(buoy2.Position);
-
-				if( loc != null )
+				if(autoMapUpdate || isFirstMapUpdate) 
 				{
-					builder.include(new LatLng(loc.getLatitude(), loc.getLongitude()));
-				}
+					isFirstMapUpdate = false;
+					
+					//set map camera
+					Location loc = raceMap.getMyLocation();
 
-				if( viewWidth > 0 && viewHeight > 0 )
-				{
-					int padding = 40;
-					CameraUpdate c = CameraUpdateFactory.newLatLngBounds(builder.build(), viewWidth, viewHeight, padding);
-					raceMap.animateCamera(c);
+					LatLngBounds.Builder builder = new LatLngBounds.Builder();
+					builder.include(buoy1.Position);
+					builder.include(buoy2.Position);
+
+					if( loc != null )
+					{
+						builder.include(new LatLng(loc.getLatitude(), loc.getLongitude()));
+					}
+
+					if( viewWidth > 0 && viewHeight > 0 )
+					{
+						int padding = 40;
+						CameraUpdate c = CameraUpdateFactory.newLatLngBounds(builder.build(), viewWidth, viewHeight, padding);
+						raceMap.animateCamera(c);
+					}
 				}
 			}
 
@@ -195,11 +275,6 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 				if (raceMap != null) 
 				{
 					raceMap.setMyLocationEnabled(true);
-					raceMap.getUiSettings().setMyLocationButtonEnabled(false);
-					raceMap.getUiSettings().setRotateGesturesEnabled(false);
-					raceMap.getUiSettings().setTiltGesturesEnabled(false);
-					raceMap.getUiSettings().setScrollGesturesEnabled(false);
-
 					refreshMap();
 					refreshFinishLine();
 				}

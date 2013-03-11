@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * API level 11 specific implementation of the {@link ApiAdapter}.
  * 
- * @author Jimmy Shih
+ * @author Jimmy Shih 
  */
 @TargetApi(11)
 public class Api11Adapter extends Api10Adapter {

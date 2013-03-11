@@ -27,4 +27,5 @@
     <string name="current_fragment_key">current_fragment</string>
     <string name="last_race_stop_time_key">last_race_stop_time</string>
     <string name="boat_name_key">boat_name</string>
+    <string name="auto_map_update_key">auto_map_update</string>
 </resources>

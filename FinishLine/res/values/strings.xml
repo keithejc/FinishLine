@@ -10,6 +10,9 @@
     <string name="menu_about">About</string>
     <string name="menu_help">Help</string>
     <string name="menu_share">Share</string>
+    <string name="menu_set_auto_map">Auto</string>
+    <string name="menu_autozoom">Auto Zoom</string>
+    <string name="menu_set_manual_map">Manual</string>
     <string name="menu_clear_crossing_times">Clear crossing times</string>
     <string name="finish_line_service">FinishLine Service</string>
     <string name="button_start">Start</string>
