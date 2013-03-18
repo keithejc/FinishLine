@@ -30,16 +30,46 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.github.espiandev.showcaseview.ShowcaseView;
 
 
 public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 {
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+	{
+		
+		
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
 	@SuppressWarnings("unused")
 	private static final String TAG = HomeFragment.class.getSimpleName(); 
 
+	ShowcaseView sv;
+	ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
+
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) 
+	{
+		ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
+		co.hideOnClickOutside = true;
+		
+		//sv = ShowcaseView.insertShowcaseView(R.id.buttonStart, getActivity(),
+		//		"Start A Race", "When racing, FinishLine will log finish times", co);
+			
+		super.onViewCreated(view, savedInstanceState);
+	}
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) 
@@ -47,8 +77,18 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onBroadcastServiceStatusReceived,
 			      new IntentFilter(Constants.SERVICE_STATUS_MESSAGE));
 		
+		
+		//final FrameLayout overlayFramelayout = new FrameLayout(getActivity().getApplicationContext());		
+		//getActivity().setContentView(overlayFramelayout);
+		
 		View view = inflater.inflate(R.layout.home, container, false);
-
+		//final View overlay_view = inflater.inflate(R.layout.setup, ((ViewGroup) getActivity().getWindow().getDecorView()),false);
+	    
+		//((ViewGroup) getActivity().getWindow().getDecorView()).addView(overlay_view);		
+		
+//        overlayFramelayout.addView(view);
+  //      overlayFramelayout.addView(overlay_view);
+  		
     	final Button start = (Button)view.findViewById(R.id.buttonStart);
     	final Button stop = (Button)view.findViewById(R.id.buttonStop);
 		
@@ -228,6 +268,7 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface
 		
 	private void startRace() 
 	{
+		
 		Intent startIntent = new Intent(getActivity(), FinishLineService.class)
 		.putExtra(Constants.START_RACE_EXTRA_NAME, true);
 		getActivity().startService(startIntent);

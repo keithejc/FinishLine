@@ -21,14 +21,21 @@ import java.util.Arrays;
 import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.util.TimingLogger;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
@@ -36,6 +43,7 @@ import android.widget.TextView;
 
 public class BuoyListDialog extends DialogFragment 
 {
+	private static final String TAG = "BuoyListDialog";
 
 	Buoy current;
 	BuoyListDialogListener dialogListener;
@@ -70,6 +78,8 @@ public class BuoyListDialog extends DialogFragment
 		setStyle(DialogFragment.STYLE_NORMAL + DialogFragment.STYLE_NO_TITLE, R.style.Theme_Sherlock_DialogWithCorners);
 
 		current = getArguments().getParcelable("current");
+		
+
 	}
 
 	@Override
@@ -89,26 +99,36 @@ public class BuoyListDialog extends DialogFragment
 
 		dbStorage = new FinishLineDataStorage(view.getContext()); 
 		dbStorage.open();
-		
+
 		ArrayList<Buoy> buoys = (ArrayList<Buoy>) dbStorage.getAllBuoys();
 		mAdapter = new BuoyAdapter(view.getContext(), R.layout.buoy_list_item, buoys);
-		
+
 		SwipeDismissAdapter swipeDismissAdapter = new SwipeDismissAdapter(mAdapter, new MyOnDismissCallback(mAdapter));
 		swipeDismissAdapter.setListView(getListView());
 
 		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		mListView.setAdapter(swipeDismissAdapter);
-
+		
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) 
+			public void onItemClick(AdapterView<?> parent, View view, int position,long id) 
 			{
-				dialogListener.buoySet((Buoy)mAdapter.getItem(position));
-				dismiss();
+				//provide feedback that the item was clicked
+				mListView.setItemChecked(position, true);
+
+				//dismiss dialog after the item has been drawn clicked
+				final int listPos = position;
+				final Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() 
+					{
+						dialogListener.buoySet((Buoy)mAdapter.getItem(listPos));
+						dismiss();
+					}}, 1);
 			}});
-		
+
 		int selPos = mAdapter.getPosition(current);
 		if(selPos >=0 )
 		{
@@ -116,6 +136,7 @@ public class BuoyListDialog extends DialogFragment
 		}
 	}
 
+	private int posToDelete;
 	private class MyOnDismissCallback implements OnDismissCallback {
 
 		private ArrayAdapter<Buoy> mAdapter;
@@ -128,14 +149,35 @@ public class BuoyListDialog extends DialogFragment
 		public void onDismiss(ListView listView, int[] reverseSortedPositions) {
 			for (int position : reverseSortedPositions) 
 			{
-				Buoy buoy = mAdapter.getItem(position);
-				dbStorage.deleteBuoy(buoy.Name);
-				mAdapter.remove(buoy);
+				posToDelete = position;
+				Buoy buoy = mAdapter.getItem(posToDelete);
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				builder.setMessage(getString(R.string.confirm_delete_buoy) + buoy.Name).setPositiveButton(getString(R.string.yes), dialogClickListener)
+				.setNegativeButton(getString(R.string.no), dialogClickListener).show();
+				
 			}
 		}
 	}
+
+	//delete buoy?
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which){
+			case DialogInterface.BUTTON_POSITIVE:
+				Buoy buoy = mAdapter.getItem(posToDelete);
+				dbStorage.deleteBuoy(buoy.Name);
+				mAdapter.remove(buoy);
+				break;
+
+			case DialogInterface.BUTTON_NEGATIVE:
+				//No button clicked
+				break;
+			}
+		}
+	};	
 	
-	
+
 	@Override
 	public void onDestroy() 
 	{
@@ -152,6 +194,7 @@ public class BuoyListDialog extends DialogFragment
 
 	public class BuoyAdapter extends ArrayAdapter<Buoy> 
 	{
+
 		@Override
 		public int getPosition(Buoy item) 
 		{
@@ -186,6 +229,7 @@ public class BuoyListDialog extends DialogFragment
 		@Override
 		public View getView(int pos, View convertView, ViewGroup parent) 
 		{
+			
 			View v = convertView;
 			if (v == null) 
 			{
@@ -206,19 +250,23 @@ public class BuoyListDialog extends DialogFragment
 			{
 				if( list.isItemChecked(pos) )
 				{
-					buoyHolder.name.setBackgroundColor(getResources().getColor(R.color.finishLineHighlight));
+					buoyHolder.name.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
+					buoyHolder.location.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
+					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.finishLineHighlight));
 				}
 				else
 				{
-					buoyHolder.name.setBackgroundColor(getResources().getColor(R.color.abs__background_holo_dark));
+					buoyHolder.name.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
+					buoyHolder.location.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
+					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.abs__background_holo_dark));
 				}
 				
+
 				buoyHolder.name.setText(buoy.Name);
 				buoyHolder.location.setText(
 						PreferencesUtils.locationToString(getContext(), buoy.Position.latitude, true) +
 						" " + 
 						PreferencesUtils.locationToString(getContext(), buoy.Position.longitude, true) );
-				
 			}
 
 			return v;

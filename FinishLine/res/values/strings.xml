@@ -16,6 +16,7 @@
 -->
 <resources>
 
+    <string name="confirm_delete_buoy">Delete buoy: </string>
     <string name="app_name">Finish Line</string>
     <string name="menu_delete">    Delete </string>
     <string name="icon_track">    Track</string>

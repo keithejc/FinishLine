@@ -17,6 +17,7 @@ package com.keithcassidy.finishline;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 public class PlaySounds 
 {
@@ -26,14 +27,42 @@ public class PlaySounds
 		HighTone,
 		ToneQuarterSec,
 		ToneHalfSec,
-		Tone1Sec
+		Tone1Sec,
+		Tick,
+		VHighTone
+	}
+
+	protected static final String TAG = "PlaySounds";
+	
+	public static int getPeriodFromDistance(double distance)
+	{
+		if( distance > 0 && distance < 10)
+		{
+			return 250;
+		}
+		if( distance > 0 && distance < 20)
+		{
+			return 500;
+		}
+		else if( distance > 0 && distance < 30)
+		{
+			return 1000;
+		}			
+		else if( distance > 0 && distance < 50 )
+		{
+			return 2000;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	public static void playStartRace(final Context context)
 	{
 		if( context != null )
 		{
-			playTone(context, 1, Sound.MidTone);
+			playTone(context, Sound.ToneQuarterSec);
 		}
 	}
 
@@ -41,22 +70,15 @@ public class PlaySounds
 	{
 		if( context != null )
 		{
-			playTone(context, 2, Sound.MidTone);
+			playTone(context, Sound.ToneQuarterSec, 2, 5);
 		}
 	}
 
-	public static void playProximity(final Context context, int distance)
+	public static void playProximityTone(final Context context)
 	{
 		if( context != null )
 		{
-			if( distance > 0 && distance < 30)
-			{
-				playTone(context, 1, Sound.ToneHalfSec);
-			}			
-			else if( distance > 0 && distance < 50 )
-			{
-				playTone(context, 1, Sound.ToneQuarterSec);
-			}
+			playTone(context, Sound.Tick);
 		}
 	}
 
@@ -64,11 +86,16 @@ public class PlaySounds
 	{
 		if( context != null )
 		{
-			playTone(context, 2, Sound.Tone1Sec);
+			playTone(context, Sound.VHighTone, 3, 1);
 		}
 	}
 
-	public static void playTone(final Context context, final int count, final Sound soundFile)
+	public static void playTone(final Context context, final Sound soundFile)
+	{
+		playTone(context, soundFile, 1, 0);
+	}
+	
+	public static void playTone(final Context context, final Sound soundFile, final int count, final int msGap)
 	{
 		if( context != null )
 		{
@@ -97,19 +124,25 @@ public class PlaySounds
 						case Tone1Sec:
 							player = MediaPlayer.create(context,R.raw.beep1sec);
 							break;
+						case Tick:
+							player = MediaPlayer.create(context,R.raw.beeptick);
+							break;
+						case VHighTone:
+							player = MediaPlayer.create(context,R.raw.beepvhigh);
+							break;
 						}
 						player.start();
 						countBeep+=1;
 						try 
 						{
-							// 100 millisecond is duration gap between two beep
-							Thread.sleep(player.getDuration()+100);
+							// millisecond gap is duration gap between two beep
+							Thread.sleep(player.getDuration() + msGap);
 							player.release();
 						}
-						catch (InterruptedException e) 
+						catch (Exception e) 
 						{
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+						   	Log.e(TAG, "playTone ", e );
 						}
 
 

@@ -15,6 +15,10 @@
  ******************************************************************************/
 package com.keithcassidy.finishline;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -33,7 +37,7 @@ public class LineCrossHandler
 	private float finishLineExtension;
 	private boolean isRacing;
 
-	
+
 	private Buoy buoy1;
 
 	private Buoy buoy2;
@@ -155,12 +159,12 @@ public class LineCrossHandler
 		DistanceIntersection diToFinish = LocationUtils.distanceToFinish(location, buoy1, buoy2, finishLineExtension);
 		sendLocalBroadcast(Constants.FINISHLINE_DISTANCE_MESSAGE, diToFinish.distance);
 
-		
+
 		if( isRacing )
 		{
 			//sound appropriate to distance
-			PlaySounds.playProximity(context, (int)diToFinish.distance);
-			
+			startBeepTimer(PlaySounds.getPeriodFromDistance((int)diToFinish.distance));
+
 			//update latest time (used for deciding if service should restart after a crash/reboot
 			PreferencesUtils.setLastRaceStopTime(context, location.getTime());
 
@@ -169,7 +173,7 @@ public class LineCrossHandler
 			{				
 				Location locationLookingBack = new Location(location);
 				locationLookingBack.setBearing(locationLookingBack.bearingTo(lastLocation));
-				
+
 				DistanceIntersection diBackToFinish = LocationUtils.distanceToFinish(locationLookingBack, buoy1, buoy2, finishLineExtension);
 				if( !Double.isInfinite(diBackToFinish.distance) && diBackToFinish.distance >= 0 && diBackToFinish.intersection != null 
 						&& (location.distanceTo(diBackToFinish.intersection) <= location.distanceTo(lastLocation) ))
@@ -185,16 +189,16 @@ public class LineCrossHandler
 
 					PlaySounds.playLineCross(context);
 				}
-				
+
 			}
-			
-		
+
+
 		}
-		
+
 		lastLocation = location;
 		lastDistanceToFinish = diToFinish.distance;
-		
-	/*	
+
+		/*	
 		if (lastLocation != null && isRacing) 
 		{
 
@@ -229,7 +233,7 @@ public class LineCrossHandler
 			}
 
 		}
-*/
+		 */
 	}
 
 	public void initialise() 
@@ -240,6 +244,50 @@ public class LineCrossHandler
 	public void setRacing(boolean isRacing) 
 	{
 		this.isRacing = isRacing;		
+		if( !isRacing )
+		{
+			stopBeepTimer();
+		}
+	}
+
+
+	private ScheduledExecutorService scheduleBeeps;
+	private int lastBeepInterval = 0;
+
+	private void stopBeepTimer() 
+	{
+		if( scheduleBeeps != null )
+		{
+			scheduleBeeps.shutdown();
+		}
+		lastBeepInterval = 0;
+	}
+
+	private void startBeepTimer(int beepInterval)
+	{
+		//different interval - reset the timer
+		if( lastBeepInterval != beepInterval)
+		{
+			stopBeepTimer();
+
+			if( beepInterval > 0)
+			{
+				scheduleBeeps = Executors.newScheduledThreadPool(1);
+
+				scheduleBeeps.scheduleAtFixedRate(new Runnable() 
+				{
+					public void run() 
+					{
+						//beep
+						PlaySounds.playProximityTone(context);
+
+					}
+				}, 0, beepInterval, TimeUnit.MILLISECONDS);
+
+			}		
+		}
+		
+		lastBeepInterval = beepInterval;
 	}
 
 }

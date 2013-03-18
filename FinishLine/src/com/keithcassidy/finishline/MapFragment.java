@@ -28,6 +28,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 {
 
 
-	private static final String TAG = MapFragment.class.getSimpleName(); 
+	private static final String TAG = "MapFragment"; 
 	private GoogleMap raceMap = null;
 	private Polyline line = null;
 	private int viewWidth = 0;
@@ -191,7 +192,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 						viewWidth = getView().getWidth(); 
 						viewHeight = getView().getHeight();
 
-						setUpMap();
+						setupMap();
 						refreshMap();
 					}
 				});		
@@ -298,6 +299,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 					//set map camera
 					Location loc = raceMap.getMyLocation();
 
+					
 					LatLngBounds.Builder builder = new LatLngBounds.Builder();
 					builder.include(buoy1.Position);
 					builder.include(buoy2.Position);
@@ -315,7 +317,6 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 					}
 				}
 			}
-
 		}
 		catch(Exception e)
 		{
@@ -337,7 +338,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 		return false;
 	}
 	
-	private void setUpMap() 
+	private void setupMap()
 	{
 		try
 		{
@@ -345,6 +346,7 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 			if (raceMap == null) 
 			{
 				raceMap = getMap();
+				
 				// Check if we were successful in obtaining the map.
 				if (raceMap != null) 
 				{

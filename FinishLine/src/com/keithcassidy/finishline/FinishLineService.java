@@ -16,6 +16,9 @@
 package com.keithcassidy.finishline;
 
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -40,6 +43,8 @@ import android.widget.Toast;
 
 public class FinishLineService extends Service 
 {
+	
+	
     // Binder given to clients
     private final IBinder mBinder = new LocalBinder();	
     
@@ -85,6 +90,9 @@ public class FinishLineService extends Service
 	protected int maxAccuracyAllowed;	
 	Buoy buoy1;
 	Buoy buoy2;
+	
+	
+	
 	/*
 	 * Note that sharedPreferenceChangeListener cannot be an anonymous inner
 	 * class. Anonymous inner class will get garbage collected.

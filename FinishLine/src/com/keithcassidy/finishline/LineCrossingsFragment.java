@@ -347,11 +347,15 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 
 				if( getListView().isItemChecked(pos))
 				{
-					crossingHolder.time.setBackgroundColor(getResources().getColor(R.color.finishLineHighlight));
+					((View) crossingHolder.time.getParent()).setBackgroundColor(getResources().getColor(R.color.finishLineHighlight));
+					crossingHolder.time.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
+					crossingHolder.location.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
 				}
 				else
 				{
-					crossingHolder.time.setBackgroundColor(getResources().getColor(R.color.abs__background_holo_dark));
+					crossingHolder.time.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
+					crossingHolder.location.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
+					((View) crossingHolder.time.getParent()).setBackgroundColor(getResources().getColor(R.color.abs__background_holo_dark));
 				}
 
 				DateFormat dFormat = DateFormat.getDateTimeInstance();
