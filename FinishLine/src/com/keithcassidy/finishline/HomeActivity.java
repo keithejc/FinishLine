@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -192,6 +193,9 @@ public class HomeActivity extends SherlockFragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+
+		//volume controls will adjust media playback when this app has focus
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getSupportActionBar();
