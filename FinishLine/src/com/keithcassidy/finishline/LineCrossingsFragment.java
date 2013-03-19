@@ -281,14 +281,15 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 			{
 				list.setVisibility(ListView.VISIBLE);
 				noneYet.setVisibility(ListView.INVISIBLE);
-
-				//select the last one in the list by default
-				list.setItemChecked(crossings.size() - 1, true);
 			}
 			
-		    list.post(new Runnable() {
+		    list.post(new Runnable() 
+		    {
 		        @Override
-		        public void run() {
+		        public void run() 
+		        {
+					//select the last one in the list by default
+		        	getListView().setItemChecked(getListView().getCount() - 1, true);
 		        	getListView().setSelection(getListView().getCount() - 1);
 		        }
 		    });			
