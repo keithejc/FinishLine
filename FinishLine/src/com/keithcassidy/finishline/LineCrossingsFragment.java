@@ -129,11 +129,14 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 	{
 		try
 		{
-			Location l = mAdapter.getItem(mListView.getCheckedItemPosition());
-			if( l != null )
+			if(mAdapter.getCount() > 0)
 			{
-				sendCrossing(l);
-			}			
+				Location l = mAdapter.getItem(mListView.getCheckedItemPosition());
+				if( l != null )
+				{
+					sendCrossing(l);
+				}
+			}
 		}
 		catch(Exception e)
 		{
@@ -266,6 +269,8 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 			});
 			
 			ArrayList<Location> crossings = (ArrayList<Location>)dbStorage.getCrossings();
+			mAdapter = new CrossingsAdapter(getActivity(), R.layout.crossing_list_item, crossings);
+			list.setAdapter(mAdapter);
 
 			if( crossings.isEmpty())
 			{
@@ -276,11 +281,6 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 			{
 				list.setVisibility(ListView.VISIBLE);
 				noneYet.setVisibility(ListView.INVISIBLE);
-
-				
-				mAdapter = new CrossingsAdapter(getActivity(), R.layout.crossing_list_item, crossings);
-				
-				list.setAdapter(mAdapter);
 
 				//select the last one in the list by default
 				list.setItemChecked(crossings.size() - 1, true);
