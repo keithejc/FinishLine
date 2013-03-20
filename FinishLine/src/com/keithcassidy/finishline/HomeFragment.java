@@ -25,7 +25,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +38,14 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.github.espiandev.showcaseview.ShowcaseView;
 
 
-public class HomeFragment extends SherlockFragment implements TabFocusInterface 
+public class HomeFragment extends SherlockFragment implements TabFocusInterface , ServiceStatusInterface
 {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
 	{
-		
-		
+
+
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -56,42 +55,39 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface
 	ShowcaseView sv;
 	ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
-	
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) 
 	{
 		ShowcaseView.ConfigOptions co = new ShowcaseView.ConfigOptions();
 		co.hideOnClickOutside = true;
-		
+
 		//sv = ShowcaseView.insertShowcaseView(R.id.buttonStart, getActivity(),
 		//		"Start A Race", "When racing, FinishLine will log finish times", co);
-			
+
 		super.onViewCreated(view, savedInstanceState);
 	}
-	
-	
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) 
 	{
-		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(onBroadcastServiceStatusReceived,
-			      new IntentFilter(Constants.SERVICE_STATUS_MESSAGE));
-		
-		
+
 		//final FrameLayout overlayFramelayout = new FrameLayout(getActivity().getApplicationContext());		
 		//getActivity().setContentView(overlayFramelayout);
-		
+
 		View view = inflater.inflate(R.layout.home, container, false);
 		//final View overlay_view = inflater.inflate(R.layout.setup, ((ViewGroup) getActivity().getWindow().getDecorView()),false);
-	    
+
 		//((ViewGroup) getActivity().getWindow().getDecorView()).addView(overlay_view);		
-		
-//        overlayFramelayout.addView(view);
-  //      overlayFramelayout.addView(overlay_view);
-  		
-    	final Button start = (Button)view.findViewById(R.id.buttonStart);
-    	final Button stop = (Button)view.findViewById(R.id.buttonStop);
-		
+
+		//        overlayFramelayout.addView(view);
+		//      overlayFramelayout.addView(overlay_view);
+
+		final Button start = (Button)view.findViewById(R.id.buttonStart);
+		final Button stop = (Button)view.findViewById(R.id.buttonStop);
+
 		if( start != null && stop != null)
 		{
 			start.setOnClickListener(new Button.OnClickListener() 
@@ -115,87 +111,24 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface
 
 	}
 
-	
+
 	@Override
-    public void onStart() 
+	public void onStart() 
 	{
-        super.onStart();
-        
-        setupButtons(PreferencesUtils.getBoolean(getActivity(), R.string.is_racing_key, false));
-    }
+		super.onStart();
+		setStatus(R.string.status_gps_waiting);
+		setupButtons(PreferencesUtils.getBoolean(getActivity(), R.string.is_racing_key, false));
+	}
 
 	@Override
 	public void onDestroy() 
 	{
-		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(onBroadcastServiceStatusReceived);
 		super.onDestroy();
 	}
-	
-	private BroadcastReceiver onBroadcastServiceStatusReceived = new BroadcastReceiver() 
-	{
-		@Override
-		public void onReceive(Context context, Intent intent) 
-		{	
-			if( intent.getBooleanExtra(Constants.LOCATION_INACCURATE_MESSAGE, false))
-			{
-				setStatus(R.string.status_inaccurate_location, String.format("( > %dm)", PreferencesUtils.getMaxAccuracyAllowed(getActivity())));
-			}
-			else if( intent.getBooleanExtra(Constants.LOCATION_INVALID_MESSAGE, false))
-			{
-				setStatus(R.string.status_invalid_location);
-			}
-			else if( intent.getBooleanExtra(Constants.GPS_ENABLED_MESSAGE, false))
-			{
-				setStatus(R.string.status_gps_waiting);
-			}
-			else if( intent.getBooleanExtra(Constants.GPS_NOT_ENABLED_MESSAGE, false))
-			{
-				setStatus(R.string.status_gps_not_enabled);
-			}		
 
-			Location newLocation = intent.getParcelableExtra(Constants.NEW_LOCATION_MESSAGE);
-			if( newLocation != null )
-			{
-				setStatus(R.string.status_location_ok);
-				
-				TextView textViewLocation = (TextView)getActivity().findViewById(R.id.textViewLocation);
-				TextView textViewBearing = (TextView)getActivity().findViewById(R.id.textViewBearing);
-				
-				if( textViewLocation!= null )
-				{
-					textViewLocation.setText(
-							PreferencesUtils.locationToString(getActivity(), newLocation.getLatitude(), true) + " " +
-									PreferencesUtils.locationToString(getActivity(), newLocation.getLongitude(), false));
-				}
-				
-				if( textViewBearing != null)
-				{
-					textViewBearing.setText(String.format("%.0f", newLocation.getBearing()));
-				}
-			
-			}
-			
-			TextView textViewDistance = (TextView)getActivity().findViewById(R.id.textViewDistance);
-			if( textViewDistance != null)
-			{
-				float distance = intent.getFloatExtra(Constants.FINISHLINE_DISTANCE_MESSAGE, Float.POSITIVE_INFINITY);
-				if( Float.isInfinite(distance) )
-				{
-					textViewDistance.setText(getActivity().getString(R.string.distance_infinite));
-				}
-				else
-				{
-					textViewDistance.setText(String.format("%.0f m", distance));
-				}
-			}
-			
-			
-			
-		}
-	};	
 
-    private float[] mGravity;
-    private float[] mGeomagnetic;
+	private float[] mGravity;
+	private float[] mGeomagnetic;
 	String bearing = "";
 	@SuppressWarnings("unused")
 	private void doCompass()
@@ -228,10 +161,10 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface
 						if (success) {
 							float orientation[] = new float[3];
 							SensorManager.getOrientation(rot, orientation);
-								double floatBearing = Math.toDegrees(orientation[0]); 
-								if (floatBearing < 0) floatBearing += 360;
+							double floatBearing = Math.toDegrees(orientation[0]); 
+							if (floatBearing < 0) floatBearing += 360;
 
-								bearing = String.format("%.0f", floatBearing);
+							bearing = String.format("%.0f", floatBearing);
 						}
 					}
 				}
@@ -264,28 +197,28 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface
 	{
 		setStatus((getActivity().getString(resId)));
 	}
-   
-		
+
+
 	private void startRace() 
 	{
-		
+
 		Intent startIntent = new Intent(getActivity(), FinishLineService.class)
 		.putExtra(Constants.START_RACE_EXTRA_NAME, true);
 		getActivity().startService(startIntent);
 	}
 
-    private void stopRace()
-    {
+	private void stopRace()
+	{
 		Intent stopIntent = new Intent(getActivity(), FinishLineService.class)
 		.putExtra(Constants.STOP_RACE_EXTRA_NAME, true);
 		getActivity().startService(stopIntent);
-    }
-	
-    private void setupButtons(boolean isRacing) 
-    {
-    	final Button start = (Button)getView().findViewById(R.id.buttonStart);
-    	final Button stop = (Button)getView().findViewById(R.id.buttonStop);
-		
+	}
+
+	private void setupButtons(boolean isRacing) 
+	{
+		final Button start = (Button)getView().findViewById(R.id.buttonStart);
+		final Button stop = (Button)getView().findViewById(R.id.buttonStop);
+
 		if( start != null && stop != null)
 		{			
 			start.setEnabled(!isRacing);
@@ -302,5 +235,66 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface
 	public void tabLoseFocus() 
 	{
 	}
-	
+
+
+	@Override
+	public void onReceiveServiceStatus(Context context, Intent intent) 
+	{
+		if( intent.getBooleanExtra(Constants.LOCATION_INACCURATE_MESSAGE, false))
+		{
+			setStatus(R.string.status_inaccurate_location, String.format("( > %dm)", PreferencesUtils.getMaxAccuracyAllowed(getActivity())));
+		}
+		else if( intent.getBooleanExtra(Constants.LOCATION_INVALID_MESSAGE, false))
+		{
+			setStatus(R.string.status_invalid_location);
+		}
+		else if( intent.getBooleanExtra(Constants.GPS_ENABLED_MESSAGE, false))
+		{
+			setStatus(R.string.status_gps_waiting);
+		}
+		else if( intent.getBooleanExtra(Constants.GPS_NOT_ENABLED_MESSAGE, false))
+		{
+			setStatus(R.string.status_gps_not_enabled);
+		}		
+
+		Location newLocation = intent.getParcelableExtra(Constants.NEW_LOCATION_MESSAGE);
+		if( newLocation != null )
+		{
+			setStatus(R.string.status_location_ok);
+
+			TextView textViewLocation = (TextView)getActivity().findViewById(R.id.textViewLocation);
+			TextView textViewBearing = (TextView)getActivity().findViewById(R.id.textViewBearing);
+
+			if( textViewLocation!= null )
+			{
+				textViewLocation.setText(
+						PreferencesUtils.locationToString(getActivity(), newLocation.getLatitude(), true) + " " +
+								PreferencesUtils.locationToString(getActivity(), newLocation.getLongitude(), false));
+			}
+
+			if( textViewBearing != null)
+			{
+				textViewBearing.setText(String.format("%.0f", newLocation.getBearing()));
+			}
+
+		}
+
+		TextView textViewDistance = (TextView)getActivity().findViewById(R.id.textViewDistance);
+		if( textViewDistance != null)
+		{
+			float distance = intent.getFloatExtra(Constants.FINISHLINE_DISTANCE_MESSAGE, Float.POSITIVE_INFINITY);
+			if( Float.isInfinite(distance) )
+			{
+				textViewDistance.setText(getActivity().getString(R.string.distance_infinite));
+			}
+			else
+			{
+				textViewDistance.setText(String.format("%.0f m", distance));
+			}
+		}
+
+
+
+	}
+
 }

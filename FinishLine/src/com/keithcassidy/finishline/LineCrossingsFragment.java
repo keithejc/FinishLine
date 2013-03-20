@@ -48,7 +48,7 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class LineCrossingsFragment extends SherlockFragment implements TabFocusInterface 
+public class LineCrossingsFragment extends SherlockFragment implements TabFocusInterface , ServiceStatusInterface
 {
 
 	protected static final String TAG = LineCrossingsFragment.class.getSimpleName();
@@ -386,6 +386,13 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 	@Override
 	public void tabLoseFocus() 
 	{
+	}
+
+
+	@Override
+	public void onReceiveServiceStatus(Context context, Intent intent) {
+		// do nothing
+		
 	}
 
 }

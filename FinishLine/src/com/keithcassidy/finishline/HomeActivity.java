@@ -16,8 +16,11 @@
 package com.keithcassidy.finishline;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -27,6 +30,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
@@ -40,7 +44,8 @@ public class HomeActivity extends SherlockFragmentActivity
 
 	protected static final String TAG = null;
 	private int currentFragment =0;
-
+	private boolean gpsDialogShownAlready = false;
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
@@ -124,6 +129,7 @@ public class HomeActivity extends SherlockFragmentActivity
 	@Override
 	protected void onDestroy() 
 	{
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(onBroadcastServiceStatusReceived);
 
 		PreferencesUtils.setCurrentFragment(this, currentFragment);
 
@@ -274,10 +280,57 @@ public class HomeActivity extends SherlockFragmentActivity
 			}
 		});
 
+		LocalBroadcastManager.getInstance(this).registerReceiver(onBroadcastServiceStatusReceived,
+			      new IntentFilter(Constants.SERVICE_STATUS_MESSAGE));
+		
 	}
 
+	private HomeActivity getHomeActivity()
+	{
+		return this;
+	}
+	
+	
+	private BroadcastReceiver onBroadcastServiceStatusReceived = new BroadcastReceiver() 
+	{
+		@Override
+		public void onReceive(Context context, Intent intent) 
+		{	
+			
+			ServiceStatusInterface frag =  (ServiceStatusInterface)mSectionsPagerAdapter.getItem(currentFragment);
+			if( frag != null)
+			{
+				((ServiceStatusInterface)homeFragment).onReceiveServiceStatus(context, intent);
+			}
+			
+			if( intent.getBooleanExtra(Constants.GPS_NOT_ENABLED_MESSAGE, false) && gpsDialogShownAlready == false)
+			{
+				gpsDialogShownAlready = true;
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(getHomeActivity());
+				builder.setMessage(getString(R.string.enable_gps)).setPositiveButton(getString(R.string.show_gps_settings), dialogGpsClickListener)
+				.setNegativeButton(getString(R.string.cancel), dialogGpsClickListener).show();
+			}    
+		}
+	};
 
 
+	DialogInterface.OnClickListener dialogGpsClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which)
+			{
+			case DialogInterface.BUTTON_POSITIVE:
+				startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+				break;
+
+			case DialogInterface.BUTTON_NEGATIVE:
+				//No button clicked
+				break;
+			}
+		}
+	};	
+	
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.

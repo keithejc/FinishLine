@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-/** Automatically generated file. DO NOT MODIFY */
 package com.keithcassidy.finishline;
 
-public final class BuildConfig {
-    public final static boolean DEBUG = true;
+import android.content.Context;
+import android.content.Intent;
+
+public interface ServiceStatusInterface 
+{
+	public void onReceiveServiceStatus(Context context, Intent intent);
 }

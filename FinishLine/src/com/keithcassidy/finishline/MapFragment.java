@@ -52,7 +52,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 
-public class MapFragment extends SherlockMapFragment implements TabFocusInterface
+public class MapFragment extends SherlockMapFragment implements TabFocusInterface, ServiceStatusInterface
 {
 
 
@@ -403,5 +403,11 @@ public class MapFragment extends SherlockMapFragment implements TabFocusInterfac
 	@Override
 	public void tabLoseFocus() 
 	{
+	}
+
+	@Override
+	public void onReceiveServiceStatus(Context context, Intent intent) {
+		// do nothing
+		
 	}    
 }

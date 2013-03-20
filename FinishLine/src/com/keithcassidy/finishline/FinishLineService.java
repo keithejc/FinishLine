@@ -220,7 +220,6 @@ public class FinishLineService extends Service
 		lineCrossHandler.initialise();
 		
 		
-
 		acquireWakeLock();
 		registerLocationListener();
 		
@@ -288,6 +287,7 @@ public class FinishLineService extends Service
 
 	private void handleStartCommand(Intent intent, int startId) 
 	{
+	
 		// Check if the service is called to resume track (from phone reboot)
 		if (intent == null || intent.getBooleanExtra(Constants.RESUME_RACE_EXTRA_NAME, false)) 
 		{
@@ -409,6 +409,7 @@ public class FinishLineService extends Service
 		} 
 		catch (RuntimeException e) 
 		{
+			Toast.makeText(getBaseContext(), "Error registering gps", Toast.LENGTH_SHORT).show();
 			Log.e(TAG, "Could not request Location Updates.", e);
 		}
 	}

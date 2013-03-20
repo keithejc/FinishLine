@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,9 @@ import android.graphics.Color;
 
 public class AboutDialog extends DialogFragment 
 {
+
+
+	private static final String TAG = "AboutDialog";
 
 
 	@Override
@@ -57,11 +61,10 @@ public class AboutDialog extends DialogFragment
     {
         View v = inflater.inflate(R.layout.about, container, false);
         
-		TextView tv = (TextView)v.findViewById(R.id.legal_text);
-		tv.setText(readRawTextFile(R.raw.legal));
+		TextView tvLegal = (TextView)v.findViewById(R.id.legal_text);
+		htmlIfy(tvLegal, readRawTextFile(R.raw.legal));
 		
-		tv = (TextView)v.findViewById(R.id.info_text);
-		
+		TextView tvInfo = (TextView)v.findViewById(R.id.info_text);
 		String version = "";
 		try 
 		{
@@ -69,19 +72,24 @@ public class AboutDialog extends DialogFragment
 		}
 		catch (NameNotFoundException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(TAG, "Error in onCreateView: " + e);
 		}
 		String info = readRawTextFile(R.raw.info);
-		String infoReady = info.replace("VVV", version);
-		tv.setText(Html.fromHtml(infoReady));
-		tv.setLinkTextColor(Color.WHITE);
-		Linkify.addLinks(tv, Linkify.ALL);
-
+		String infoWithVersion = info.replace("VVV", version);
+		htmlIfy(tvInfo, infoWithVersion);
+		
     	getDialog().setCanceledOnTouchOutside(true);
 		
         return v;
     }	
+    
+    void htmlIfy(TextView tv, String text)
+    {
+		tv.setText(Html.fromHtml(text));
+		tv.setLinkTextColor(Color.WHITE);
+		Linkify.addLinks(tv, Linkify.ALL);
+    }
+    
 	
 	public String readRawTextFile(int id) 
 	{

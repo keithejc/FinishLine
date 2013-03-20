@@ -326,7 +326,6 @@ public class SetFromGPSActivity extends Activity
 		public void onProviderDisabled(String provider) 
 		{
 			updateGPSReady(false, false);
-			Toast.makeText(getBaseContext(), "GPS disabled..", Toast.LENGTH_SHORT).show();
 			// Do nothing
 		}
 

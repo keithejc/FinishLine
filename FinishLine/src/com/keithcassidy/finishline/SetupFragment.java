@@ -18,6 +18,7 @@ package com.keithcassidy.finishline;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -36,7 +37,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class SetupFragment extends SherlockFragment implements TabFocusInterface
+public class SetupFragment extends SherlockFragment implements TabFocusInterface, ServiceStatusInterface
 {
 	
 	private static final String TAG = SetupFragment.class.getSimpleName();
@@ -509,6 +510,12 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 			longEdit.setRawInputType(InputType.TYPE_CLASS_NUMBER);
 		}
 
+	}
+
+	@Override
+	public void onReceiveServiceStatus(Context context, Intent intent) {
+		// do nothing
+		
 	}
 
 }

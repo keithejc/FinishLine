@@ -16,6 +16,9 @@
 -->
 <resources>
 
+    <string name="cancel">Cancel</string>
+    <string name="enable_gps">Please enable GPS to use this app.</string>
+    <string name="show_gps_settings">GPS Settings</string>
     <string name="confirm_delete_buoy">Delete buoy: </string>
     <string name="app_name">Finish Line</string>
     <string name="menu_delete">    Delete </string>
