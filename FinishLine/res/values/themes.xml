@@ -17,7 +17,7 @@
 <resources>
 
     <style name="CustomTitlePageIndicator">
-        <item name="android:background">#494949</item>
+        <item name="android:background">@drawable/graduated_pageindicator_background</item>
         <item name="footerColor">#ffae36</item>
         <item name="footerLineHeight">1dp</item>
         <item name="footerIndicatorHeight">2dp</item>
@@ -28,7 +28,9 @@
         <item name="android:padding">20dp</item>
         
         <!-- 
+        <item name="android:background">#494949</item>
         
+         
         <item name="android:paddingLeft">12dip</item>
         <item name="android:paddingRight">12dip</item>
         <item name="android:paddingTop">6dp</item>
