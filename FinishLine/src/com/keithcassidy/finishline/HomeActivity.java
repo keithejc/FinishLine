@@ -21,9 +21,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -216,11 +213,7 @@ public class HomeActivity extends SherlockFragmentActivity
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowHomeEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
-
-		Bitmap tile = BitmapFactory.decodeResource(getResources(), R.drawable.action_bar_background);		
-		BitmapDrawable background = new BitmapDrawable(getResources(), tile);
-		background.setTileModeX(android.graphics.Shader.TileMode.REPEAT);
-		actionBar.setBackgroundDrawable(background);		
+		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.pinstripe_actionbar_tile));
 
 		currentFragment = PreferencesUtils.getCurrentFragment(this);
 
