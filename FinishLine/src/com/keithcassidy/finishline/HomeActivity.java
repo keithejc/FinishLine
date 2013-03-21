@@ -37,6 +37,7 @@ import android.util.Log;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.viewpagerindicator.TitlePageIndicator;
 
 public class HomeActivity extends SherlockFragmentActivity
@@ -160,6 +161,14 @@ public class HomeActivity extends SherlockFragmentActivity
 	{
 		super.onStart();
 		startService();
+		EasyTracker.getInstance().activityStart(this);
+	}
+
+	@Override
+	protected void onStop() 
+	{
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
 	}
 	
 	private void startService()

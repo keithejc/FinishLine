@@ -15,6 +15,8 @@
  ******************************************************************************/
 package com.keithcassidy.finishline;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -34,4 +36,19 @@ public class SettingsActivity extends PreferenceActivity
 
 		addPreferencesFromResource(R.xml.preferences);
 	}
+	
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		EasyTracker.getInstance().activityStart(this);
+	}
+
+	@Override
+	protected void onStop() 
+	{
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this);
+	}
+	
 }

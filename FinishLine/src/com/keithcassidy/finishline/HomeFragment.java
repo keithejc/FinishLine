@@ -36,6 +36,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.github.espiandev.showcaseview.ShowcaseView;
+import com.google.analytics.tracking.android.EasyTracker;
 
 
 public class HomeFragment extends SherlockFragment implements TabFocusInterface , ServiceStatusInterface
@@ -201,7 +202,11 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 
 	private void startRace() 
 	{
+		EasyTracker.getTracker().sendEvent("category", "action", "label", 42L);
+		
 
+		
+		
 		Intent startIntent = new Intent(getActivity(), FinishLineService.class)
 		.putExtra(Constants.START_RACE_EXTRA_NAME, true);
 		getActivity().startService(startIntent);
@@ -209,6 +214,8 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 
 	private void stopRace()
 	{
+		int s = 0;
+		float d = 10/s;
 		Intent stopIntent = new Intent(getActivity(), FinishLineService.class)
 		.putExtra(Constants.STOP_RACE_EXTRA_NAME, true);
 		getActivity().startService(stopIntent);
