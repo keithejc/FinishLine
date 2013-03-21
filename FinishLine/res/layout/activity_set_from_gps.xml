@@ -17,8 +17,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetFromGPSActivity" >
-
+    tools:context=".SetFromGPSActivity"
+    android:background="@drawable/graduated_view_background" >
+    
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"

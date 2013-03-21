@@ -17,8 +17,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relativeLayoutCrossings"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
+    android:layout_height="match_parent" 
+    android:background="@drawable/graduated_view_background" >
+    
     <ListView
         android:id="@+id/listViewCrossings"
         android:layout_width="match_parent"
