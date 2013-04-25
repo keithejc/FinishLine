@@ -63,7 +63,7 @@ public class HomeActivity extends SherlockFragmentActivity
 		}
 
 	}
-
+	
 	private void showAbout() 
 	{
 		// Create and show the dialog.
@@ -285,6 +285,7 @@ public class HomeActivity extends SherlockFragmentActivity
 		LocalBroadcastManager.getInstance(this).registerReceiver(onBroadcastServiceStatusReceived,
 			      new IntentFilter(Constants.SERVICE_STATUS_MESSAGE));
 		
+		new SimpleEula(this).show(); 		
 	}
 
 	private HomeActivity getHomeActivity()

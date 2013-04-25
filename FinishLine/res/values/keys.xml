@@ -15,6 +15,7 @@
   limitations under the License.
 -->
 <resources>
+    <string name="has_eula_shown_key">has_eula_shown2</string>
     <string name="location_interval_key">min_distance</string>
     <string name="max_accuracy_allowed_key">max_accuracy_allowed</string>
     <string name="auto_resume_race_timeout_key">auto_resume_race_timeout</string>

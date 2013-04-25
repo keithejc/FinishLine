@@ -357,6 +357,8 @@ public class LocationUtilsTests extends AndroidTestCase
 		assertEquals(-1.008333, LocationUtils.parseDMS("W1.008333"), 0.000001);
 		assertEquals(1.008333, LocationUtils.parseDMS("N1.008333"), 0.000001);
 		
+		assertEquals(50.790183, LocationUtils.parseDMS("N50:47.411"), 0.000001);
+		assertEquals(-0.112183, LocationUtils.parseDMS("W00:06.731"), 0.000001);
 	}
 	
 }

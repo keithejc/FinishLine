@@ -16,8 +16,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.keithcassidy.finishline"
-    android:versionCode="5"
-    android:versionName="0.05" >
+    android:versionCode="7"
+    android:versionName="0.07" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -34,7 +34,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -62,7 +61,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyATlZ_h8hX8gVPzS3-Chj8fUJLJSbR9UkM" />
+            android:value="AIzaSyDE8xannvMrG20HGuY5r7g87h-Nyein1jE" />
 
         <activity
             android:name="com.keithcassidy.finishline.MapFragment"

@@ -196,7 +196,10 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 	}
 	private void setStatus(int resId)
 	{
-		setStatus((getActivity().getString(resId)));
+		if( getActivity() != null )
+		{
+			setStatus((getActivity().getString(resId)));
+		}
 	}
 
 
@@ -240,60 +243,62 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 	@Override
 	public void onReceiveServiceStatus(Context context, Intent intent) 
 	{
-		if( intent.getBooleanExtra(Constants.LOCATION_INACCURATE_MESSAGE, false))
+		if(getActivity() != null)
 		{
-			setStatus(R.string.status_inaccurate_location, String.format("( > %dm)", PreferencesUtils.getMaxAccuracyAllowed(getActivity())));
-		}
-		else if( intent.getBooleanExtra(Constants.LOCATION_INVALID_MESSAGE, false))
-		{
-			setStatus(R.string.status_invalid_location);
-		}
-		else if( intent.getBooleanExtra(Constants.GPS_ENABLED_MESSAGE, false))
-		{
-			setStatus(R.string.status_gps_waiting);
-		}
-		else if( intent.getBooleanExtra(Constants.GPS_NOT_ENABLED_MESSAGE, false))
-		{
-			setStatus(R.string.status_gps_not_enabled);
-		}		
-
-		Location newLocation = intent.getParcelableExtra(Constants.NEW_LOCATION_MESSAGE);
-		if( newLocation != null )
-		{
-			setStatus(R.string.status_location_ok);
-
-			TextView textViewLocation = (TextView)getActivity().findViewById(R.id.textViewLocation);
-			TextView textViewBearing = (TextView)getActivity().findViewById(R.id.textViewBearing);
-
-			if( textViewLocation!= null )
+			if( intent.getBooleanExtra(Constants.LOCATION_INACCURATE_MESSAGE, false))
 			{
-				textViewLocation.setText(
-						PreferencesUtils.locationToString(getActivity(), newLocation.getLatitude(), true) + " " +
-								PreferencesUtils.locationToString(getActivity(), newLocation.getLongitude(), false));
+				setStatus(R.string.status_inaccurate_location, String.format("( > %dm)", PreferencesUtils.getMaxAccuracyAllowed(getActivity())));
+			}
+			else if( intent.getBooleanExtra(Constants.LOCATION_INVALID_MESSAGE, false))
+			{
+				setStatus(R.string.status_invalid_location);
+			}
+			else if( intent.getBooleanExtra(Constants.GPS_ENABLED_MESSAGE, false))
+			{
+				setStatus(R.string.status_gps_waiting);
+			}
+			else if( intent.getBooleanExtra(Constants.GPS_NOT_ENABLED_MESSAGE, false))
+			{
+				setStatus(R.string.status_gps_not_enabled);
+			}		
+	
+			Location newLocation = intent.getParcelableExtra(Constants.NEW_LOCATION_MESSAGE);
+			if( newLocation != null )
+			{
+				setStatus(R.string.status_location_ok);
+	
+				TextView textViewLocation = (TextView)getActivity().findViewById(R.id.textViewLocation);
+				TextView textViewBearing = (TextView)getActivity().findViewById(R.id.textViewBearing);
+	
+				if( textViewLocation!= null )
+				{
+					textViewLocation.setText(
+							PreferencesUtils.locationToString(getActivity(), newLocation.getLatitude(), true) + " " +
+									PreferencesUtils.locationToString(getActivity(), newLocation.getLongitude(), false));
+				}
+	
+				if( textViewBearing != null)
+				{
+					textViewBearing.setText(String.format("%.0f", newLocation.getBearing()));
+				}
+	
+			}
+	
+			TextView textViewDistance = (TextView)getActivity().findViewById(R.id.textViewDistance);
+			if( textViewDistance != null)
+			{
+				float distance = intent.getFloatExtra(Constants.FINISHLINE_DISTANCE_MESSAGE, Float.POSITIVE_INFINITY);
+				if( Float.isInfinite(distance) )
+				{
+					textViewDistance.setText(getActivity().getString(R.string.distance_infinite));
+				}
+				else
+				{
+					textViewDistance.setText(String.format("%.0f m", distance));
+				}
 			}
 
-			if( textViewBearing != null)
-			{
-				textViewBearing.setText(String.format("%.0f", newLocation.getBearing()));
-			}
-
 		}
-
-		TextView textViewDistance = (TextView)getActivity().findViewById(R.id.textViewDistance);
-		if( textViewDistance != null)
-		{
-			float distance = intent.getFloatExtra(Constants.FINISHLINE_DISTANCE_MESSAGE, Float.POSITIVE_INFINITY);
-			if( Float.isInfinite(distance) )
-			{
-				textViewDistance.setText(getActivity().getString(R.string.distance_infinite));
-			}
-			else
-			{
-				textViewDistance.setText(String.format("%.0f m", distance));
-			}
-		}
-
-
 
 	}
 

@@ -2,7 +2,7 @@ FinishLine<br>
 Copyright 2013 Keith Cassidy<br>
 <br>
 This product includes software developed by Keith Cassidy (http://www.keithcassidy.com/). <br>
-<br>
+It is released under the Apache 2 license.<br>
 Get the latest code from https://github.com/keithejc/FinishLine/<br>
 <br>
 This software contains code derived from MyTracks:<br>

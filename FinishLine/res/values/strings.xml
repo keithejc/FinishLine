@@ -15,8 +15,9 @@
   limitations under the License.
 -->
 <resources>
-
+    <string name="eula">Standard EULA: By using this software you agree that I (the app developer) am not liable for any bad things that happen to you while you\'re using it.Don\'t use it if you\'re life depends on it. Or anything important.</string>
     <string name="cancel">Cancel</string>
+    <string name="agree">Agree</string>
     <string name="enable_gps">Please enable GPS to use this app.</string>
     <string name="show_gps_settings">GPS Settings</string>
     <string name="confirm_delete_buoy">Delete buoy: </string>

@@ -18,6 +18,7 @@ package com.keithcassidy.finishline;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -355,4 +356,13 @@ public final class PreferencesUtils
 		}
 	}
 
+	public static boolean hasEulaBeenShown(Context context) 
+	{
+		return getBoolean(context, R.string.has_eula_shown_key, false);
+	}
+
+	public static void setEulaShown(Context context) 
+	{
+		setBoolean(context, R.string.has_eula_shown_key, true);
+	}
 }
