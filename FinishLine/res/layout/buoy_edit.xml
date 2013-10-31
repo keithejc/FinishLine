@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textBuoyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:text="@string/buoy_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <TextView
+        android:id="@+id/textBuoyLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textBuoyName"
+        android:layout_marginTop="12dp"
+        android:text="@string/buoy_latitude"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textBuoyLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textBuoyLatitude"
+        android:layout_marginTop="12dp"
+        android:text="@string/buoy_longitude"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/editTextBuoyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textBuoyName"
+        android:layout_alignLeft="@+id/editTextBuoyLongitude"
+        android:layout_toLeftOf="@+id/errorName"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:inputType="textCapWords"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+
+    <ImageView
+        android:id="@+id/errorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textBuoyName"
+        android:src="@drawable/ic_action_help"
+        android:visibility="invisible" />
+    
+    <EditText
+        android:id="@+id/editTextBuoyLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textBuoyLongitude"
+        android:layout_marginLeft="12dp"
+        android:layout_toLeftOf="@+id/errorLongitude"
+        android:layout_toRightOf="@+id/textBuoyLongitude"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+    
+    <ImageView
+        android:id="@+id/errorLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textBuoyLongitude"
+        android:src="@drawable/ic_action_help"
+        android:visibility="invisible" />
+    
+    <EditText
+        android:id="@+id/editTextBuoyLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textBuoyLatitude"
+        android:layout_alignLeft="@+id/editTextBuoyLongitude"
+        android:layout_toLeftOf="@+id/errorLatitude"
+        android:ems="10"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorLink="@color/pressed_finishlineactionbarstyle" />
+
+    <ImageView
+        android:id="@+id/errorLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textBuoyLatitude"
+        android:src="@drawable/ic_action_help"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/ButtonGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textBuoyLongitude"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+        
+
+        <Button android:id="@+id/buttonOK" 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ok"/>
+
+        <Button android:id="@+id/buttonCancel" 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content" 
+            android:layout_weight="1"
+            android:text="@string/cancel"/>
+    </LinearLayout>    
+
+</RelativeLayout>

@@ -329,14 +329,14 @@ public class LocationUtilsTests extends AndroidTestCase
 		
 		assertEquals(-1.508333, LocationUtils.parseDMS("1 30.5W"), 0.000001);
 		
-		assertEquals(49.995703, LocationUtils.parseDMS("49° 59' 44.5302\""), 0.000001);
+		assertEquals(49.995703, LocationUtils.parseDMS("49Â° 59' 44.5302\""), 0.000001);
 		
-		assertEquals(50.8010, LocationUtils.parseDMS("	N50° 48.06'"), 0.000001);
+		assertEquals(50.8010, LocationUtils.parseDMS("	N50Â° 48.06'"), 0.000001);
 		
-		assertEquals(-0.106667, LocationUtils.parseDMS("W00° 06.40'"), 0.000001);
+		assertEquals(-0.106667, LocationUtils.parseDMS("W00Â° 06.40'"), 0.000001);
 		
 		assertEquals(-1.5, LocationUtils.parseDMS("1 30 0w"));
-		assertEquals(-1.5, LocationUtils.parseDMS("1° 30' 0\"w"));
+		assertEquals(-1.5, LocationUtils.parseDMS("1Â° 30' 0\"w"));
 		assertEquals(-1.0, LocationUtils.parseDMS("1 0 0S"));
 		assertEquals(1.008333, LocationUtils.parseDMS("1 0 30"), 0.000001);
 		assertEquals(1.008333, LocationUtils.parseDMS("1.008333"), 0.000001);

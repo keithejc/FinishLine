@@ -108,6 +108,23 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 				}
 			});				
 		}		
+		
+		final Button addManual = (Button)view.findViewById(R.id.buttonAddManualTime);
+		if( addManual != null )
+		{
+			addManual.setOnClickListener(new Button.OnClickListener()
+			{
+
+				@Override
+				public void onClick(View v) 
+				{
+					addManualTime();					
+				}
+				
+			});
+		}
+		
+		
 		return view;
 
 	}
@@ -229,6 +246,11 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 		}		
 	}
 
+	public void addManualTime()
+	{		
+		((HomeActivity)getActivity()).addManualTime();
+	}	
+	
 	@Override
 	public void tabSetFocus() 
 	{
@@ -239,6 +261,7 @@ public class HomeFragment extends SherlockFragment implements TabFocusInterface 
 	{
 	}
 
+	
 
 	@Override
 	public void onReceiveServiceStatus(Context context, Intent intent) 

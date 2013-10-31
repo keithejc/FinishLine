@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -43,6 +44,7 @@ public class HomeActivity extends SherlockFragmentActivity
 	protected static final String TAG = null;
 	private int currentFragment =0;
 	private boolean gpsDialogShownAlready = false;
+	private long sysTimeDelta = 0;	
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
@@ -313,7 +315,14 @@ public class HomeActivity extends SherlockFragmentActivity
 				AlertDialog.Builder builder = new AlertDialog.Builder(getHomeActivity());
 				builder.setMessage(getString(R.string.enable_gps)).setPositiveButton(getString(R.string.show_gps_settings), dialogGpsClickListener)
 				.setNegativeButton(getString(R.string.cancel), dialogGpsClickListener).show();
-			}    
+			}
+			
+			Location newLocation = intent.getParcelableExtra(Constants.NEW_LOCATION_MESSAGE);
+			if( newLocation != null )
+			{
+				calcSysTimeDelta(newLocation.getTime());
+			}
+			
 		}
 	};
 
@@ -332,7 +341,7 @@ public class HomeActivity extends SherlockFragmentActivity
 				break;
 			}
 		}
-	};	
+	};
 	
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -389,6 +398,21 @@ public class HomeActivity extends SherlockFragmentActivity
 		}
 	}
 
+	//get diff between sys time and gps time
+	protected void calcSysTimeDelta(long gpsTime) 
+	{
+		sysTimeDelta = System.currentTimeMillis() - gpsTime;
+	}
+
+	public void addManualTime()
+	{
+		FinishLineDataStorage finishLineDataStorage = new FinishLineDataStorage(this);
+		finishLineDataStorage.open();
+		finishLineDataStorage.addManualTime(System.currentTimeMillis() - sysTimeDelta);
+		finishLineDataStorage.close();
+		
+		PlaySounds.playAddManualTime(this);
+	}
 
 
 

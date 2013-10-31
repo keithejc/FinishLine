@@ -15,22 +15,16 @@
  ******************************************************************************/
 package com.keithcassidy.finishline;
 
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -41,6 +35,7 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 {
 	
 	private static final String TAG = SetupFragment.class.getSimpleName();
+	private static Buoy currentBuoy;
 
 	@Override
 	public void tabSetFocus() 
@@ -61,25 +56,28 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 
 	public void onBuoyListClicked()
 	{
-		BuoyListDialog dlg = BuoyListDialog.newInstance(loadBuoyFromControls());
+		BuoyListDialog dlg = BuoyListDialog.newInstance(currentBuoy);
 		//assign a new DateDialogFragmentListener
-		dlg.setBuoyListDialogListener(new BuoyListDialogListener() {
+		dlg.setBuoyListDialogListener(new BuoyDialogListener() {
 
 			//fired when user selects buoy
 			@Override
 			public void buoySet(Buoy buoy) {
 		        if( buoy != null )
 		        {
+		        	currentBuoy = buoy;
 		        	if( buoyNumber == 1)
 		        	{
 		        		PreferencesUtils.setBouy1(getActivity(), buoy);
+			        	setCurrentBuoy(buoy.Name);
+			        	loadControlsWithBuoy(buoy);
 		        	}
-		        	else
+		        	else if( buoyNumber == 2)
 		        	{
 		        		PreferencesUtils.setBouy2(getActivity(), buoy);
+			        	setCurrentBuoy(buoy.Name);
+			        	loadControlsWithBuoy(buoy);
 		        	}
-		        	setCurrentBuoy(buoy.Name);
-		        	loadControlsWithBuoy(buoy);
 		        }
 				
 			}
@@ -96,35 +94,35 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 		
 		if( data != null )
 		{
-			Buoy buoy = null;
-	        if(data.getExtras().containsKey(getString(R.string.intent_data_buoy_name)))
-	        {
-	        	String buoyName = data.getStringExtra(getString(R.string.intent_data_buoy_name));
-	        	buoy = dbStorage.getBuoy(buoyName);
-	        }
-			else if(data.getExtras().containsKey(getString(R.string.intent_data_buoy_position)))
+	        if(data.getExtras().containsKey(getString(R.string.intent_data_buoy_position)))
 			{
 				LatLng llBuoy = data.getParcelableExtra(getString(R.string.intent_data_buoy_position));
 				if( llBuoy != null)
 				{
-					buoy = loadBuoyFromControls();
-					buoy.Position = llBuoy;
+					
+					currentBuoy.Position = llBuoy;
+				
+		        	if( buoyNumber == 1)
+		        	{
+						currentBuoy.Name = getString(R.string.buoy_1_gps);
+		        		PreferencesUtils.setBouy1(getActivity(), currentBuoy);
+			        	setCurrentBuoy("");
+			        	loadControlsWithBuoy(currentBuoy);
+		        	}
+		        	else if( buoyNumber == 2)
+		        	{
+						currentBuoy.Name = getString(R.string.buoy_2_gps);
+		        		PreferencesUtils.setBouy2(getActivity(), currentBuoy);
+			        	setCurrentBuoy("");
+			        	loadControlsWithBuoy(currentBuoy);
+		        	}
+
+		        	
+					Log.d(TAG, "##################### saving buoy number " + buoyNumber + " #############################");
+					
 				}
 			}
 
-	        if( buoy != null )
-	        {
-	        	if( buoyNumber == 1)
-	        	{
-	        		PreferencesUtils.setBouy1(getActivity(), buoy);
-	        	}
-	        	else
-	        	{
-	        		PreferencesUtils.setBouy2(getActivity(), buoy);
-	        	}
-	        	setCurrentBuoy(buoy.Name);
-	        	loadControlsWithBuoy(buoy);
-	        }
 		}
 		
 	}
@@ -138,9 +136,6 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 
 
 	private FinishLineDataStorage dbStorage = null;
-	private EditText editName = null;
-	private EditText editLatitude = null;
-	private EditText editLongitude = null;
 	private TextView buoyList = null;
 	private int buoyNumber;
 	ArrayList<String> savedBuoyList;
@@ -174,11 +169,7 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 	{
 		super.onViewCreated(view, savedInstanceState);
 
-		editName = (EditText) view.findViewById(R.id.editTextBuoyName);
-		editLatitude = (EditText) view.findViewById(R.id.editTextBuoyLatitude);
-		editLongitude = (EditText) view.findViewById(R.id.editTextBuoyLongitude);
 		buoyList = (TextView)view.findViewById(R.id.textViewBuoySelect);
-		
 		if( buoyList != null)
 		{
 			buoyList.setOnClickListener(new TextView.OnClickListener() 
@@ -192,26 +183,13 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 		}
 		
 		//load current buoy
-		Buoy buoy = loadBuoyFromPrefs();
-		if( buoy != null )
+		loadBuoyFromPrefs();
+		if( currentBuoy != null )
 		{
-			setCurrentBuoy(buoy.Name);			
+			setCurrentBuoy(currentBuoy.Name);			
 		}
 
-		setupLatLongEdits(editLatitude, editLongitude);
-
-		Button buttonSave = (Button) view.findViewById(R.id.buttonSaveBuoy);
-		if( buttonSave != null )
-		{
-			buttonSave.setOnClickListener(new Button.OnClickListener() 
-			{  
-				public void onClick(View v)
-				{
-					onSaveBuoyButtonPressed();
-				}
-			});				
-		}
-		
+	
 		Button buttonGPS = (Button)view.findViewById(R.id.buttonSetWithGPS);
 		if( buttonGPS != null )
 		{
@@ -224,23 +202,37 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 				}
 			}); 
 		}
+		
+		
+		Button buttonManageList = (Button) view.findViewById(R.id.buttonManageBuoys);
+		if( buttonManageList != null )
+		{
+			buttonManageList.setOnClickListener(new Button.OnClickListener() 
+			{  
+				public void onClick(View v)
+				{
+					Intent intent = new Intent(getActivity(), BuoyManageActivity.class);
+			        startActivityForResult(intent, 1);
+
+				}
+			});	
+		}
+		
 	}
 
 	protected void saveBuoyToPrefs() 
 	{
 		try
 		{
-	    	Buoy buoy = loadBuoyFromControls();
-	    	
-	    	if( buoy != null )
+	    	if( currentBuoy != null )
 	    	{
 		    	if( buoyNumber == 1 )
 		    	{
-		    		PreferencesUtils.setBouy1(getActivity(), buoy);
+		    		PreferencesUtils.setBouy1(getActivity(), currentBuoy);
 		    	}
-		    	else
+		    	else if( buoyNumber == 2 )
 		    	{
-		    		PreferencesUtils.setBouy2(getActivity(), buoy);
+		    		PreferencesUtils.setBouy2(getActivity(), currentBuoy);
 		    	}
 	    	}
 		}
@@ -250,59 +242,27 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 		}
 	}
 
-	private Buoy loadBuoyFromPrefs() 
+	private void loadBuoyFromPrefs() 
 	{
 		try
 		{
-			Buoy buoy;
 			if( buoyNumber == 1)
 			{
-				buoy = PreferencesUtils.getBouy1(getActivity());
+				currentBuoy = PreferencesUtils.getBouy1(getActivity());
+				loadControlsWithBuoy(currentBuoy);
 			}
-			else
+			else if( buoyNumber == 2)
 			{
-				buoy = PreferencesUtils.getBouy2(getActivity());
-			}
-
-			loadControlsWithBuoy(buoy);
-			
-			return buoy;
+				currentBuoy = PreferencesUtils.getBouy2(getActivity());
+				loadControlsWithBuoy(currentBuoy);
+			}			
 		}
 		catch(Exception e)
 		{
 			Log.e(TAG, "loadBuoyFromPrefs" + e);
-			return null;
 		}
 	}
-	
-	protected void onSaveBuoyButtonPressed() 
-	{
 		
-		Buoy buoy = loadBuoyFromControls();
-		if( buoy != null )
-		{
-			if( !buoy.Name.contentEquals(""))
-			{
-				//does this buoy already exist - if so edit, otherwise add new
-				if( dbStorage.doesBuoyExist(buoy.Name) )
-				{
-					dbStorage.updateBuoy(buoy);
-				}
-				else
-				{
-					dbStorage.addBuoy(buoy);
-					savedBuoyList.add(buoy.Name);
-				}
-	
-				//show it in the spinner
-				setCurrentBuoy(buoy.Name);
-			}
-
-		}
-
-	}
-	
-	
 
 	private void setCurrentBuoy(String name) 
 	{
@@ -330,187 +290,24 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 	}
 
 
-
 	protected void loadControlsWithBuoy(Buoy item) 
 	{
-		if( editName != null )
+		if( item != null )
 		{
-			editName.setText(item.Name);			
+			TextView buoyName = (TextView) getActivity().findViewById(R.id.buoyName);
+			if( buoyName != null )
+			{
+				buoyName.setText(item.Name); 
+			}
+			
+			TextView buoyPos = (TextView) getActivity().findViewById(R.id.buoyPos);
+			if( buoyPos != null )
+			{
+				buoyPos.setText(PreferencesUtils.locationToString(getActivity(), item.Position.latitude, true) + " " + PreferencesUtils.locationToString(getActivity(), item.Position.longitude, false)); 
+			}
 		}
-
-		if( editLatitude != null && !Double.isNaN( item.Position.latitude) )
-		{			
-			editLatitude.setText(PreferencesUtils.locationToString(getActivity(), item.Position.latitude, true));
-		}
-		if( editLongitude != null && !Double.isNaN( item.Position.longitude) )
-		{
-			editLongitude.setText(PreferencesUtils.locationToString(getActivity(), item.Position.longitude, false));
-		}
-
 	}
 
-	protected Buoy loadBuoyFromControls()
-	{
-		try
-		{
-			Buoy buoy = new Buoy();
-	
-			if( editName != null )
-			{
-				buoy.Name = editName.getText().toString().trim();
-			}
-	
-			if( editLatitude != null && editLongitude != null )
-			{
-				double lat = LocationUtils.parseDMS(editLatitude.getText().toString()); 
-				double lng = LocationUtils.parseDMS(editLongitude.getText().toString());
-				if( !Double.isNaN(lat) && ! Double.isNaN(lng))
-				{
-					buoy.Position = new LatLng(lat, lng);
-				}
-				else
-				{
-					buoy = null;
-				}
-			}
-	
-	
-			return buoy;
-		}
-		catch (Exception e)
-		{
-		}
-		
-		return null;
-	}
-
-	private class LatLongFilter implements InputFilter 
-	{
-		private boolean isLatitude;
-		private final DecimalFormatSymbols decSym = new DecimalFormatSymbols(); 
-
-		public LatLongFilter(boolean isLatitude)
-		{
-			this.isLatitude = isLatitude;
-		}
-
-		@Override
-		public CharSequence filter(CharSequence source, int start, int end,
-				Spanned dest, int dstart, int dend) 
-		{
-
-			if (source instanceof SpannableStringBuilder) 
-			{
-				SpannableStringBuilder sourceAsSpannableBuilder = (SpannableStringBuilder)source;
-				for (int i = end - 1; i >= start; i--) 
-				{ 
-					char currentChar = source.charAt(i);
-
-					if( isLatitude )
-					{
-						if (!Character.isDigit(currentChar) &&
-								!Character.isSpaceChar(currentChar) &&
-								currentChar != ':' && 
-								currentChar != '°' && 
-								currentChar != '"' && 
-								currentChar != '\'' && 
-								currentChar != 'N' && 
-								currentChar != 'S' && 
-								currentChar != 'n' && 
-								currentChar != 's' && 
-								currentChar != decSym.getDecimalSeparator() &&
-								currentChar != '-') 
-						{    
-							sourceAsSpannableBuilder.delete(i, i+1);
-						}
-					}
-					else
-					{
-						if (!Character.isDigit(currentChar) &&
-								!Character.isSpaceChar(currentChar) && 
-								currentChar != ':' && 
-								currentChar != '°' && 
-								currentChar != '"' && 
-								currentChar != '\'' && 
-								currentChar != 'E' && 
-								currentChar != 'W' && 
-								currentChar != 'e' && 
-								currentChar != 'w' && 
-								currentChar != decSym.getDecimalSeparator() && 
-								currentChar != '-') 
-						{    
-							sourceAsSpannableBuilder.delete(i, i+1);
-						}
-					}
-				}
-				return source;
-			}
-			else 
-			{
-				StringBuilder filteredStringBuilder = new StringBuilder();
-				for (int i = 0; i < end; i++) 
-				{ 
-					char currentChar = source.charAt(i);
-
-					if( isLatitude)
-					{
-						if (Character.isDigit(currentChar) ||
-								Character.isSpaceChar(currentChar) ||
-								currentChar == ':' || 
-								currentChar == '°' || 
-								currentChar == '"' || 
-								currentChar == '\'' || 
-								currentChar == 'N' || 
-								currentChar == 'S' || 
-								currentChar == 'n' || 
-								currentChar == 's' || 
-								currentChar == decSym.getDecimalSeparator()|| 
-								currentChar == '-' ) 
-						{    
-							filteredStringBuilder.append(currentChar);
-						}     
-					}
-					else
-					{
-						if (Character.isDigit(currentChar) ||
-								Character.isSpaceChar(currentChar) ||
-								currentChar == ':' || 
-								currentChar == '°' || 
-								currentChar == '"' || 
-								currentChar == '\'' || 
-								currentChar == 'E' || 
-								currentChar == 'W' || 
-								currentChar == 'e' || 
-								currentChar == 'w' || 
-								currentChar == decSym.getDecimalSeparator()|| 
-								currentChar == '-' ) 
-						{    
-							filteredStringBuilder.append(currentChar);
-						}     
-					}
-				}
-				return filteredStringBuilder.toString();
-			}
-		}
-	};
-
-
-	private void setupLatLongEdits(EditText latEdit, EditText longEdit)
-	{		
-
-		if( latEdit != null )
-		{
-			latEdit.setFilters(new InputFilter[]{ new LatLongFilter(true)});
-			latEdit.setRawInputType(InputType.TYPE_CLASS_NUMBER);
-		}
-
-		if( longEdit != null )
-		{
-			longEdit.setFilters(new InputFilter[]{ new LatLongFilter(false) });
-			longEdit.setRawInputType(InputType.TYPE_CLASS_NUMBER);
-		}
-
-	}
 
 	@Override
 	public void onReceiveServiceStatus(Context context, Intent intent) {

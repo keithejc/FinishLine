@@ -46,7 +46,7 @@ public class BuoyListDialog extends DialogFragment
 	private static final String TAG = "BuoyListDialog";
 
 	Buoy current;
-	BuoyListDialogListener dialogListener;
+	BuoyDialogListener dialogListener;
 
 	static BuoyListDialog newInstance(Buoy current) 
 	{
@@ -60,7 +60,7 @@ public class BuoyListDialog extends DialogFragment
 		return f;
 	}
 
-	public void setBuoyListDialogListener(BuoyListDialogListener listener)
+	public void setBuoyListDialogListener(BuoyDialogListener listener)
 	{
 		dialogListener = listener;
 	}

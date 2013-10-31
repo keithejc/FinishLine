@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/keith/git/FinishLine/google-play-services_lib/res/values-es/strings.xml -->
+    <string name="common_google_play_services_enable_button" msgid="4181637455539816337">"Habilitar Google Play Services"</string>
+    <string name="common_google_play_services_enable_text" msgid="7627896071867667758">"Esta aplicación no funcionará si no habilitas Google Play Services."</string>
+    <string name="common_google_play_services_enable_title" msgid="529078775174559253">"Habilita Google Play Services"</string>
+    <string name="common_google_play_services_install_button" msgid="8515591849428043265">"Descargar Google Play Services"</string>
+    <string name="common_google_play_services_install_text_phone" msgid="8685301130651051380">"Esta aplicación no se ejecutará si tu teléfono no tiene instalado Google Play Services."</string>
+    <string name="common_google_play_services_install_text_tablet" msgid="1589957570365247855">"Esta aplicación no se ejecutará si tu tablet no tiene instalado Google Play Services."</string>
+    <string name="common_google_play_services_install_title" msgid="26645092511305524">"Descarga Google Play Services"</string>
+    <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Actualizar"</string>
+    <string name="common_google_play_services_update_text" msgid="448354684997260580">"Esta aplicación no se ejecutará si no actualizas Google Play Services."</string>
+    <string name="common_google_play_services_update_title" msgid="6006316683626838685">"Actualiza Google Play Services"</string>
+
+</resources>

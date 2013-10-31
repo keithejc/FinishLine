@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/keith/git/FinishLine/FinishLine/build/exploded-bundles/FinishLineGooglePlayServices_libUnspecified.aar/res/values-sk/values.xml -->
+    <string name="common_google_play_services_enable_button" msgid="4181637455539816337">"Povoliť služby Google Play"</string>
+    <string name="common_google_play_services_enable_text" msgid="7627896071867667758">"Táto aplikácia bude fungovať až po povolení služieb Google Play."</string>
+    <string name="common_google_play_services_enable_title" msgid="529078775174559253">"Povoliť služby Google Play"</string>
+    <string name="common_google_play_services_install_button" msgid="8515591849428043265">"Inštalovať služby Google Play"</string>
+    <string name="common_google_play_services_install_text_phone" msgid="8685301130651051380">"Na spustenie tejto aplikácie sa vyžadujú služby Google Play, ktoré v telefóne nemáte."</string>
+    <string name="common_google_play_services_install_text_tablet" msgid="1589957570365247855">"Na spustenie tejto aplikácie sa vyžadujú služby Google Play, ktoré v tablete nemáte."</string>
+    <string name="common_google_play_services_install_title" msgid="26645092511305524">"Inštalovať služby Google Play"</string>
+    <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Aktualizovať"</string>
+    <string name="common_google_play_services_update_text" msgid="448354684997260580">"Túto aplikáciu bude možné spustiť až po aktualizácii služieb Google Play."</string>
+    <string name="common_google_play_services_update_title" msgid="6006316683626838685">"Aktualizovať služby Google Play"</string>
+
+</resources>

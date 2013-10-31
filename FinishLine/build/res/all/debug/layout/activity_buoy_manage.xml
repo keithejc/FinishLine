@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BuoyManageActivity"
+    android:orientation="vertical" >
+    
+    <ListView
+        android:id="@+id/ListViewBuoys"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="12dp"
+        android:layout_weight="0.52"
+        android:choiceMode="singleChoice" >
+
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/linearButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/buttonCopy"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="copy"
+            android:text="@string/copy" />
+
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="add"
+            android:text="@string/add" />
+
+        <Button
+            android:id="@+id/buttonEdit"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="edit"
+            android:text="@string/edit" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="delete"
+            android:text="@string/delete" />
+
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/C:/Users/keith/git/FinishLine/FinishLine/res/layout/activity_buoy_manage.xml -->

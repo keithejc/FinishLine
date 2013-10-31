@@ -25,7 +25,7 @@ class FinishLineDbHelper extends SQLiteOpenHelper
 	private static final String TAG = FinishLineDbHelper.class.getSimpleName();
 	
 	private static final String DATABASE_NAME = "FinishLine.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
     public static final String BUOY_TABLE_NAME = "Bouys";
     public static final String BUOY_COL_ID = "_id";
@@ -50,11 +50,13 @@ class FinishLineDbHelper extends SQLiteOpenHelper
     public static final String CROSSING_COL_LONGITUDE = "Longitude";
     public static final String CROSSING_COL_TIME = "Time";
     public static final String CROSSING_COL_BEARING = "Bearing";
+    public static final String CROSSING_TYPE_MANUAL = "Manual";
     public static final String[] CROSSING_TABLE_ALL_COLS = { CROSSING_COL_ID,
     														CROSSING_COL_LATITUDE,
     														CROSSING_COL_LONGITUDE,
     														CROSSING_COL_TIME,
-    														CROSSING_COL_BEARING}; 
+    														CROSSING_COL_BEARING,
+    														CROSSING_TYPE_MANUAL}; 
     	
     	
     private static final String CROSSING_TABLE_CREATE =
@@ -63,7 +65,8 @@ class FinishLineDbHelper extends SQLiteOpenHelper
             		CROSSING_COL_LATITUDE + " INTEGER, " +
             		CROSSING_COL_LONGITUDE + " INTEGER, " +
             		CROSSING_COL_TIME + " INTEGER, " +
-            		CROSSING_COL_BEARING + " FLOAT );"; 
+            		CROSSING_COL_BEARING + " FLOAT, " + 
+            		CROSSING_TYPE_MANUAL + " INTEGER );"; 
             		
     
     FinishLineDbHelper(Context context) 
@@ -84,14 +87,15 @@ class FinishLineDbHelper extends SQLiteOpenHelper
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
 		//delete and start again
-		if( oldVersion == 1 && newVersion == 2)
+		if( (oldVersion == 1 || oldVersion == 2) && (newVersion == 2 || newVersion == 3) )
 		{
-	        Log.d(TAG, "upgrading 1 to 2 database");
+	        Log.d(TAG, "upgrading " + oldVersion + " to " + newVersion + " database");
 
 	        db.execSQL("DROP TABLE IF EXISTS Crossings");
 			db.execSQL("DROP TABLE IF EXISTS Races");
 	        db.execSQL(CROSSING_TABLE_CREATE);
 		}
+		
 	}
 		
 	

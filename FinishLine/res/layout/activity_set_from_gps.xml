@@ -21,7 +21,7 @@
     android:background="@drawable/graduated_view_background" >
     
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/buoyLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -47,29 +47,33 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewLocation"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         android:minHeight="72dip"
         android:onClick="onSetPositionNowClick"
-        android:text="@string/button_set_pos_gps" />
+        android:text="@string/button_set_pos_gps"
+        android:textSize="32sp" />
 
     <TextView
         android:id="@+id/textViewForeAft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="6dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_below="@+id/buoyLatitude"
+        android:layout_marginLeft="24dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textViewPortStarboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textViewForeAft"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="12dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="false"
+        android:layout_below="@+id/textViewForeAft"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24sp" />
 
     <ImageButton
         android:id="@+id/imageButtonNudgeRight"
@@ -77,6 +81,7 @@
         android:layout_height="76dp"
         android:layout_alignTop="@+id/imageButtonNudgeForward"
         android:layout_marginLeft="32dp"
+        android:layout_marginTop="6dp"
         android:layout_toRightOf="@+id/imageButtonNudgeForward"
         android:onClick="onNudgeStarboard"
         android:src="@drawable/ic_action_arrow_right" />
@@ -87,7 +92,7 @@
         android:layout_height="76dp"
         android:layout_alignLeft="@+id/imageButtonNudgeForward"
         android:layout_below="@+id/imageButtonNudgeRight"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="18dp"
         android:onClick="onNudgeAstern"
         android:src="@drawable/ic_action_arrow_bottom" />
 
@@ -107,6 +112,7 @@
         android:layout_height="76dp"
         android:layout_alignTop="@id/imageButtonNudgeForward"
         android:layout_marginRight="32dp"
+        android:layout_marginTop="6dp"
         android:layout_toLeftOf="@+id/imageButtonNudgeForward"
         android:onClick="onNudgePort"
         android:src="@drawable/ic_action_arrow_left" />
@@ -115,9 +121,9 @@
         android:id="@+id/imageButtonNudgeForward"
         android:layout_width="76dp"
         android:layout_height="76dp"
-        android:layout_below="@+id/textViewForeAft"
+        android:layout_below="@+id/textViewPortStarboard"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="12dp"
         android:onClick="onNudgeForward"
         android:src="@drawable/ic_action_arrow_top" />
 
@@ -152,7 +158,8 @@
         android:layout_toRightOf="@+id/buttonSetGPSNow"
         android:minHeight="72dip"
         android:onClick="closeAndReturnBuoy"
-        android:text="@string/save_and_close" />
+        android:text="@string/save_and_close"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textViewAccuracyLabel"

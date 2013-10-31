@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.actionbarsherlock.internal.widget.IcsLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/actionBarTabBarStyle"
+/><!-- From: file:/C:/Users/keith/git/FinishLine/actionbarsherlock/res/layout/abs__action_bar_tab_bar_view.xml --><!-- From: file:/C:/Users/keith/git/FinishLine/FinishLine/build/exploded-bundles/FinishLineActionbarsherlockUnspecified.aar/res/layout/abs__action_bar_tab_bar_view.xml -->

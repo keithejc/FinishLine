@@ -1,0 +1,7 @@
+include ':listviewanimations'
+include ':ShowCaseViewLib'
+include ':google-play-services_lib'
+include ':FinishLineTest'
+include ':viewpagerindicator'
+include ':actionbarsherlock'
+include ':FinishLine'

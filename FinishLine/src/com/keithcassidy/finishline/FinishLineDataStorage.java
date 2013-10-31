@@ -53,6 +53,16 @@ public class FinishLineDataStorage implements FinishLineDataInterface
 		dbHelper.close();
 	}
 	
+	public void addManualTime(long manTime)
+	{
+		ContentValues values = new ContentValues();
+		values.put(FinishLineDbHelper.CROSSING_COL_TIME, manTime);
+		values.put(FinishLineDbHelper.CROSSING_TYPE_MANUAL, 1);
+		
+		long id =  db.insert(FinishLineDbHelper.CROSSING_TABLE_NAME, null, values);
+        Log.d(TAG, "Adding Crossing: " + id  );
+	}
+	
 	public long addCrossing(Location location)
 	{
 		ContentValues values = new ContentValues();
@@ -60,6 +70,7 @@ public class FinishLineDataStorage implements FinishLineDataInterface
 		values.put(FinishLineDbHelper.CROSSING_COL_LATITUDE, Double.doubleToLongBits(location.getLatitude()));
 		values.put(FinishLineDbHelper.CROSSING_COL_LONGITUDE, Double.doubleToLongBits(location.getLongitude()));
 		values.put(FinishLineDbHelper.CROSSING_COL_TIME, location.getTime());
+		values.put(FinishLineDbHelper.CROSSING_TYPE_MANUAL, 0);
 		
 		long id =  db.insert(FinishLineDbHelper.CROSSING_TABLE_NAME, null, values);
         Log.d(TAG, "Adding Crossing: " + id  );
@@ -87,11 +98,16 @@ public class FinishLineDataStorage implements FinishLineDataInterface
 	private Location cursorToCrossing(Cursor cursor) 
 	{
 		Location crossing = new Location(LocationManager.GPS_PROVIDER);
-		
 		crossing.setTime(cursor.getLong(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_COL_TIME)));
-		crossing.setBearing((cursor.getFloat(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_COL_BEARING))));
-		crossing.setLatitude( Double.longBitsToDouble(cursor.getLong(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_COL_LATITUDE))));
-		crossing.setLongitude( Double.longBitsToDouble(cursor.getLong(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_COL_LONGITUDE))));
+
+		//manually added crossings only have a time
+		boolean isManual = cursor.getLong(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_TYPE_MANUAL)) == 1;
+		if( !isManual )
+		{
+			crossing.setBearing((cursor.getFloat(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_COL_BEARING))));
+			crossing.setLatitude( Double.longBitsToDouble(cursor.getLong(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_COL_LATITUDE))));
+			crossing.setLongitude( Double.longBitsToDouble(cursor.getLong(cursor.getColumnIndex(FinishLineDbHelper.CROSSING_COL_LONGITUDE))));
+		}
 		
 		return crossing;		
 	}

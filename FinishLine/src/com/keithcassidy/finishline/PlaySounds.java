@@ -74,6 +74,14 @@ public class PlaySounds
 		}
 	}
 
+	public static void playAddManualTime(final Context context)
+	{
+		if( context != null )
+		{
+			playTone(context, Sound.Tick, 3, 1);
+		}
+	}
+	
 	public static void playProximityTone(final Context context)
 	{
 		if( context != null )

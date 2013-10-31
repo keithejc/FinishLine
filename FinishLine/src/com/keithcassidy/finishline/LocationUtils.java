@@ -288,7 +288,7 @@ public class LocationUtils
 		Double dLon13 = Math.atan2( Math.sin(brng13)*Math.sin(dist13)*Math.cos(lat1), 
 				Math.cos(dist13)-Math.sin(lat1)*Math.sin(lat3) );
 		Double lon3 = lon1+dLon13;
-		lon3 = (lon3+3*Math.PI) % (2*Math.PI) - Math.PI;  // normalise to -180..+180º
+		lon3 = (lon3+3*Math.PI) % (2*Math.PI) - Math.PI;  // normalise to -180..+180ï¿½
 
 		Location ret = new Location("na");
 		ret.setLatitude(roundLatOrLong(Math.toDegrees(lat3)));
@@ -470,7 +470,7 @@ public class LocationUtils
 
 			String dmsStrTrim = dmsStr.trim(); 
 
-			if( !dmsStrTrim.contains(" ") && !dmsStrTrim.contains(":") && !dmsStrTrim.contains("'") && !dmsStrTrim.contains("°")&& !dmsStrTrim.contains("\""))
+			if( !dmsStrTrim.contains(" ") && !dmsStrTrim.contains(":") && !dmsStrTrim.contains("'") && !dmsStrTrim.contains("Â°")&& !dmsStrTrim.contains("\""))
 			{
 				decimalDeg = Math.abs(parseDoubleLocale(dmsStr));
 			}
@@ -479,7 +479,7 @@ public class LocationUtils
 			if( Double.isNaN(decimalDeg) )
 			{
 				// strip off any sign or compass dir'n & split out separate d/m/s
-				String cleaned = dmsStrTrim.replaceAll("^-","").replaceAll("[NSEWnsew°\"']","").replaceAll(" +", " ").replaceAll(":", " ");
+				String cleaned = dmsStrTrim.replaceAll("^-","").replaceAll("[NSEWnsewÂ°\"']","").replaceAll(" +", " ").replaceAll(":", " ");
 				List<String> dms = Arrays.asList(cleaned.split("[^0-9.,]"));
 
 				if (dms.get(dms.size() - 1) == "")

@@ -1,0 +1,69 @@
+<!--
+  Copyright 2013 Keith Cassidy
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+    http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="9" android:versionName="0.09" package="com.keithcassidy.finishline">
+
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+
+    <permission android:name="com.keithcassidy.finishline.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
+
+    <uses-permission android:name="com.keithcassidy.finishline.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+
+    <application android:allowBackup="true" android:hardwareAccelerated="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/Theme.FinishLine">
+
+        <!-- android:theme="@style/Theme.finishlineactionbarstyle" -->
+        <receiver android:name="com.keithcassidy.finishline.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service android:exported="false" android:name="com.keithcassidy.finishline.FinishLineService"/>
+
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDE8xannvMrG20HGuY5r7g87h-Nyein1jE"/>
+
+        <activity android:label="@string/app_name" android:name="com.keithcassidy.finishline.MapFragment" android:parentActivityName="com.keithcassidy.finishline.HomeActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:label="@string/title_activity_bouy_setup" android:name="com.keithcassidy.finishline.BuoySetupActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:label="@string/title_activity_home" android:name="com.keithcassidy.finishline.HomeActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:label="@string/title_activity_set_from_gps" android:name="com.keithcassidy.finishline.SetFromGPSActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:label="@string/title_activity_buoy_list" android:name="com.keithcassidy.finishline.BuoyListDialogOld" android:screenOrientation="portrait" android:theme="@style/Theme.Sherlock.DialogWithCorners">
+        </activity>
+        <activity android:label="@string/settings" android:name="com.keithcassidy.finishline.SettingsActivity">
+        </activity>
+        <activity android:label="@string/title_activity_buoy_manage" android:name="com.keithcassidy.finishline.BuoyManageActivity">
+        </activity>
+    </application>
+
+</manifest>

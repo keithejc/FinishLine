@@ -29,7 +29,8 @@
         android:layout_marginRight="32dp"
         android:drawableLeft="@drawable/ic_action_playback_stop"
         android:minHeight="64dp"
-        android:text="@string/stop" />
+        android:text="@string/stop"
+        android:textSize="32sp" />
 
     <TextView
         android:id="@+id/textViewDistanceLabel"
@@ -88,10 +89,11 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewPressStart"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:drawableLeft="@drawable/ic_action_playback_play"
         android:minHeight="64dp"
-        android:text="@string/start" />
+        android:text="@string/start"
+        android:textSize="32sp" />
 
     <TextView
         android:id="@+id/textViewPressStart"
@@ -108,7 +110,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textViewPosLabel"
-        android:layout_centerVertical="true"
+        android:layout_below="@id/buttonStop"
+        android:layout_centerVertical="false"
+        android:layout_marginTop="24dp"
         android:text="@string/status"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -129,5 +133,16 @@
         android:layout_alignLeft="@+id/buttonStop"
         android:text="@string/distance_infinite"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/buttonAddManualTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewDistanceLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:minHeight="64dp"
+        android:text="@string/buttonAddManualTime"
+        android:textSize="32sp" />
 
 </RelativeLayout>

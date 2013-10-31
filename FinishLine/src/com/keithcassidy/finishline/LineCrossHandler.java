@@ -33,7 +33,7 @@ public class LineCrossHandler
 	private int maxAccuracyAllowed = 0;
 	private Context context = null;
 	private FinishLineDataInterface finishLineDataStorage;
-	float lastDistanceToFinish = Float.POSITIVE_INFINITY;
+	//float lastDistanceToFinish = Float.POSITIVE_INFINITY;
 	private float finishLineExtension;
 	private boolean isRacing;
 
@@ -170,7 +170,10 @@ public class LineCrossHandler
 
 
 			if( lastLocation != null && lastLocation.distanceTo(location) > LocationUtils.EPSILON)
-			{				
+			{
+				Log.d(TAG, "last location time " + lastLocation.getTime() );
+				
+				
 				Location locationLookingBack = new Location(location);
 				locationLookingBack.setBearing(locationLookingBack.bearingTo(lastLocation));
 
@@ -192,11 +195,9 @@ public class LineCrossHandler
 
 			}
 
-
+			lastLocation = location;
 		}
-
-		lastLocation = location;
-		lastDistanceToFinish = diToFinish.distance;
+		//lastDistanceToFinish = diToFinish.distance;
 
 		/*	
 		if (lastLocation != null && isRacing) 

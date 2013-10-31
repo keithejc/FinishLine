@@ -1,0 +1,36 @@
+int attr backgroundColor 0x7f010005
+int attr buttonBackgroundColor 0x7f010002
+int attr detailTextColor 0x7f010006
+int attr showcaseButtonStyle 0x7f010001
+int attr showcaseViewStyle 0x7f010000
+int attr text 0x7f010004
+int attr textColor 0x7f010003
+int attr titleTextColor 0x7f010007
+int drawable btn_cling_normal 0x7f020000
+int drawable btn_cling_pressed 0x7f020001
+int drawable cling 0x7f020002
+int drawable cling_button_bg 0x7f020003
+int drawable hand 0x7f020004
+int drawable ic_launcher 0x7f020005
+int id showcase_button 0x7f040000
+int id showcase_sub_text 0x7f040001
+int id showcase_title_text 0x7f040002
+int layout handy 0x7f030000
+int layout showcase_button 0x7f030001
+int string ok 0x7f050000
+int style ShowcaseButton 0x7f060000
+int style ShowcaseText 0x7f060001
+int style ShowcaseTitleText 0x7f060002
+int style ShowcaseView 0x7f060003
+int style ShowcaseView_Light 0x7f060004
+int[] styleable CustomTheme { 0x7f010000, 0x7f010001 }
+int styleable CustomTheme_showcaseButtonStyle 1
+int styleable CustomTheme_showcaseViewStyle 0
+int[] styleable ShowcaseButton { 0x7f010002, 0x7f010003, 0x7f010004 }
+int styleable ShowcaseButton_buttonBackgroundColor 0
+int styleable ShowcaseButton_text 2
+int styleable ShowcaseButton_textColor 1
+int[] styleable ShowcaseView { 0x7f010005, 0x7f010006, 0x7f010007 }
+int styleable ShowcaseView_backgroundColor 0
+int styleable ShowcaseView_detailTextColor 1
+int styleable ShowcaseView_titleTextColor 2

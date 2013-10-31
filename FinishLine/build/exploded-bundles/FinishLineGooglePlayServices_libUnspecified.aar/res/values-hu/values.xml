@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/keith/git/FinishLine/google-play-services_lib/res/values-hu/strings.xml -->
+    <string name="common_google_play_services_enable_button" msgid="4181637455539816337">"Play Szolgáltatások enged."</string>
+    <string name="common_google_play_services_enable_text" msgid="7627896071867667758">"Az alkalmazás csak akkor fog működni, ha engedélyezi a Google Play Szolgáltatásokat."</string>
+    <string name="common_google_play_services_enable_title" msgid="529078775174559253">"Google Play Szolgáltatások engedélyezése"</string>
+    <string name="common_google_play_services_install_button" msgid="8515591849428043265">"Play Szolgáltatások telepítése"</string>
+    <string name="common_google_play_services_install_text_phone" msgid="8685301130651051380">"Az alkalmazás működéséhez a Google Play Szolgáltatások szükségesek, ezek nincsenek telepítve a telefonon."</string>
+    <string name="common_google_play_services_install_text_tablet" msgid="1589957570365247855">"Az alkalmazás működéséhez a Google Play Szolgáltatások szükségesek, ezek nincsenek telepítve a táblagépen."</string>
+    <string name="common_google_play_services_install_title" msgid="26645092511305524">"Google Play Szolgáltatások telepítése"</string>
+    <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Frissítés"</string>
+    <string name="common_google_play_services_update_text" msgid="448354684997260580">"Az alkalmazás csak akkor fog működni, ha frissíti a Google Play Szolgáltatásokat."</string>
+    <string name="common_google_play_services_update_title" msgid="6006316683626838685">"Google Play Szolgáltatások frissítése"</string>
+
+</resources>

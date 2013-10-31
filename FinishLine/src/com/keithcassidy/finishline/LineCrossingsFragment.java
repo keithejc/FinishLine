@@ -65,8 +65,12 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 	{
 		SimpleDateFormat dFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 		dFormat.setTimeZone(TimeZone.getDefault());
-		String text = PreferencesUtils.getBoatName(getActivity()) + 
-						" " + dFormat.format(new Date(crossing.getTime()));
+		String boat = "";
+		if( crossing.hasBearing() )
+		{
+			boat = PreferencesUtils.getBoatName(getActivity()) + " ";
+		}
+		String text = boat + dFormat.format(new Date(crossing.getTime()));
 
 		Intent sendIntent = new Intent();
 		sendIntent.setAction(Intent.ACTION_SEND);
@@ -363,13 +367,21 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 				dFormat.setTimeZone(TimeZone.getDefault());
 				crossingHolder.time.setText(dFormat.format(new Date(crossing.getTime())));
 
+				if( crossing.hasBearing() )
+				{
+				
 				//Date time = new Date(crossing.getTime());
 				//SimpleDateFormat fmt = new SimpleDateFormat("hh:mm:ss", getActivity().getResources().getConfiguration().locale); 
 				//crossingHolder.time.setText(fmt.format(time));
 				crossingHolder.location.setText(
 						PreferencesUtils.locationToString(getContext(), crossing.getLatitude(), true) +
 						" " + 
-						PreferencesUtils.locationToString(getContext(), crossing.getLongitude(), true) );
+						PreferencesUtils.locationToString(getContext(), crossing.getLongitude(), false) );
+				}
+				else
+				{
+					crossingHolder.location.setText(getResources().getString(R.string.spot_time));
+				}
 			}
 
 			return v;

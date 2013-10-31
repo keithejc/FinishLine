@@ -1,0 +1,183 @@
+<!--
+  Copyright 2013 Keith Cassidy
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+    http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SetFromGPSActivity"
+    android:background="@drawable/graduated_view_background" >
+    
+    <TextView
+        android:id="@+id/buoyLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/set_from_gps_label" />
+
+    <TextView
+        android:id="@+id/textViewAccuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewGPSStatus"
+        android:layout_alignLeft="@+id/textViewAccuracyLabel"
+        android:layout_below="@id/textViewAccuracyLabel"
+        android:text="..."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/buttonSetGPSNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewLocation"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="6dp"
+        android:minHeight="72dip"
+        android:onClick="onSetPositionNowClick"
+        android:text="@string/button_set_pos_gps"
+        android:textSize="32sp" />
+
+    <TextView
+        android:id="@+id/textViewForeAft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/buoyLatitude"
+        android:layout_marginLeft="24dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textViewPortStarboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="false"
+        android:layout_below="@+id/textViewForeAft"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="3dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24sp" />
+
+    <ImageButton
+        android:id="@+id/imageButtonNudgeRight"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_alignTop="@+id/imageButtonNudgeForward"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="6dp"
+        android:layout_toRightOf="@+id/imageButtonNudgeForward"
+        android:onClick="onNudgeStarboard"
+        android:src="@drawable/ic_action_arrow_right" />
+
+    <ImageButton
+        android:id="@+id/imageButtonNudgeBackward"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_alignLeft="@+id/imageButtonNudgeForward"
+        android:layout_below="@+id/imageButtonNudgeRight"
+        android:layout_marginTop="18dp"
+        android:onClick="onNudgeAstern"
+        android:src="@drawable/ic_action_arrow_bottom" />
+
+    <TextView
+        android:id="@+id/textViewGPSStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewGPSStatusLabel"
+        android:layout_marginLeft="12dp"
+        android:text="..."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageButton
+        android:id="@+id/imageButtonNudgeLeft"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_alignTop="@id/imageButtonNudgeForward"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="6dp"
+        android:layout_toLeftOf="@+id/imageButtonNudgeForward"
+        android:onClick="onNudgePort"
+        android:src="@drawable/ic_action_arrow_left" />
+
+    <ImageButton
+        android:id="@+id/imageButtonNudgeForward"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_below="@+id/textViewPortStarboard"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:onClick="onNudgeForward"
+        android:src="@drawable/ic_action_arrow_top" />
+
+    <TextView
+        android:id="@+id/textViewLocationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewAccuracy"
+        android:layout_below="@+id/textViewAccuracy"
+        android:layout_marginTop="16dp"
+        android:text="@string/position"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textViewLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textViewLocationLabel"
+        android:layout_alignBottom="@+id/textViewLocationLabel"
+        android:layout_toRightOf="@+id/textViewLocationLabel"
+        android:text="..."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/buttonSetGPSNow"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_toRightOf="@+id/buttonSetGPSNow"
+        android:minHeight="72dip"
+        android:onClick="closeAndReturnBuoy"
+        android:text="@string/save_and_close"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textViewAccuracyLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageButtonNudgeLeft"
+        android:layout_alignTop="@+id/imageButtonNudgeBackward"
+        android:text="@string/accuracy"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textViewGPSStatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageButtonNudgeBackward"
+        android:layout_alignLeft="@+id/textViewGPSStatus"
+        android:text="@string/gps_status"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>
+<!-- From: file:/C:/Users/keith/git/FinishLine/FinishLine/res/layout/activity_set_from_gps.xml -->
