@@ -229,15 +229,15 @@ public class BuoyManageActivity extends FragmentActivity
 			{
 				if( list.isItemChecked(pos) )
 				{
-					buoyHolder.name.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
-					buoyHolder.location.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
+					buoyHolder.name.setTextColor(getResources().getColor(R.color.vpi__background_holo_dark));
+					buoyHolder.location.setTextColor(getResources().getColor(R.color.vpi__background_holo_dark));
 					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.finishLineHighlight));
 				}
 				else
 				{
-					buoyHolder.name.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
-					buoyHolder.location.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
-					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.abs__background_holo_dark));
+					buoyHolder.name.setTextColor(getResources().getColor(R.color.finishLineHighlight));
+					buoyHolder.location.setTextColor(getResources().getColor(R.color.finishLineHighlight));
+					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.vpi__background_holo_dark));
 				}
 				
 

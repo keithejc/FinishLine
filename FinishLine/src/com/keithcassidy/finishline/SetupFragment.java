@@ -17,6 +17,7 @@ package com.keithcassidy.finishline;
 
 import java.util.ArrayList;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,11 +28,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class SetupFragment extends SherlockFragment implements TabFocusInterface, ServiceStatusInterface
+public class SetupFragment extends Fragment implements TabFocusInterface, ServiceStatusInterface
 {
 	
 	private static final String TAG = SetupFragment.class.getSimpleName();
@@ -82,7 +82,7 @@ public class SetupFragment extends SherlockFragment implements TabFocusInterface
 				
 			}
 		});
-		dlg.show(getActivity().getSupportFragmentManager(), "bouy list dialog fragment");
+		dlg.show(getActivity().getFragmentManager(), "bouy list dialog fragment");
 		
 	}
 	

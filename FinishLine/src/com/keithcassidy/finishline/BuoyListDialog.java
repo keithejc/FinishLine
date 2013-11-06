@@ -22,11 +22,11 @@ import com.haarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.haarman.listviewanimations.itemmanipulation.SwipeDismissAdapter;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
 import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -75,7 +75,7 @@ public class BuoyListDialog extends DialogFragment
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		setStyle(DialogFragment.STYLE_NORMAL + DialogFragment.STYLE_NO_TITLE, R.style.Theme_Sherlock_DialogWithCorners);
+		setStyle(DialogFragment.STYLE_NORMAL + DialogFragment.STYLE_NO_TITLE, R.style.Theme_FinishLine_DialogWithCorners);
 
 		current = getArguments().getParcelable("current");
 		
@@ -250,15 +250,15 @@ public class BuoyListDialog extends DialogFragment
 			{
 				if( list.isItemChecked(pos) )
 				{
-					buoyHolder.name.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
-					buoyHolder.location.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
+					buoyHolder.name.setTextColor(getResources().getColor(R.color.vpi__background_holo_dark));
+					buoyHolder.location.setTextColor(getResources().getColor(R.color.vpi__background_holo_dark));
 					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.finishLineHighlight));
 				}
 				else
 				{
-					buoyHolder.name.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
-					buoyHolder.location.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
-					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.abs__background_holo_dark));
+					buoyHolder.name.setTextColor(getResources().getColor(R.color.finishLineHighlight));
+					buoyHolder.location.setTextColor(getResources().getColor(R.color.finishLineHighlight));
+					((View) buoyHolder.name.getParent()).setBackgroundColor(getResources().getColor(R.color.vpi__background_holo_dark));
 				}
 				
 

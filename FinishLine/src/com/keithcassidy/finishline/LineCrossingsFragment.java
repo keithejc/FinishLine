@@ -21,12 +21,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
+
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,10 +32,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -48,7 +49,7 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class LineCrossingsFragment extends SherlockFragment implements TabFocusInterface , ServiceStatusInterface
+public class LineCrossingsFragment extends Fragment implements TabFocusInterface , ServiceStatusInterface
 {
 
 	protected static final String TAG = LineCrossingsFragment.class.getSimpleName();
@@ -332,7 +333,7 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 			if (v == null) 
 			{
 				getActivity();
-				LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(FragmentActivity.LAYOUT_INFLATER_SERVICE);
+				LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 				v = inflater.inflate(R.layout.crossing_list_item, null);
 				crossingHolder = new CrossingViewHolder();
 				crossingHolder.time = (CheckedTextView)v.findViewById(R.id.crossing_time);
@@ -353,14 +354,14 @@ public class LineCrossingsFragment extends SherlockFragment implements TabFocusI
 				if( getListView().isItemChecked(pos))
 				{
 					((View) crossingHolder.time.getParent()).setBackgroundColor(getResources().getColor(R.color.finishLineHighlight));
-					crossingHolder.time.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
-					crossingHolder.location.setTextColor(getResources().getColor(R.color.abs__background_holo_dark));
+					crossingHolder.time.setTextColor(getResources().getColor(R.color.vpi__background_holo_dark));
+					crossingHolder.location.setTextColor(getResources().getColor(R.color.vpi__background_holo_dark));
 				}
 				else
 				{
-					crossingHolder.time.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
-					crossingHolder.location.setTextColor(getResources().getColor(R.color.abs__primary_text_holo_dark));
-					((View) crossingHolder.time.getParent()).setBackgroundColor(getResources().getColor(R.color.abs__background_holo_dark));
+					crossingHolder.time.setTextColor(getResources().getColor(R.color.finishLineHighlight));
+					crossingHolder.location.setTextColor(getResources().getColor(R.color.finishLineHighlight));
+					((View) crossingHolder.time.getParent()).setBackgroundColor(getResources().getColor(R.color.vpi__background_holo_dark));
 				}
 
 				DateFormat dFormat = DateFormat.getDateTimeInstance();

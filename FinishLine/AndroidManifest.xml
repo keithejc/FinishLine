@@ -20,8 +20,8 @@
     android:versionName="0.09" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="18" />
 
     <permission
         android:name="com.keithcassidy.finishline.permission.MAPS_RECEIVE"
@@ -93,7 +93,7 @@
             android:name="com.keithcassidy.finishline.BuoyListDialogOld"
             android:label="@string/title_activity_buoy_list"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Sherlock.DialogWithCorners" >
+            android:theme="@style/Theme.FinishLine.DialogWithCorners" >
         </activity>
         <activity
             android:name="com.keithcassidy.finishline.SettingsActivity"

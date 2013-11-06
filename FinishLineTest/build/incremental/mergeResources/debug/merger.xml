@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="C:\Users\keith\git\FinishLine\FinishLineTest\res" >
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\FinishLineTest\res\drawable-hdpi\ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\FinishLineTest\res\drawable-ldpi\ic_launcher.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\FinishLineTest\res\drawable-mdpi\ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\FinishLineTest\res\drawable-xhdpi\ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                path="C:\Users\keith\git\FinishLine\FinishLineTest\res\values\strings.xml"
+                qualifiers="" >
+                <string name="app_name" >FinishLineTestTest
+                </string>
+            </file>
+        </source>
+        <source path="C:\Users\keith\git\FinishLine\FinishLineTest\build\res\rs\debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="C:\Users\keith\git\FinishLine\FinishLineTest\build-types\debug\res" />
+    </dataSet>
+
+</merger>

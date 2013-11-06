@@ -1,0 +1,6 @@
+# incremental data. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1363105566277 1354 889ccd7101d58dfe7726e03992139e56989841a4 C:\Users\keith\git\FinishLine\FinishLineTest\src\com\keithcassidy\finishline\test\MockFinishLineDataStorage.java
+1383218983242 11414 e4a4ecb7b4ba866d2b70ac00a97f11ee3bc2e265 C:\Users\keith\git\FinishLine\FinishLineTest\src\com\keithcassidy\finishline\test\LocationUtilsTests.java
+1363105566262 3797 11557e5ee31ee558bc0a89c1674bae91a93d3dce C:\Users\keith\git\FinishLine\FinishLineTest\src\com\keithcassidy\finishline\test\LineCrossTest.java

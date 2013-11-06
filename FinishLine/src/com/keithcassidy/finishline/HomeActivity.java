@@ -15,7 +15,12 @@
  ******************************************************************************/
 package com.keithcassidy.finishline;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,21 +29,17 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.viewpagerindicator.TitlePageIndicator;
 
-public class HomeActivity extends SherlockFragmentActivity
+public class HomeActivity extends Activity
 {
 
 	protected static final String TAG = null;
@@ -70,7 +71,7 @@ public class HomeActivity extends SherlockFragmentActivity
 	{
 		// Create and show the dialog.
 		DialogFragment newFragment = AboutDialog.newInstance();
-		newFragment.show(getSupportFragmentManager(), "aboutdialog");
+		newFragment.show(getFragmentManager(), "aboutdialog");
 	}
 
 	private void showHelp() 
@@ -92,9 +93,9 @@ public class HomeActivity extends SherlockFragmentActivity
 	Fragment mapFragment = null;
 
 	@Override
-	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) 
+	public boolean onCreateOptionsMenu(Menu menu) 
 	{
-		getSupportMenuInflater().inflate(R.menu.options_menu, menu);
+		getMenuInflater().inflate(R.menu.options_menu, menu);
 		return true;
 	}
 
@@ -212,7 +213,7 @@ public class HomeActivity extends SherlockFragmentActivity
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		// Set up the action bar.
-		final ActionBar actionBar = getSupportActionBar();
+		final ActionBar actionBar = getActionBar();// getSupportActionBar();
 		actionBar.setDisplayShowHomeEnabled(true);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.pinstripe_actionbar_tile));
@@ -225,12 +226,11 @@ public class HomeActivity extends SherlockFragmentActivity
 		setupFragment2 = new SetupFragment();
 		((SetupFragment)setupFragment2).setBuoyNumber(2);
 		lineCrossFragment = new LineCrossingsFragment();
-		mapFragment = new MapFragment();
+		mapFragment = new FinishLineMapFragment();
 
 		// Create the adapter that will return a fragment for each of the 
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);

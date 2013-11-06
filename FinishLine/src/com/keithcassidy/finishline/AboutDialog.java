@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.app.DialogFragment;
 import android.text.Html;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -43,7 +43,7 @@ public class AboutDialog extends DialogFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setStyle(DialogFragment.STYLE_NORMAL + DialogFragment.STYLE_NO_TITLE, R.style.Theme_Sherlock_DialogWithCorners);
+        setStyle(DialogFragment.STYLE_NORMAL + DialogFragment.STYLE_NO_TITLE, R.style.Theme_FinishLine_DialogWithCorners);
     }
 	
     static AboutDialog newInstance() 

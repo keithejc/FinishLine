@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/keith/git/FinishLine/google-play-services_lib/res/values-ru/strings.xml -->
+    <string name="common_google_play_services_enable_button" msgid="4181637455539816337">"Включить Сервисы Google Play"</string>
+    <string name="common_google_play_services_enable_text" msgid="7627896071867667758">"Для работы этого приложения требуется включить Сервисы Google Play."</string>
+    <string name="common_google_play_services_enable_title" msgid="529078775174559253">"Включите Сервисы Google Play"</string>
+    <string name="common_google_play_services_install_button" msgid="8515591849428043265">"Установить"</string>
+    <string name="common_google_play_services_install_text_phone" msgid="8685301130651051380">"Для работы этого приложения требуется установить Сервисы Google Play."</string>
+    <string name="common_google_play_services_install_text_tablet" msgid="1589957570365247855">"Для работы этого приложения требуется установить Сервисы Google Play."</string>
+    <string name="common_google_play_services_install_title" msgid="26645092511305524">"Установите Сервисы Google Play"</string>
+    <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Обновить"</string>
+    <string name="common_google_play_services_update_text" msgid="448354684997260580">"Для работы этого приложения требуется обновить Сервисы Google Play."</string>
+    <string name="common_google_play_services_update_title" msgid="6006316683626838685">"Обновите Сервисы Google Play"</string>
+
+</resources>

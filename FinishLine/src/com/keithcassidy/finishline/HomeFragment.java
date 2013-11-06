@@ -15,6 +15,7 @@
  ******************************************************************************/
 package com.keithcassidy.finishline;
 
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,20 +27,20 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
+
 import com.github.espiandev.showcaseview.ShowcaseView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 
-public class HomeFragment extends SherlockFragment implements TabFocusInterface , ServiceStatusInterface
+public class HomeFragment extends Fragment implements TabFocusInterface , ServiceStatusInterface
 {
 
 	@Override

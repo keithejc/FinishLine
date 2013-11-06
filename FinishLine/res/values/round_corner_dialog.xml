@@ -16,7 +16,7 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Sherlock.DialogWithCorners" parent="Theme.Sherlock.Dialog">
+    <style name="Theme.FinishLine.DialogWithCorners" parent="Theme.FinishLine.Dialog">
         <item name="android:windowBackground">@drawable/rounded_corner_dialog</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>

@@ -59,7 +59,7 @@ public class BuoyEditDialog extends DialogFragment
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		setStyle(DialogFragment.STYLE_NORMAL + DialogFragment.STYLE_NO_TITLE, R.style.Theme_Sherlock_DialogWithCorners);
+		setStyle(DialogFragment.STYLE_NORMAL + DialogFragment.STYLE_NO_TITLE, R.style.Theme_FinishLine_DialogWithCorners);
 
 		buoy = getArguments().getParcelable("buoy");
 		

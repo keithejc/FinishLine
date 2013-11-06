@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res" >
+            <file
+                name="cling_button_bg"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable\cling_button_bg.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="btn_cling_normal"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-hdpi\btn_cling_normal.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="btn_cling_pressed"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-hdpi\btn_cling_pressed.9.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="cling"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-hdpi\cling.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="hand"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-hdpi\hand.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-hdpi\ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-ldpi\ic_launcher.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="btn_cling_normal"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-mdpi\btn_cling_normal.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="btn_cling_pressed"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-mdpi\btn_cling_pressed.9.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="cling"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-mdpi\cling.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="hand"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-mdpi\hand.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-mdpi\ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="btn_cling_normal"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-xhdpi\btn_cling_normal.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="btn_cling_pressed"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-xhdpi\btn_cling_pressed.9.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="cling"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-xhdpi\cling.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="hand"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-xhdpi\hand.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\drawable-xhdpi\ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="handy"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\layout\handy.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="showcase_button"
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\layout\showcase_button.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\values\attrs.xml"
+                qualifiers="" >
+                <declare-styleable name="CustomTheme" >
+                    <attr
+                        name="showcaseViewStyle"
+                        format="reference" />
+                    <attr
+                        name="showcaseButtonStyle"
+                        format="reference" />
+                </declare-styleable>
+                <declare-styleable name="ShowcaseView" >
+                    <attr
+                        name="backgroundColor"
+                        format="color|reference" />
+                    <attr
+                        name="detailTextColor"
+                        format="color|reference" />
+                    <attr
+                        name="titleTextColor"
+                        format="color|reference" />
+                </declare-styleable>
+                <declare-styleable name="ShowcaseButton" >
+                    <attr
+                        name="buttonBackgroundColor"
+                        format="color|reference" />
+                    <attr
+                        name="textColor"
+                        format="color|reference" />
+                    <attr
+                        name="text"
+                        format="string|reference" />
+                </declare-styleable>
+            </file>
+            <file
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\values\ids.xml"
+                qualifiers="" >
+                <item
+                    name="showcase_button"
+                    type="id"/>
+                <item
+                    name="showcase_sub_text"
+                    type="id"/>
+                <item
+                    name="showcase_title_text"
+                    type="id"/>
+            </file>
+            <file
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\values\strings.xml"
+                qualifiers="" >
+                <string name="ok" >OK
+                </string>
+            </file>
+            <file
+                path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\res\values\styles.xml"
+                qualifiers="" >
+
+                <style name="ShowcaseView" >
+                    <item name="titleTextColor">
+#33B5E5
+                    </item>
+                    <item name="detailTextColor">
+#FFFFFF
+                    </item>
+                    <item name="backgroundColor">
+#3333B5E5
+                    </item>
+                </style>
+
+                <style name="ShowcaseButton" >
+                    <item name="android:layout_width">
+wrap_content
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:paddingTop">
+10dp
+                    </item>
+                    <item name="android:paddingBottom">
+15dp
+                    </item>
+                    <item name="android:paddingLeft">
+35dp
+                    </item>
+                    <item name="android:paddingRight">
+35dp
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+#FFFFFF
+                    </item>
+                    <item name="android:background">
+@drawable/cling_button_bg
+                    </item>
+                </style>
+
+                <style name="ShowcaseText" >
+                    <item name="android:textSize">
+15sp
+                    </item>
+                    <item name="android:textColor">
+#FFFFFF
+                    </item>
+                    <item name="android:shadowColor">
+#000000
+                    </item>
+                    <item name="android:shadowDy">
+2
+                    </item>
+                    <item name="android:shadowRadius">
+2.0
+                    </item>
+                    <item name="android:lineSpacingMultiplier">
+1.1
+                    </item>
+                </style>
+
+                <style name="ShowcaseTitleText" >
+                    <item name="android:layout_width">
+wrap_content
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:layout_marginBottom">
+5dp
+                    </item>
+                    <item name="android:textSize">
+23sp
+                    </item>
+                    <item name="android:textColor">
+#49C0EC
+                    </item>
+                    <item name="android:shadowColor">
+#000000
+                    </item>
+                    <item name="android:shadowDy">
+2
+                    </item>
+                    <item name="android:shadowRadius">
+2.0
+                    </item>
+                </style>
+
+                <style name="ShowcaseView.Light" >
+                    <item name="titleTextColor">
+#33B5E5
+                    </item>
+                    <item name="detailTextColor">
+#444
+                    </item>
+                    <item name="backgroundColor">
+#3333B5E5
+                    </item>
+                </style>
+            </file>
+        </source>
+        <source path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\build\res\rs\release" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="C:\Users\keith\git\FinishLine\ShowCaseViewLib\build-types\release\res" />
+    </dataSet>
+
+</merger>

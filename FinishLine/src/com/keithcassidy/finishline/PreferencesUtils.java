@@ -15,14 +15,32 @@
  ******************************************************************************/
 package com.keithcassidy.finishline;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.location.Geocoder;
 import android.location.Location;
+import android.os.StrictMode;
+import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.AdapterView.OnItemLongClickListener;
 
 @SuppressLint("CommitPrefEdits")
 public final class PreferencesUtils 
@@ -37,7 +55,7 @@ public final class PreferencesUtils
 	public static final double METERS_FORWARD_DEFAULT = 0;
 	public static final double METERS_STARBOARD_DEFAULT = 0;
 	public static final float FINISHLINE_EXTENSION_DEFAULT = 20;
-	public static final String LOCATION_FORMAT_DEFAULT = String.format("%d",Location.FORMAT_SECONDS); 
+	public static final String LOCATION_FORMAT_DEFAULT = String.format(Locale.getDefault(), "%d",Location.FORMAT_SECONDS); 
 	public static final boolean AUTO_MAP_UPDATE_DEFAULT = true;
 
 	private PreferencesUtils() {}
@@ -191,7 +209,7 @@ public final class PreferencesUtils
 				Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
 		editor.putLong(getKey(context, keyId), Double.doubleToLongBits(value));
-		ApiAdapterFactory.getApiAdapter().applyPreferenceChanges(editor);
+		applyPreferenceChanges(editor);
 	}
 
 
@@ -220,7 +238,7 @@ public final class PreferencesUtils
 				Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
 		editor.putFloat(getKey(context, keyId), value);
-		ApiAdapterFactory.getApiAdapter().applyPreferenceChanges(editor);
+		applyPreferenceChanges(editor);
 	}
 
 	/**
@@ -248,7 +266,7 @@ public final class PreferencesUtils
 				Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
 		editor.putBoolean(getKey(context, keyId), value);
-		ApiAdapterFactory.getApiAdapter().applyPreferenceChanges(editor);
+		applyPreferenceChanges(editor);
 	}
 
 	/**
@@ -276,7 +294,7 @@ public final class PreferencesUtils
 				Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
 		editor.putInt(getKey(context, keyId), value);
-		ApiAdapterFactory.getApiAdapter().applyPreferenceChanges(editor);
+		applyPreferenceChanges(editor);
 	}
 
 	/**
@@ -303,7 +321,7 @@ public final class PreferencesUtils
 				Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
 		editor.putLong(getKey(context, keyId), value);
-		ApiAdapterFactory.getApiAdapter().applyPreferenceChanges(editor);
+		applyPreferenceChanges(editor);
 	}
 
 	/**
@@ -331,7 +349,7 @@ public final class PreferencesUtils
 				Constants.SETTINGS_NAME, Context.MODE_PRIVATE);
 		Editor editor = sharedPreferences.edit();
 		editor.putString(getKey(context, keyId), value);
-		ApiAdapterFactory.getApiAdapter().applyPreferenceChanges(editor);
+		applyPreferenceChanges(editor);
 	}
 
 	public static int getMaxAccuracyAllowed(Context context) 
@@ -365,4 +383,223 @@ public final class PreferencesUtils
 	{
 		setBoolean(context, R.string.has_eula_shown_key, true);
 	}
+	
+	  /**
+	   * Applies all the changes done to a given preferences editor. Changes may or
+	   * may not be applied immediately.
+	   * <p>
+	   * Due to changes in API level 9.
+	   * 
+	   * @param editor the editor
+	   */
+		  public static void applyPreferenceChanges(Editor editor) {
+			    // Apply asynchronously
+			    editor.apply();
+			  }
+
+	  /**
+	   * Enables strict mode where supported, only if this is a development build.
+	   * <p>
+	   * Due to changes in API level 9.
+	   */
+		  public static void enableStrictMode() {
+			    Log.d(Constants.TAG, "Enabling strict mode");
+			    StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+			        .detectAll()
+			        .penaltyLog()
+			        .build());
+			    StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+			        .detectAll()
+			        .penaltyLog()
+			        .build());
+			  }
+
+	  /**
+	   * Copies elements from an input byte array into a new byte array, from
+	   * indexes start (inclusive) to end (exclusive). The end index must be less
+	   * than or equal to the input length.
+	   * <p>
+	   * Due to changes in API level 9.
+	   *
+	   * @param input the input byte array
+	   * @param start the start index
+	   * @param end the end index
+	   * @return a new array containing elements from the input byte array.
+	   */
+		  public static byte[] copyByteArray(byte[] input, int start, int end) {
+			    return Arrays.copyOfRange(input, start, end);
+			  }
+
+	  /**
+	   * Returns true if GeoCoder is present.
+	   * <p>
+	   * Due to changes in API level 9.
+	   */
+		  public static boolean isGeoCoderPresent() {
+			    return Geocoder.isPresent();
+			  }
+
+
+	  /**
+	   * Hides the title. If the platform supports the action bar, do nothing.
+	   * Ideally, with the action bar, we would like to collapse the navigation tabs
+	   * into the action bar. However, collapsing is not supported by the
+	   * compatibility library.
+	   * <p>
+	   * Due to changes in API level 11.
+	   * 
+	   * @param activity the activity
+	   */
+	  public static void hideTitle(Activity activity) {
+		    // Do nothing
+		  }
+
+	  /**
+	   * Configures the action bar with the Home button as an Up button. If the
+	   * platform doesn't support the action bar, do nothing.
+	   * <p>
+	   * Due to changes in API level 11.
+	   *
+	   * @param activity the activity
+	   */
+	   public static void configureActionBarHomeAsUp(Activity activity) {
+	    ActionBar actionBar = activity.getActionBar();
+	    actionBar.setHomeButtonEnabled(true);
+	    actionBar.setDisplayHomeAsUpEnabled(true);
+	  }
+
+	  /**
+	   * Configures the list view context menu.
+	   * <p>
+	   * Due to changes in API level 11.
+	   *
+	   * @param activity the activity
+	   * @param listView the list view
+	   * @param contextualActionModeCallback the callback when an item is selected
+	   *          in the contextual action mode
+	   */
+	   public static void configureListViewContextualMenu(final Activity activity, ListView listView,
+			      final ContextualActionModeCallback contextualActionModeCallback) {
+			    listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			      ActionMode actionMode;
+			      @Override
+			      public boolean onItemLongClick(
+			          AdapterView<?> parent, View view, final int position, final long id) {
+			        if (actionMode != null) {
+			          return false;
+			        }
+			        actionMode = activity.startActionMode(new ActionMode.Callback() {
+			          @Override
+			          public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			            mode.getMenuInflater().inflate(R.menu.list_context_menu, menu);
+			            return true;
+			          }
+			          @Override
+			          public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			            // Return false to indicate no change.
+			            return false;
+			          }
+			          @Override
+			          public void onDestroyActionMode(ActionMode mode) {
+			            actionMode = null;
+			          }
+			          @Override
+			          public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			            mode.finish();
+			            return contextualActionModeCallback.onClick(item.getItemId(), position, id);
+			          }
+			        });
+			        TextView textView = (TextView) view.findViewById(R.id.list_item_name);
+			        if (textView != null) {
+			          actionMode.setTitle(textView.getText());
+			        }
+			        view.setSelected(true);
+			        return true;
+			      }
+			    });
+			  };
+
+	  /**
+	   * Configures the search widget.
+	   * <p>
+	   * Due to changes in API level 11.
+	   * 
+	   * @param activity the activity
+	   * @param menuItem the search menu item
+	   */
+	  public static void configureSearchWidget(Activity activity, final MenuItem menuItem) 
+	  {
+	    SearchView searchView = (SearchView) menuItem.getActionView();
+	    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() 
+	    {
+	      @Override
+	      public boolean onQueryTextSubmit(String query) 
+	      {
+	        menuItem.collapseActionView();
+	        return false;
+	      }
+	      @Override
+	      public boolean onQueryTextChange(String newText) 
+	      {
+	        return false;
+	      }
+	    });
+	    searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+	        @Override
+	      public boolean onSuggestionSelect(int position) {
+	        return false;
+	      }
+	      @Override
+	      public boolean onSuggestionClick(int position) {
+	        menuItem.collapseActionView();
+	        return false;
+	      }
+	    });
+	  }
+	 
+	  /**
+	   * Handles the search menu selection. Returns true if handled.
+	   * <p>
+	   * Due to changes in API level 11.
+	   * 
+	   * @param activity the activity
+	   */
+	  public static boolean handleSearchMenuSelection(Activity activity) {
+		    // Returns false to allow the platform to expand the search widget.
+		    return false;
+		  }
+	  
+	  /**
+	   * Adds all items to an array adapter.
+	   * <p>
+	   * Due to changes in API level 11.
+	   *
+	   * @param arrayAdapter the array adapter
+	   * @param items list of items
+	   */
+	  public static <T> void addAllToArrayAdapter(ArrayAdapter<T> arrayAdapter, List<T> items) {
+		    arrayAdapter.addAll(items);
+		  }
+
+	  /**
+	   * Invalidates the menu.
+	   * <p>
+	   * Due to changes in API level 11.
+	   */
+	  public static void invalidMenu(Activity activity) {
+		    activity.invalidateOptionsMenu();
+		  }
+
+	  /**
+	   * Handles the search key press. Returns true if handled.
+	   * <p>
+	   * Due to changes in API level 14.
+	   * 
+	   * @param menu the search menu
+	   */
+	  public static boolean handleSearchKey(MenuItem menuItem) {
+		    menuItem.expandActionView();
+		    return true;
+		  }
+	
 }

@@ -18,14 +18,15 @@
 
 <resources>
 
-    <style name="Theme.finishlineactionbarstyle" parent="@style/Theme.Sherlock">
+    <style name="Theme.finishlineactionbarstyle" parent="@android:style/Theme.Holo">
+        <!--
         <item name="actionBarItemBackground">@drawable/selectable_background_finishlineactionbarstyle</item>
         <item name="popupMenuStyle">@style/finishlineactionbarstyle_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/finishlineactionbarstyle_DropDownListView</item>
         <item name="actionBarTabStyle">@style/finishlineactionbarstyle_ActionBarTabStyle</item>
         <item name="actionDropDownStyle">@style/finishlineactionbarstyle_DropDownNav</item>
         <item name="actionBarStyle">@style/finishlineactionbarstyle_solid_ActionBar</item>
-
+        -->
         <item name="android:actionBarItemBackground">@drawable/selectable_background_finishlineactionbarstyle</item>
         <item name="android:popupMenuStyle">@style/finishlineactionbarstyle_PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/finishlineactionbarstyle_DropDownListView</item>
@@ -37,59 +38,46 @@
         
     </style>
 
-    <style name="finishlineactionbarstyle_solid_ActionBar" parent="@style/Widget.Sherlock.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_finishlineactionbarstyle</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_finishlineactionbarstyle</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_finishlineactionbarstyle</item>
-        <item name="progressBarStyle">@style/finishlineactionbarstyle_ProgressBar</item>
 
+    <style name="finishlineactionbarstyle_solid_ActionBar" parent="@android:style/Widget.Holo.ActionBar.Solid">
         <item name="android:background">@drawable/ab_solid_finishlineactionbarstyle</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_finishlineactionbarstyle</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_finishlineactionbarstyle</item>
         <item name="android:progressBarStyle">@style/finishlineactionbarstyle_ProgressBar</item>
     </style>
-
-    <style name="finishlineactionbarstyle_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
-        <item name="background">@drawable/ab_transparent_finishlineactionbarstyle</item>
-        <item name="progressBarStyle">@style/finishlineactionbarstyle_ProgressBar</item>
-        
-        <item name="android:background">@drawable/ab_transparent_finishlineactionbarstyle</item>
-        <item name="android:progressBarStyle">@style/finishlineactionbarstyle_ProgressBar</item>
-    </style>
-	
-    <style name="finishlineactionbarstyle_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_finishlineactionbarstyle</item>	
-    </style>
-	
-    <style name="finishlineactionbarstyle_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_finishlineactionbarstyle</item>
-    </style>
-
-    <style name="finishlineactionbarstyle_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
-        <item name="background">@drawable/tab_indicator_ab_finishlineactionbarstyle</item>
-
+    
+    <style name="finishlineactionbarstyle_ActionBarTabStyle" parent="@android:style/Widget.Holo.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_finishlineactionbarstyle</item>
     </style>
-	
-    <style name="finishlineactionbarstyle_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
-        <item name="background">@drawable/spinner_background_ab_finishlineactionbarstyle</item>
-
+    
+    <style name="finishlineactionbarstyle_DropDownNav" parent="@android:style/Widget.Holo.Spinner">
         <item name="android:background">@drawable/spinner_background_ab_finishlineactionbarstyle</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_finishlineactionbarstyle</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_finishlineactionbarstyle</item>
     </style>
     
-    <style name="finishlineactionbarstyle_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
+    <style name="finishlineactionbarstyle_transparent_ActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_finishlineactionbarstyle</item>
+        <item name="android:progressBarStyle">@style/finishlineactionbarstyle_ProgressBar</item>
+    </style>
+	
+    <style name="finishlineactionbarstyle_PopupMenu" parent="@android:style/Widget.ListPopupWindow">	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_finishlineactionbarstyle</item>	
+    </style>
+	
+    <style name="finishlineactionbarstyle_DropDownListView" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_finishlineactionbarstyle</item>
+    </style>
+
+    
+    <style name="finishlineactionbarstyle_ProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_finishlineactionbarstyle</item>
     </style>
     
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+     <!-- this style is only referenced in a Light.DarkActionBar based theme
     <style name="Theme.finishlineactionbarstyle.widget" parent="@style/Theme.Sherlock">
-        <item name="popupMenuStyle">@style/finishlineactionbarstyle_PopupMenu</item>
-        <item name="dropDownListViewStyle">@style/finishlineactionbarstyle_DropDownListView</item>
-        
         <item name="android:popupMenuStyle">@style/finishlineactionbarstyle_PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/finishlineactionbarstyle_DropDownListView</item>
-    </style>
+    </style>--> 
 
 </resources>
