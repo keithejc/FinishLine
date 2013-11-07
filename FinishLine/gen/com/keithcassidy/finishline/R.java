@@ -543,6 +543,7 @@ containing a value of this type.
         public static final int warning_background=0x7f090015;
     }
     public static final class dimen {
+        public static final int alert_dialog_title_height=0x7f0c000d;
         public static final int default_circle_indicator_radius=0x7f0c0000;
         public static final int default_circle_indicator_stroke_width=0x7f0c0001;
         public static final int default_line_indicator_gap_width=0x7f0c0003;
@@ -978,11 +979,11 @@ limitations under the License.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080042;
+        public static final int AppBaseTheme=0x7f080044;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f080043;
+        public static final int AppTheme=0x7f080045;
         /**  choose upload service checkbox 
          */
         public static final int ChooseUploadServiceCheckBox=0x7f08000c;
@@ -1007,7 +1008,8 @@ limitations under the License.
         <item name="background">@drawable/tab_indicator_ab_finishlineactionbarstyle</item>  
         
          */
-        public static final int CustomTitlePageIndicator=0x7f08004d;
+        public static final int CustomTitlePageIndicator=0x7f08004f;
+        public static final int DialogWindowTitle_FinishLine=0x7f080042;
         /**  edit category 
          */
         public static final int EditCategory=0x7f08000e;
@@ -1067,6 +1069,7 @@ limitations under the License.
         /**  stats value 
          */
         public static final int StatsValue=0x7f08001f;
+        public static final int TextAppearance_FinishLine_DialogWindowTitle=0x7f080043;
         public static final int TextAppearance_TabPageIndicator=0x7f080008;
         /**  text choose activity 
          */
@@ -1089,38 +1092,11 @@ limitations under the License.
         /**  text small 
          */
         public static final int TextSmall=0x7f080026;
-        public static final int Theme_FinishLine=0x7f08004e;
-        /**  
-                <item name="android:windowFrame">@null</item>
-        <item name="android:windowTitleStyle">@style/DialogWindowTitle.Sherlock</item>
-        <item name="android:windowBackground">@drawable/abs__dialog_full_holo_dark</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowActionModeOverlay">true</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimAmount">0.6</item>
-
-        <item name="android:colorBackgroundCacheHint">@null</item>
-
-        <item name="android:textColorPrimary">@color/abs__primary_text_holo_dark</item>
-        <item name="android:textColorPrimaryInverse">@color/abs__primary_text_holo_light</item>
-
-        <item name="windowMinWidthMajor">@dimen/abs__dialog_min_width_major</item>
-        <item name="windowMinWidthMinor">@dimen/abs__dialog_min_width_minor</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowContentOverlay">@null</item>
-        
-         */
-        public static final int Theme_FinishLine_Dialog=0x7f08004c;
+        public static final int Theme_FinishLine=0x7f080050;
+        public static final int Theme_FinishLine_Dialog=0x7f08004e;
         public static final int Theme_FinishLine_DialogWithCorners=0x7f08000a;
         public static final int Theme_PageIndicatorDefaults=0x7f080005;
-        public static final int Theme_finishlineactionbarstyle=0x7f080044;
+        public static final int Theme_finishlineactionbarstyle=0x7f080046;
         /**  theme selector 
          */
         public static final int ThemeSelector=0x7f080027;
@@ -1205,13 +1181,13 @@ limitations under the License.
         public static final int Widget=0x7f080006;
         public static final int Widget_IconPageIndicator=0x7f080009;
         public static final int Widget_TabPageIndicator=0x7f080007;
-        public static final int finishlineactionbarstyle_ActionBarTabStyle=0x7f080046;
-        public static final int finishlineactionbarstyle_DropDownListView=0x7f08004a;
-        public static final int finishlineactionbarstyle_DropDownNav=0x7f080047;
-        public static final int finishlineactionbarstyle_PopupMenu=0x7f080049;
-        public static final int finishlineactionbarstyle_ProgressBar=0x7f08004b;
-        public static final int finishlineactionbarstyle_solid_ActionBar=0x7f080045;
-        public static final int finishlineactionbarstyle_transparent_ActionBar=0x7f080048;
+        public static final int finishlineactionbarstyle_ActionBarTabStyle=0x7f080048;
+        public static final int finishlineactionbarstyle_DropDownListView=0x7f08004c;
+        public static final int finishlineactionbarstyle_DropDownNav=0x7f080049;
+        public static final int finishlineactionbarstyle_PopupMenu=0x7f08004b;
+        public static final int finishlineactionbarstyle_ProgressBar=0x7f08004d;
+        public static final int finishlineactionbarstyle_solid_ActionBar=0x7f080047;
+        public static final int finishlineactionbarstyle_transparent_ActionBar=0x7f08004a;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;

@@ -357,6 +357,20 @@ limitations under the License.
     <item name="android:orientation">vertical</item>
   </style>
 
+    <style name="DialogWindowTitle.FinishLine" parent="Widget">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.FinishLine.DialogWindowTitle</item>
+        <item name="android:minHeight">@dimen/alert_dialog_title_height</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+    </style>
+    
+    <style name="TextAppearance.FinishLine.DialogWindowTitle" parent="Widget">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/finishLineHighlight</item>
+    </style>
+        
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
@@ -374,4 +388,6 @@ limitations under the License.
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    
+    
 </resources>
